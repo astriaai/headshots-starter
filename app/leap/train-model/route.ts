@@ -14,8 +14,6 @@ if (!webhookUrl) {
   throw new Error("MISSING LEAP_WEBHOOK_URL!");
 }
 
-export const dynamic = 'force-dynamic'
-
 export async function POST(request: Request) {
   const incomingFormData = await request.formData();
   const images = incomingFormData.get("images") as unknown as File[];

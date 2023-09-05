@@ -9,8 +9,6 @@ if (!resendApiKey) {
   throw new Error("MISSING RESEND_API_KEY!");
 }
 
-export const dynamic = 'force-dynamic'
-
 export async function POST(request: Request) {
   const resend = new Resend(resendApiKey);
   const incomingData = await request.json();
