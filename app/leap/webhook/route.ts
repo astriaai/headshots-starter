@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend';
 import { cookies } from 'next/headers';
 
+export const dynamic = 'force-dynamic'
+
 const resendApiKey = process.env.RESEND_API_KEY;
 
 if (!resendApiKey) {

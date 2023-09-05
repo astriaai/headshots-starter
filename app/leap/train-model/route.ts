@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server'
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from 'next/headers'
 
+export const dynamic = 'force-dynamic'
+
 const leapApiKey = process.env.LEAP_API_KEY;
 const webhookUrl = process.env.LEAP_WEBHOOK_URL;
 
