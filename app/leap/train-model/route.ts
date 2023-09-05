@@ -1,6 +1,6 @@
 import { Leap } from '@leap-ai/sdk';
 import { NextResponse } from 'next/server'
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
+import { createRouteHandlerClient, createServerActionClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
@@ -19,7 +19,7 @@ if (!webhookUrl) {
 export async function POST(request: Request) {
   const incomingFormData = await request.formData();
   const images = incomingFormData.get("images") as unknown as File[];
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
 
   const { data: { user } } = await supabase.auth.getUser();
 

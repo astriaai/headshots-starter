@@ -1,4 +1,4 @@
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
+import { createRouteHandlerClient, createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend';
 import { cookies } from 'next/headers';
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const incomingData = await request.json();
   const { state, user_id } = incomingData;
 
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { data: { user } } = await supabase.from('users').select('*').eq('id', user_id).single();
 
   if (!user) {
