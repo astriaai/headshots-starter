@@ -1,12 +1,10 @@
-import { TrainModelZone } from '@/components/TrainModel'
+import TrainModelZone from '@/components/TrainModel'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import Login from './login/page'
-
-export const dynamic = 'force-dynamic'
+import { cookies } from 'next/headers'
 
 export default async function Index() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient({ cookies });
 
   const {
     data: { user }

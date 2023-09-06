@@ -4,7 +4,7 @@ import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { Button } from "./ui/button";
 
-export function TrainModelZone() {
+export default async function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback(async (acceptedFiles: any) => {
     setFiles([...acceptedFiles]);

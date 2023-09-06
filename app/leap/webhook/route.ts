@@ -1,7 +1,7 @@
-import { createRouteHandlerClient, createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server'
-import { Resend } from 'resend';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
 export const dynamic = 'force-dynamic'
 
