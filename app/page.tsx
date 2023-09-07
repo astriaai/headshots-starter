@@ -16,11 +16,9 @@ export default async function Index() {
 
   return (
     <div className='flex flex-1 w-full h-screen flex-col'>
-      <div id="train-model-container" className="w-full h-full px-20 py-10">
+      <div id="train-model-container" className="w-full h-full px-20 py-10 max-w-screen-md">
         <h2>Train Model</h2>
-        <div className='bg-slate-500 w-80 h-80 rounded-md mt-2'>
-          <TrainModelZone />
-        </div>
+        <TrainModelZone />
       </div>
     </div>
   )

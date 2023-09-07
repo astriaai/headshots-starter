@@ -1,3 +1,4 @@
+import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -18,7 +19,9 @@ if (!webhookUrl) {
 export async function POST(request: Request) {
   const incomingFormData = await request.formData();
   const images = incomingFormData.getAll("image") as File[];
-  const supabase = createRouteHandlerClient({ cookies });
+  const type = incomingFormData.get("type") as string;
+  const name = incomingFormData.get("name") as string;
+  const supabase = createRouteHandlerClient<Database>({ cookies });
 
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -47,6 +50,12 @@ export async function POST(request: Request) {
     const { status, statusText } = resp;
 
     console.log({ status, statusText });
+
+    await supabase.from("models").insert({
+      user_id: user.id,
+      name,
+      type,
+    });
   } catch (e) {
     console.log(e);
     return NextResponse.json({

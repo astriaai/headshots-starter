@@ -2,12 +2,39 @@
 
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import * as z from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+
+const formSchema = z.object({
+  name: z.string().min(1).max(50),
+  type: z.string().min(1).max(50),
+})
 
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
   const { toast } = useToast()
+
+  const form = useForm<z.infer<typeof formSchema>>({
+  resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      type: "",
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+    trainModel();
+  }
+
   const onDrop = useCallback(async (acceptedFiles: any) => {
     setFiles(acceptedFiles);
     toast({
@@ -22,7 +49,6 @@ export default function TrainModelZone() {
     files?.forEach(file => {
       formData.append("image", file); // Add the image Blob to the form data
     });
-    console.log("formData", formData.getAll("image"));
     const response = await fetch("/leap/train-model", {
       method: "POST",
       body: formData,
@@ -48,21 +74,57 @@ export default function TrainModelZone() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {
     "image/png": [".png"],
     "image/jpeg": [".jpg", ".jpeg"],
-  } });
+  }});
 
   return (
-    <>
-      <div {...getRootProps()} className="bg-slate-700 w-full h-full p-4 rounded-md justify-center align-middle cursor-pointer">
-        <div className="outline-dashed outline-2 outline-gray-100 w-full h-full rounded-md p-4 flex justify-center align-middle">
-          <input {...getInputProps()} />
-          {
-            isDragActive ?
-              <p className="self-center">Drop the files here ...</p> :
-              <p className="self-center">Drag some images here, or click to select</p>
-          }
-        </div>
-      </div>
-      <Button className="w-full" onClick={trainModel}>Train Model</Button>
-    </>
+    <div className="h-full">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="rounded-md">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="w-full py-5 rounded-md">
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="My First Model" {...field} className="outline-1 outline max-w-screen-sm" />
+                </FormControl>
+                <FormDescription>
+                  This helps you identify the model later.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem className="w-full py-5 rounded-md">
+                <FormLabel>Type</FormLabel>
+                <FormControl>
+                  <Input placeholder="person" {...field} className="outline-1 outline max-w-screen-sm" />
+                </FormControl>
+                <FormDescription>
+                  This helps the model identify what it is looking at.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div {...getRootProps()} className="h-96 py-5 rounded-md justify-center align-middle cursor-pointer">
+            <div className="outline-dashed outline-2 outline-gray-100 w-full h-full rounded-md p-4 flex justify-center align-middle">
+              <input {...getInputProps()} />
+              {
+                isDragActive ?
+                  <p className="self-center">Drop the files here ...</p> :
+                  <p className="self-center">Drag some images here, or click to select</p>
+              }
+            </div>
+          </div>
+          <Button type="submit" className="w-full">Train Model</Button>
+        </form>
+      </Form>
+    </div>
   )
 }

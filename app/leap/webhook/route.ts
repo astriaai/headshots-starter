@@ -48,8 +48,6 @@ export async function POST(request: Request) {
     return NextResponse.json({}, { status: 401, statusText: "User not found!" })
   }
 
-  console.log({ user_id, user, result });
-
   try {
     if (result.status === "finished") {
       // Send Email
@@ -59,6 +57,10 @@ export async function POST(request: Request) {
         subject: 'Your model was successfully trained!',
         html: `<h2>We're writing to notify you that your model training was successful!</h2>`
       });
+
+      await supabase.from("models").update({
+        status: "finished",
+      }).eq("id", result.id);
     } else {
       // Send Email
       await resend.emails.send({
@@ -67,6 +69,10 @@ export async function POST(request: Request) {
         subject: 'Your model failed to train!',
         html: `<h2>We're writing to notify you that your model training failed!.</h2>`
       });
+
+      await supabase.from("models").update({
+        status: "failed",
+      }).eq("id", result.id);
     }
     return NextResponse.json({
       message: "success"
