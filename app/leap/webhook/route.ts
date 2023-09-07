@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       // Send Email
       resend.emails.send({
         from: 'noreply@headshots.tryleap.ai',
-        to: user.email,
+        to: user?.email ?? "",
         subject: 'Your model was successfully trained!',
         html: `<h2>We're writing to notify you that your model training was successful!</h2>`
       });
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       // Send Email
       resend.emails.send({
         from: 'noreply@headshots.tryleap.ai',
-        to: user.email,
+        to: user?.email ?? "",
         subject: 'Your model failed to train!',
         html: `<h2>We're writing to notify you that your model training failed!.</h2>`
       });
