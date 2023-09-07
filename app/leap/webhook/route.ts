@@ -51,26 +51,22 @@ export async function POST(request: Request) {
   console.log({ user_id, user, result });
 
   try {
-    switch (result.status) {
-      case "finished":
-        // Send Email
-        await resend.emails.send({
-          from: 'noreply@headshots.tryleap.ai',
-          to: user?.email ?? "",
-          subject: 'Your model was successfully trained!',
-          html: `<h2>We're writing to notify you that your model training was successful!</h2>`
-        });
-      case "failed":
-        // Send Email
-        await resend.emails.send({
-          from: 'noreply@headshots.tryleap.ai',
-          to: user?.email ?? "",
-          subject: 'Your model failed to train!',
-          html: `<h2>We're writing to notify you that your model training failed!.</h2>`
-        });
-      default:
-        // Send Email
-        null;
+    if (result.status === "finished") {
+      // Send Email
+      await resend.emails.send({
+        from: 'noreply@headshots.tryleap.ai',
+        to: user?.email ?? "",
+        subject: 'Your model was successfully trained!',
+        html: `<h2>We're writing to notify you that your model training was successful!</h2>`
+      });
+    } else {
+      // Send Email
+      await resend.emails.send({
+        from: 'noreply@headshots.tryleap.ai',
+        to: user?.email ?? "",
+        subject: 'Your model failed to train!',
+        html: `<h2>We're writing to notify you that your model training failed!.</h2>`
+      });
     }
     return NextResponse.json({
       message: "success"

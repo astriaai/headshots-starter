@@ -3,12 +3,18 @@
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
 
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
+  const { toast } = useToast()
   const onDrop = useCallback(async (acceptedFiles: any) => {
     setFiles(acceptedFiles);
-    console.log("acceptedFiles", acceptedFiles);
+    toast({
+      title: "Images uploaded",
+      description: "The images were uploaded successfully.",
+      duration: 5000,
+    })
   }, []);
 
   const trainModel = useCallback(async () => {
@@ -24,10 +30,25 @@ export default function TrainModelZone() {
 
     if (!response.ok) {
       console.log("Something went wrong! ", response?.statusText);
+      toast({
+        title: "Something went wrong!",
+        description: response?.statusText,
+        duration: 5000,
+      })
+      return;
     }
+
+    toast({
+      title: "Model queued for training",
+      description: "The model was queued for training. You will receive an email when the model is ready to use.",
+      duration: 5000,
+    })
   }, [files]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {
+    "image/png": [".png"],
+    "image/jpeg": [".jpg", ".jpeg"],
+  } });
 
   return (
     <>

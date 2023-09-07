@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import './globals.css'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata = {
   title: 'Create Next App',
@@ -22,6 +23,7 @@ export default async function RootLayout({
         <main className="min-h-screen flex flex-col items-center bg-slate-800">
           {children}
         </main>
+        <Toaster />
       </body>
     </html>
   )
