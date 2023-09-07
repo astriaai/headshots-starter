@@ -2,6 +2,7 @@ import { AvatarIcon } from "@radix-ui/react-icons";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import Link from "next/link";
 
 export default async function Navbar() {
   const supabase = createServerComponentClient({ cookies });
@@ -12,9 +13,9 @@ export default async function Navbar() {
 
   return (
     <div className="flex flex-row w-full px-8 py-4 justify-between">
-      <div>
+      <Link href="/">
         <h2>Headshots AI</h2>
-      </div>
+      </Link>
       {user && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">

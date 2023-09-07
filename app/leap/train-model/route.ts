@@ -49,13 +49,21 @@ export async function POST(request: Request) {
 
     const { status, statusText } = resp;
 
+    console.log("formData", formData);
     console.log({ status, statusText });
 
-    await supabase.from("models").insert({
+    const { error: modelError } = await supabase.from("models").insert({
       user_id: user.id,
       name,
       type,
     });
+
+    if (modelError) {
+      console.log(modelError);
+      return NextResponse.json({
+        message: "Something went wrong!"
+      }, { status: 500, statusText: "Something went wrong!" })
+    }
   } catch (e) {
     console.log(e);
     return NextResponse.json({

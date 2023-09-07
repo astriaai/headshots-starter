@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 
 const formSchema = z.object({
@@ -18,7 +19,8 @@ const formSchema = z.object({
 
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
-  const { toast } = useToast()
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
   resolver: zodResolver(formSchema),
@@ -49,6 +51,8 @@ export default function TrainModelZone() {
     files?.forEach(file => {
       formData.append("image", file); // Add the image Blob to the form data
     });
+    formData.append("name", form.getValues("name"));
+    formData.append("type", form.getValues("type"));
     const response = await fetch("/leap/train-model", {
       method: "POST",
       body: formData,
@@ -69,6 +73,8 @@ export default function TrainModelZone() {
       description: "The model was queued for training. You will receive an email when the model is ready to use.",
       duration: 5000,
     })
+
+    router.push("/");
   }, [files]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {
