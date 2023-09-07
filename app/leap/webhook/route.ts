@@ -17,13 +17,13 @@ export async function POST(request: Request) {
   const { state, user_id } = incomingData;
 
   const supabase = createRouteHandlerClient({ cookies });
-  const { data: { user } } = await supabase.from('users').select('*').eq('user_id', user_id).single();
-
-  console.log({ user_id, user, state });
+  const { data: { user } } = await supabase.auth.admin.getUserById(user_id);
 
   if (!user) {
     return NextResponse.json({}, { status: 401, statusText: "User not found!" })
   }
+
+  console.log({ user_id, user, state });
 
   switch (state) {
     case "finished":
