@@ -23,7 +23,13 @@ if (!supabaseServiceRoleKey) {
 export async function POST(request: Request) {
   const resend = new Resend(resendApiKey);
   const incomingData = await request.json();
-  const { result, user_id } = incomingData;
+  const { result } = incomingData;
+  const urlObj = new URL(request.url);
+  const user_id = urlObj.searchParams.get('user_id');
+
+  if (!user_id) {
+    return NextResponse.json({}, { status: 500, statusText: "Malformed URL, no user_id detected!" });
+  }
 
   const supabase = createClient(supabaseUrl as string, supabaseServiceRoleKey as string, {
     auth: {
