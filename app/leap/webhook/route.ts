@@ -1,7 +1,4 @@
-import { Database } from '@/types/supabase';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
@@ -26,7 +23,7 @@ if (!supabaseServiceRoleKey) {
 export async function POST(request: Request) {
   const resend = new Resend(resendApiKey);
   const incomingData = await request.json();
-  const { state, user_id } = incomingData;
+  const { result, user_id } = incomingData;
 
   const supabase = createClient(supabaseUrl as string, supabaseServiceRoleKey as string, {
     auth: {
@@ -35,13 +32,7 @@ export async function POST(request: Request) {
       detectSessionInUrl: false
     }
   });
-  console.log("body", request.body)
-  console.log({ incomingData })
-  console.log("About to get user");
   const { data: { user }, error } = await supabase.auth.admin.getUserById(user_id);
-  console.log("Got user");
-
-  console.log({ user, error });
 
   if (error) {
     return NextResponse.json({}, { status: 401, statusText: error.message, })
@@ -51,9 +42,9 @@ export async function POST(request: Request) {
     return NextResponse.json({}, { status: 401, statusText: "User not found!" })
   }
 
-  console.log({ user_id, user, state });
+  console.log({ user_id, user, result });
 
-  switch (state) {
+  switch (result.status) {
     case "finished":
       // Send Email
       resend.emails.send({

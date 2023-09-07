@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     });
 
     formData.append("testRequest", "true");
-    formData.append('webhookUrl', `${webhookUrl}`);
+    formData.append('webhookUrl', `${webhookUrl}?user_id=${user.id}`);
 
     let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
     const resp = await fetch(`https://api.tryleap.ai/api/v2/images/models/new`, options);
