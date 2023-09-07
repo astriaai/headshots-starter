@@ -22,7 +22,6 @@ export default async function ModelsTable() {
   }
 
   const { data: models } = await supabase.from('models').select('*').eq('user_id', user.id);
-  console.log(models);
 
   return (
     <Table className="w-full">
