@@ -35,7 +35,10 @@ export async function POST(request: Request) {
       detectSessionInUrl: false
     }
   });
+  console.log("supabase", supabase);
+  console.log("About to get user");
   const { data: { user }, error } = await supabase.auth.admin.getUserById(user_id);
+  console.log("Got user");
 
   if (error) {
     return NextResponse.json({}, { status: 401, statusText: error.message, })
