@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       detectSessionInUrl: false
     }
   });
+  console.log("body", request.body)
   console.log({ incomingData })
   console.log("About to get user");
   const { data: { user }, error } = await supabase.auth.admin.getUserById(user_id);
