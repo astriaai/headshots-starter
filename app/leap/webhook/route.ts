@@ -50,29 +50,35 @@ export async function POST(request: Request) {
 
   console.log({ user_id, user, result });
 
-  switch (result.status) {
-    case "finished":
-      // Send Email
-      resend.emails.send({
-        from: 'noreply@headshots.tryleap.ai',
-        to: user?.email ?? "",
-        subject: 'Your model was successfully trained!',
-        html: `<h2>We're writing to notify you that your model training was successful!</h2>`
-      });
-    case "failed":
-      // Send Email
-      resend.emails.send({
-        from: 'noreply@headshots.tryleap.ai',
-        to: user?.email ?? "",
-        subject: 'Your model failed to train!',
-        html: `<h2>We're writing to notify you that your model training failed!.</h2>`
-      });
-    default:
-      // Send Email
-      null;
+  try {
+    switch (result.status) {
+      case "finished":
+        // Send Email
+        await resend.emails.send({
+          from: 'noreply@headshots.tryleap.ai',
+          to: user?.email ?? "",
+          subject: 'Your model was successfully trained!',
+          html: `<h2>We're writing to notify you that your model training was successful!</h2>`
+        });
+      case "failed":
+        // Send Email
+        await resend.emails.send({
+          from: 'noreply@headshots.tryleap.ai',
+          to: user?.email ?? "",
+          subject: 'Your model failed to train!',
+          html: `<h2>We're writing to notify you that your model training failed!.</h2>`
+        });
+      default:
+        // Send Email
+        null;
+    }
+    return NextResponse.json({
+      message: "success"
+    }, { status: 200, statusText: "Success" })
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json({
+      message: "Something went wrong!"
+    }, { status: 500, statusText: "Something went wrong!" })
   }
-
-  return NextResponse.json({
-    message: "success"
-  }, { status: 200, statusText: "Success" })
 }
