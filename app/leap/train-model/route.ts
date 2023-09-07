@@ -1,4 +1,3 @@
-import { Leap } from '@leap-ai/sdk';
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -18,7 +17,7 @@ if (!webhookUrl) {
 
 export async function POST(request: Request) {
   const incomingFormData = await request.formData();
-  const images = incomingFormData.get("images") as unknown as File[];
+  const images = incomingFormData.getAll("image") as File[];
   const supabase = createRouteHandlerClient({ cookies });
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -33,15 +32,20 @@ export async function POST(request: Request) {
     }, { status: 500, statusText: "Missing sample images!" })
   }
 
-  const leap = new Leap({
-    accessToken: leapApiKey,
-  });
-
   try {
-    await leap.imageModels.trainModel({
-      imageSampleFiles: images as unknown as File[],
-      webhookUrl: `${webhookUrl}?user_id=${user.id}`,
-    })
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append("imageSampleFiles", image);
+    });
+
+    formData.append("testRequest", "true");
+
+    let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
+    const resp = await fetch(`https://api.tryleap.ai/api/v2/images/models/new`, options);
+
+    const { status, statusText } = resp;
+
+    console.log({ status, statusText });
   } catch (e) {
     console.log(e);
     return NextResponse.json({

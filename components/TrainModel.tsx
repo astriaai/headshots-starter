@@ -7,7 +7,8 @@ import { Button } from "./ui/button";
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback(async (acceptedFiles: any) => {
-    setFiles([...acceptedFiles]);
+    setFiles(acceptedFiles);
+    console.log("acceptedFiles", acceptedFiles);
   }, []);
 
   const trainModel = useCallback(async () => {
@@ -15,6 +16,7 @@ export default function TrainModelZone() {
     files?.forEach(file => {
       formData.append("image", file); // Add the image Blob to the form data
     });
+    console.log("formData", formData.getAll("image"));
     const response = await fetch("/leap/train-model", {
       method: "POST",
       body: formData,
@@ -23,7 +25,7 @@ export default function TrainModelZone() {
     if (!response.ok) {
       console.log("Something went wrong! ", response?.statusText);
     }
-  }, []);
+  }, [files]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
