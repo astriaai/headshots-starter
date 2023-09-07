@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   const { state, user_id } = incomingData;
 
   const supabase = createRouteHandlerClient({ cookies });
-  const { data: { user } } = await supabase.auth.admin.getUserById(user_id);
+  const { data: { user } } = await supabase.from("auth.users").select("*").eq("id", user_id).single();
 
   if (!user) {
     return NextResponse.json({}, { status: 401, statusText: "User not found!" })
