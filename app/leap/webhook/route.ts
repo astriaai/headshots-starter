@@ -28,8 +28,18 @@ export async function POST(request: Request) {
   const incomingData = await request.json();
   const { state, user_id } = incomingData;
 
-  const supabase = createClient(supabaseUrl as string, supabaseServiceRoleKey as string);
-  const { data: { user } } = await supabase.auth.admin.getUserById(user_id);
+  const supabase = createClient(supabaseUrl as string, supabaseServiceRoleKey as string, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false
+    }
+  });
+  const { data: { user }, error } = await supabase.auth.admin.getUserById(user_id);
+
+  if (error) {
+    return NextResponse.json({}, { status: 401, statusText: error.message, })
+  }
 
   if (!user) {
     return NextResponse.json({}, { status: 401, statusText: "User not found!" })
