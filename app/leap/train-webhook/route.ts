@@ -1,3 +1,4 @@
+import { Database } from '@/types/supabase';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
     return NextResponse.json({}, { status: 500, statusText: "Malformed URL, no user_id detected!" });
   }
 
-  const supabase = createClient(supabaseUrl as string, supabaseServiceRoleKey as string, {
+  const supabase = createClient<Database>(supabaseUrl as string, supabaseServiceRoleKey as string, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -82,9 +83,9 @@ export async function POST(request: Request) {
         html: `<h2>We're writing to notify you that your model training was successful!</h2>`
       });
 
-      await supabase.from("models").update({
+      const { data: modelUpdated } = await supabase.from("models").update({
         status: "finished",
-      }).eq("model_id", result.id);
+      }).eq("model_id", result.id).select("*").single();
 
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
       const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
@@ -93,7 +94,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           prompt,
           numberOfImages: 4,
-          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}`
+          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated?.id}`
         }),
       });
       const { status, statusText } = resp;
