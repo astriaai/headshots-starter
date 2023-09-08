@@ -43,8 +43,6 @@ export async function POST(request: Request) {
   const user_id = urlObj.searchParams.get('user_id');
   const webhook_secret = urlObj.searchParams.get('webhook_secret');
 
-  console.log({ user_id, webhook_secret });
-
   if (!webhook_secret) {
     return NextResponse.json({}, { status: 500, statusText: "Malformed URL, no webhook_secret detected!" });
   }
@@ -99,7 +97,8 @@ export async function POST(request: Request) {
         }),
       });
       const { status, statusText } = resp;
-      console.log({ resp });
+      console.log(resp.body);
+      console.log({ status, statusText });
 
     } else {
       // Send Email
