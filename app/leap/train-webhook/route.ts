@@ -100,7 +100,7 @@ export async function POST(request: Request) {
       }
 
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
-      for (let index = 0; index < 3; index++) {
+      for (let index = 0; index < 4; index++) {
         const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
           method: 'POST',
           headers: { accept: 'application/json', 'content-type': 'application/json', Authorization: `Bearer ${leapApiKey}` },
