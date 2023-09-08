@@ -1,3 +1,4 @@
+import { Database } from '@/types/supabase';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
@@ -30,6 +31,8 @@ export async function POST(request: Request) {
   const user_id = urlObj.searchParams.get('user_id');
   const model_id = urlObj.searchParams.get('model_id');
   const webhook_secret = urlObj.searchParams.get('webhook_secret');
+  const model_db_id = urlObj.searchParams.get('model_db_id');
+  const result = incomingData?.result;
 
   console.log({ user_id, model_id, webhook_secret });
 
@@ -49,7 +52,11 @@ export async function POST(request: Request) {
     return NextResponse.json({}, { status: 500, statusText: "Malformed URL, no model_id detected!" });
   }
 
-  const supabase = createClient(supabaseUrl as string, supabaseServiceRoleKey as string, {
+  if (!model_db_id) {
+    return NextResponse.json({}, { status: 500, statusText: "Malformed URL, no model_db_id detected!" });
+  }
+
+  const supabase = createClient<Database>(supabaseUrl as string, supabaseServiceRoleKey as string, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -67,7 +74,17 @@ export async function POST(request: Request) {
   }
 
   try {
-    console.log({ incomingData });
+    const images = result.images;
+    console.log({ images });
+    await Promise.all(images.map(async (image: any) => {
+      const { error: imageError } = await supabase.from("images").insert({
+        modelId: Number(model_db_id),
+        uri: image.uri,
+      });
+      if (imageError) {
+        console.log({ imageError });
+      }
+    }));
     return NextResponse.json({
       message: "success"
     }, { status: 200, statusText: "Success" })
