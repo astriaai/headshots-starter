@@ -124,7 +124,7 @@ export async function POST(request: Request) {
 
       await supabase.from("models").update({
         status: "failed",
-      }).eq("model_id", result.id);
+      }).eq("modelId", result.id);
     }
     return NextResponse.json({
       message: "success"
