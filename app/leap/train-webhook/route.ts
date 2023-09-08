@@ -13,6 +13,13 @@ const leapApiKey = process.env.LEAP_API_KEY;
 const leapImageWebhookUrl = process.env.LEAP_IMAGE_WEBHOOK_URL;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 
+export const prompts = [
+  "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, office window",
+  "8k close up linkedin profile picture of @subject {model_type}, linkedin, professional jack suit, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, garden, bokeh",
+  "8k linkedin professional profile photo of @subject {model_type} in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
+  "8k portrait of realistic pencil drawing of a beautiful @subject {model_type}, accurately drawn circular eyes, accurately drawn circles, black and white, sketch, pencil strokes, pencil lines, paper texture, high resolution, high resolution textures, sharp features, 32k, super-resolution, sharp focus",
+];
+
 if (!resendApiKey) {
   throw new Error("MISSING RESEND_API_KEY!");
 }
@@ -124,20 +131,13 @@ export async function POST(request: Request) {
         console.log({ modelUpdated });
       }
 
-      const prompt = [
-        "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, office window",
-        "8k linkedin professional profile photo of @subject {model_type} in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
-        "8k portrait of realistic pencil drawing of a beautiful @subject {model_type}, accurately drawn circular eyes, accurately drawn circles, black and white, sketch, pencil strokes, pencil lines, paper texture, high resolution, high resolution textures, sharp features, 32k, super-resolution, sharp focus",
-        "8k professional historical portrait photo of @subject {model_type} from 1860, sepia tone, meticulous detail, hyperrealistic, medium long hair, facial hair, centered uncropped symmetrical , daguerreotype, framed picture",
-      ];
-
       const leap = new Leap({
         accessToken: leapApiKey,
       });
 
       for (let index = 0; index < 4; index++) {
         const { status, statusText } = await leap.images.generate({
-          prompt: prompt[index].replace(
+          prompt: prompts[index].replace(
             "{model_type}",
             (model_type as string) ?? ""
           ),
