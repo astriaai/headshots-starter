@@ -52,14 +52,56 @@ export default function TrainModelZone() {
     trainModel();
   }
 
-  const onDrop = useCallback(async (acceptedFiles: any) => {
-    setFiles(acceptedFiles);
-    toast({
-      title: "Images selected",
-      description: "The images were successfully selected.",
-      duration: 5000,
-    });
-  }, []);
+  const onDrop = useCallback(
+    async (acceptedFiles: any) => {
+      console.log({
+        acceptedFiles,
+        files,
+      });
+
+      const newFiles =
+        acceptedFiles.filter(
+          (file: File) => !files.some((f) => f.name === file.name)
+        ) || [];
+
+      // if user tries to upload more than 10 files, display a toast
+      if (newFiles.length + files.length > 10) {
+        toast({
+          title: "Too many images",
+          description:
+            "You can only upload up to 10 images in total. Please try again.",
+          duration: 5000,
+        });
+        return;
+      }
+
+      // display a toast if any duplicate files were found
+      if (newFiles.length !== acceptedFiles.length) {
+        toast({
+          title: "Duplicate file names",
+          description:
+            "Some of the files you selected were already added. They were ignored.",
+          duration: 5000,
+        });
+      }
+
+      setFiles([...files, ...newFiles]);
+
+      toast({
+        title: "Images selected",
+        description: "The images were successfully selected.",
+        duration: 5000,
+      });
+    },
+    [files]
+  );
+
+  const removeFile = useCallback(
+    (file: File) => {
+      setFiles(files.filter((f) => f.name !== file.name));
+    },
+    [files]
+  );
 
   const trainModel = useCallback(async () => {
     setIsLoading(true);
@@ -117,7 +159,7 @@ export default function TrainModelZone() {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="w-full rounded-md ">
+              <FormItem className="w-full rounded-md">
                 <FormLabel>Name</FormLabel>
                 <FormDescription>
                   Give your model a name so you can easily identify it later.
@@ -198,7 +240,7 @@ export default function TrainModelZone() {
           </div>
           <div
             {...getRootProps()}
-            className="h-48 rounded-md justify-center align-middle cursor-pointer flex flex-col gap-4"
+            className=" rounded-md justify-center align-middle cursor-pointer flex flex-col gap-4"
           >
             <FormLabel>Samples</FormLabel>
             <FormDescription>
@@ -218,6 +260,28 @@ export default function TrainModelZone() {
                 </div>
               )}
             </div>
+          </div>
+          <div>
+            {files.length > 0 && (
+              <div className="flex flex-row gap-4 flex-wrap">
+                {files.map((file) => (
+                  <div key={file.name} className="flex flex-col gap-1">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="rounded-md w-24 h-24 object-cover"
+                    />
+                    <Button
+                      variant="outline"
+                      size={"sm"}
+                      className="w-full"
+                      onClick={() => removeFile(file)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           {isLoading ? (
             <Icons.spinner className="h-4 w-4 animate-spin" />
