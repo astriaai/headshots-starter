@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Table,
   TableBody,
@@ -11,18 +13,19 @@ import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import { Icons } from "./icons";
+import { redirect } from "next/navigation";
 
-export default async function ModelsTable() {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+type ModelsTableProps = {
+  models: Database["public"]["Tables"]["models"]["Row"][];
+}
 
-  if (!user) {
-    return null;
+export default async function ModelsTable({
+  models,
+}: ModelsTableProps) {
+
+  const handleRedirect = (id: number) => {
+    redirect(`/overview/models/${id}`);
   }
-
-  const { data: models } = await supabase.from('models').select('*').eq('user_id', user.id);
 
   return (
     <Table className="w-full">
@@ -35,7 +38,7 @@ export default async function ModelsTable() {
       </TableHeader>
       <TableBody>
         {models?.map((model) => (
-          <TableRow key={model.id}>
+          <TableRow key={model.id} onClick={() => handleRedirect(model.id)}>
             <TableCell className="font-medium">{model.name}</TableCell>
             <TableCell>{model.status} {model.status === "processing" && <Icons.spinner className="h-4 w-4 animate-spin" />}</TableCell>
             <TableCell>{model.type}</TableCell>
