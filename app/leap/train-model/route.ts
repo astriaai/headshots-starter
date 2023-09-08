@@ -9,10 +9,6 @@ const leapApiKey = process.env.LEAP_API_KEY;
 const webhookUrl = process.env.LEAP_WEBHOOK_URL;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 
-if (!leapApiKey) {
-  throw new Error("MISSING LEAP_API_KEY!");
-}
-
 if (!webhookUrl) {
   throw new Error("MISSING LEAP_WEBHOOK_URL!");
 }
@@ -34,6 +30,16 @@ export async function POST(request: Request) {
 
   if (!user) {
     return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
+  }
+
+  if (!leapApiKey) {
+    return NextResponse.json(
+      {},
+      {
+        status: 401,
+        statusText: "Unauthorized: Add your Leap API Key to generate headshots",
+      }
+    );
   }
 
   if (images?.length < 4) {
