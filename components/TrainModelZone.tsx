@@ -180,7 +180,7 @@ export default function TrainModelZone() {
                 </FormDescription>
                 <FormControl>
                   <Input
-                    placeholder="e.g. Natalie's Headshots"
+                    placeholder="e.g. Natalie Headshots"
                     {...field}
                     className="max-w-screen-sm"
                     autoComplete="off"
