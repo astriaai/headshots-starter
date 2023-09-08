@@ -15,13 +15,20 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <Login />;
+    return <div>User not found</div>;
   }
 
   const { data: models } = await supabase
     .from("models")
-    .select("*")
+    .select(
+      `*, samples (
+      modelId,
+      uri
+    )`
+    )
     .eq("user_id", user.id);
+
+  console.log(models);
 
   return (
     <div id="train-model-container" className="w-full p-8">
