@@ -6,21 +6,21 @@
 [![Next.js](https://img.shields.io/badge/built_with-Next.js-0070f3)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue)](https://www.typescriptlang.org/)
 
-Introducing Headshot AI: an open-source repo that generates Professional AI Headshots in minutes, built on [Leap AI](https://tryleap.ai/).
+Introducing Headshot AI, an open-source repo that generates Professional AI Headshots in minutes with [Leap AI](https://tryleap.ai/).
 
 The repo comes with:
 
-- Next.js app and landing page
-- Supabase DB & Auth
-- Leap AI model training
-- Leap AI to generate headshots
-- Resend to email user when headshots are ready
+- [Next.js](https://nextjs.org/) app and landing page
+- [Supabase](https://supabase.com/) DB & Auth
+- [Leap AI](https://tryleap.ai/) model training
+- [Leap AI](https://tryleap.ai/) to generate headshots
+- [Resend](https://resend.com/) to email user when headshots are ready
 
 Just add Stripe and you have a Headshot AI SaaS in a box.
 
 ## Deploy your own Headshot AI
 
-[![Deploy with Vercel](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
+![Deploy with Vercel](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 
 ## Getting Started
 
@@ -87,7 +87,7 @@ cd headshots-starter
 
 ## Additional Use-Cases
 
-Headshot AI can be easily adapted to support many other use-cases including:
+Headshot AI can be easily adapted to support many other use-cases on [Leap AI](https://tryleap.ai/) including:
 
 - AI Avatars
   - [Anime](https://blog.tryleap.ai/transforming-images-into-anime-with-leap-ai/)
