@@ -24,16 +24,15 @@ export default async function Index() {
     .eq("user_id", user.id);
 
   return (
-    <div
-      id="train-model-container"
-      className="flex flex-grow w-full h-full px-20 py-10 justify-center items-center"
-    >
+    <div id="train-model-container" className="w-full p-8">
       {models && models.length > 0 && (
-        <div>
-          <div className="flex flex-row w-full justify-between align-middle text-center">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row gap-4 w-full justify-between items-center text-center">
             <h1>Your models</h1>
             <Link href="/overview/models/train">
-              <Button className="ml-4">Train model</Button>
+              <Button className="ml-4" size={"sm"}>
+                Train model
+              </Button>
             </Link>
           </div>
           <ModelsTable models={models} />

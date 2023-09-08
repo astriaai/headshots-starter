@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Table,
@@ -15,15 +15,13 @@ import { useRouter } from "next/navigation";
 
 type ModelsTableProps = {
   models: Database["public"]["Tables"]["models"]["Row"][];
-}
+};
 
-export default async function ModelsTable({
-  models,
-}: ModelsTableProps) {
+export default async function ModelsTable({ models }: ModelsTableProps) {
   const router = useRouter();
-  const handleRedirect = (id: number) => {;
+  const handleRedirect = (id: number) => {
     router.push(`/overview/models/${id}`);
-  }
+  };
 
   return (
     <Table className="w-full">
@@ -36,13 +34,19 @@ export default async function ModelsTable({
       </TableHeader>
       <TableBody>
         {models?.map((model) => (
-          <TableRow key={model.id} onClick={() => handleRedirect(model.id)} className="cursor-pointer">
+          <TableRow
+            key={model.id}
+            onClick={() => handleRedirect(model.id)}
+            className="cursor-pointer"
+          >
             <TableCell className="font-medium">{model.name}</TableCell>
             <TableCell>
-              {model.status}{" "}
-              {model.status === "processing" && (
-                <Icons.spinner className="h-4 w-4 animate-spin" />
-              )}
+              <div className="flex gap-2 items-center">
+                {model.status}
+                {model.status === "processing" && (
+                  <Icons.spinner className="h-4 w-4 animate-spin" />
+                )}
+              </div>
             </TableCell>
             <TableCell>{model.type}</TableCell>
           </TableRow>
