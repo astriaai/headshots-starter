@@ -123,7 +123,8 @@ export default function TrainModelZone() {
                   <Input
                     placeholder="My First Model"
                     {...field}
-                    className="outline-1 outline max-w-screen-sm"
+                    className="max-w-screen-sm"
+                    autoComplete="off"
                   />
                 </FormControl>
                 <FormDescription>
