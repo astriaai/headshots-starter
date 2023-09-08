@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
-import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 export const metadata = {
   title: "Create Next App",

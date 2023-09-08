@@ -12,7 +12,6 @@ import {
 import Link from "next/link";
 import { Button } from "./ui/button";
 import React from "react";
-import ThemeToggle from "./ThemeToggle";
 
 export default async function Navbar() {
   const supabase = createServerComponentClient({ cookies });
@@ -28,8 +27,7 @@ export default async function Navbar() {
           <h2>Headshots AI</h2>
         </Link>
       </div>
-      <div className="flex gap-2 align-middle">
-        <ThemeToggle />
+      <div className="flex gap-4 items-center">
         {!user && (
           <Link href="/login">
             <Button>Login / Signup</Button>
