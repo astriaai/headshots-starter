@@ -7,6 +7,8 @@ export const dynamic = 'force-dynamic'
 const resendApiKey = process.env.RESEND_API_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const leapApiKey = process.env.LEAP_API_KEY;
+const leapImageWebhookUrl = process.env.LEAP_IMAGE_WEBHOOK_URL;
 
 if (!resendApiKey) {
   throw new Error("MISSING RESEND_API_KEY!");
@@ -18,6 +20,14 @@ if (!supabaseUrl) {
 
 if (!supabaseServiceRoleKey) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_ANON_KEY!");
+}
+
+if (!leapApiKey) {
+  throw new Error("MISSING LEAP_API_KEY!");
+}
+
+if (!leapImageWebhookUrl) {
+  throw new Error("MISSING LEAP_IMAGE_WEBHOOK_URL!");
 }
 
 export async function POST(request: Request) {
@@ -61,6 +71,18 @@ export async function POST(request: Request) {
       await supabase.from("models").update({
         status: "finished",
       }).eq("id", result.id);
+
+      const prompt = "8k portrait of professional photo, in an office setting, with a white background";
+      const formData = new FormData();
+      formData.append('prompt', prompt);
+      formData.append('numberOfImages', "4");
+      formData.append('webhookUrl', `${leapImageWebhookUrl}?user_id=${user.id}`);
+
+      let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
+      const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, options);
+      const { status, statusText } = resp;
+      console.log({ status, statusText });
+
     } else {
       // Send Email
       await resend.emails.send({
