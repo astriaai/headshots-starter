@@ -1,6 +1,14 @@
 import { Button } from "@/components/ui/button";
 import Messages from "./messages";
 import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default async function Login() {
   return (
@@ -10,33 +18,56 @@ export default async function Login() {
         action="/auth/sign-in"
         method="post"
       >
-        <Label className="text-md" htmlFor="email">
-          Email
-        </Label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 "
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 "
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-        <Button className="rounded px-4 py-2 mb-2">Sign In</Button>
-        <Button
-          formAction="/auth/sign-up"
-          className="border rounded px-4 py-2 mb-2"
-        >
-          Sign Up
-        </Button>
-        <Messages />
+        <Card>
+          <CardHeader>
+            <CardTitle>Log In / Sign Up</CardTitle>
+            <CardDescription>
+              Log into your account or sign up for a new one to get started.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <Label className="text-md" htmlFor="email">
+              Email
+            </Label>
+            <input
+              className="rounded-md px-4 py-2 bg-inherit border"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+            <label className="text-md" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="rounded-md px-4 py-2 bg-inherit border"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              required
+            />
+            <Button className="rounded px-4 py-2">Login</Button>
+            <Button
+              formAction="/auth/sign-up"
+              className="border rounded px-4 py-2 bg-gray-700"
+            >
+              Sign Up
+            </Button>
+            <Messages />
+          </CardContent>
+          <CardFooter>
+            <p className="text-sm">
+              By signing up, you agree to our{" "}
+              <a href="#" className="underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="underline">
+                Privacy Policy
+              </a>
+              .
+            </p>
+          </CardFooter>
+        </Card>
       </form>
     </div>
   );

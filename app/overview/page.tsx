@@ -37,7 +37,7 @@ export default async function Index() {
       )}
       {models && models.length === 0 && (
         <div className="flex flex-col gap-2">
-          <h1>You don't have any models yet, click here to get started</h1>
+          <h1 className="text-xl">Get started by training your first model.</h1>
           <div>
             <Link href="/overview/models/train">
               <Button>Train model</Button>

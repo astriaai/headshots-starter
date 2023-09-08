@@ -1,4 +1,4 @@
-import TrainModelZone from "@/components/TrainModel";
+import TrainModelZone from "@/components/TrainModelZone";
 import { Button } from "@/components/ui/button";
 import {
   Card,
