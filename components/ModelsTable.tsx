@@ -43,7 +43,7 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
         <TableBody>
           {models?.map((model) => (
             <TableRow
-              key={model.id}
+              key={model.modelId}
               onClick={() => handleRedirect(model.id)}
               className="cursor-pointer h-16"
             >
