@@ -20,7 +20,7 @@ Just add Stripe and you have a Headshot AI SaaS in a box.
 
 ## Deploy your own Headshot AI
 
-![Deploy with Vercel](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 
 ## Getting Started
 
