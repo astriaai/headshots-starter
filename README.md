@@ -101,6 +101,10 @@ Headshot AI can be easily adapted to support many other use-cases on [Leap AI](h
 
 [![Anime AI Demo](./app/public/anime.png)](https://tryleap.ai/)
 
+- Pet Portraits
+
+[![Pet AI Demo](./app/public/pet.png)](https://tryleap.ai/)
+
 - Product Shots
 - Food Photography
 
