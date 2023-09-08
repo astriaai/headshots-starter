@@ -8,13 +8,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 import { Database } from "@/types/supabase";
 import { Icons } from "./icons";
 import { useRouter } from "next/navigation";
 
+type ModelsTableRow = Database["public"]["Tables"]["models"]["Row"] & {
+  samples: Database["public"]["Tables"]["samples"]["Row"][];
+};
+
 type ModelsTableProps = {
-  models: Database["public"]["Tables"]["models"]["Row"][];
+  models: ModelsTableRow[];
 };
 
 export default async function ModelsTable({ models }: ModelsTableProps) {
@@ -31,6 +37,7 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
             <TableHead>Name</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Type</TableHead>
+            <TableHead>Samples</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -42,14 +49,36 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
             >
               <TableCell className="font-medium">{model.name}</TableCell>
               <TableCell>
-                <div className="flex gap-2 items-center">
-                  {model.status}
-                  {model.status === "processing" && (
-                    <Icons.spinner className="h-4 w-4 animate-spin" />
-                  )}
+                <div>
+                  <Badge
+                    className="flex gap-2 items-center w-min"
+                    variant={
+                      model.status === "finished" ? "default" : "secondary"
+                    }
+                  >
+                    {model.status}
+                    {model.status === "processing" && (
+                      <Icons.spinner className="h-4 w-4 animate-spin" />
+                    )}
+                  </Badge>
                 </div>
               </TableCell>
               <TableCell>{model.type}</TableCell>
+              <TableCell>
+                <div className="flex gap-2 flex-shrink-0 items-center">
+                  {model.samples.slice(0, 3).map((sample) => (
+                    <Avatar key={sample.id}>
+                      <AvatarImage src={sample.uri} className="object-cover" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  ))}
+                  {model.samples.length > 3 && (
+                    <Badge className="rounded-full h-10" variant={"outline"}>
+                      +{model.samples.length}
+                    </Badge>
+                  )}
+                </div>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
