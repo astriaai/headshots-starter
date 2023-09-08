@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "update-types": "npx supabase gen types typescript --project-id \"hzcgbsakzagvgfuektjb\" > types/supabase.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
