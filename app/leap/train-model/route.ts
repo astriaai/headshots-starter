@@ -46,16 +46,18 @@ export async function POST(request: Request) {
       formData.append("imageSampleFiles", image);
     });
 
-    formData.append("testRequest", "true");
     formData.append('webhookUrl', `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}`);
 
     let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
     const resp = await fetch(`https://api.tryleap.ai/api/v2/images/models/new`, options);
 
     const { status, statusText } = resp;
-    console.log({ status, statusText });
+    const body = await resp.json();
+    console.log(resp);
+    console.log({ status, statusText, body });
 
     const { error: modelError } = await supabase.from("models").insert({
+      modelId: body.id || null,
       user_id: user.id,
       name,
       type,
