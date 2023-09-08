@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic'
 
 const leapApiKey = process.env.LEAP_API_KEY;
 const webhookUrl = process.env.LEAP_WEBHOOK_URL;
+const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 
 if (!leapApiKey) {
   throw new Error("MISSING LEAP_API_KEY!");
@@ -14,6 +15,10 @@ if (!leapApiKey) {
 
 if (!webhookUrl) {
   throw new Error("MISSING LEAP_WEBHOOK_URL!");
+}
+
+if (!leapWebhookSecret) {
+  throw new Error("MISSING LEAP_WEBHOOK_SECRET!");
 }
 
 export async function POST(request: Request) {
@@ -42,7 +47,7 @@ export async function POST(request: Request) {
     });
 
     formData.append("testRequest", "true");
-    formData.append('webhookUrl', `${webhookUrl}?user_id=${user.id}`);
+    formData.append('webhookUrl', `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}`);
 
     let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
     const resp = await fetch(`https://api.tryleap.ai/api/v2/images/models/new`, options);
