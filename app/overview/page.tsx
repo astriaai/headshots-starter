@@ -2,7 +2,7 @@ import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Login from "../login/page";
-import ClientSideModelsList from "@/components/ClientSideModelsList";
+import ClientSideModelsList from "@/components/realtime/ClientSideModelsList";
 
 export const revalidate = 0;
 
