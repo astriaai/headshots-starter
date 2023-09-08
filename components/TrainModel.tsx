@@ -11,15 +11,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
+import { FaFemale, FaMale, FaRainbow } from "react-icons/fa";
 import * as z from "zod";
 import { Icons } from "./icons";
-import { ModelTypeSelector } from "./ModelTypeSelector";
 
 const formSchema = z.object({
   name: z
@@ -40,7 +42,7 @@ export default function TrainModelZone() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: "",
+      type: "man",
     },
   });
 
@@ -102,6 +104,8 @@ export default function TrainModelZone() {
     },
   });
 
+  const modelType = form.watch("type");
+
   return (
     <div>
       <Form {...form}>
@@ -131,42 +135,78 @@ export default function TrainModelZone() {
           />
           <div className="flex flex-col gap-4">
             <FormLabel>Type</FormLabel>
-            <ModelTypeSelector />
+            <RadioGroup
+              defaultValue={modelType}
+              className="grid grid-cols-3 gap-4"
+              value={modelType}
+              onValueChange={(value) => {
+                console.log(value);
+                form.setValue("type", value);
+              }}
+            >
+              <div>
+                <RadioGroupItem
+                  value="man"
+                  id="man"
+                  className="peer sr-only"
+                  aria-label="man"
+                />
+                <Label
+                  htmlFor="man"
+                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                >
+                  <FaMale className="mb-3 h-6 w-6" />
+                  Man
+                </Label>
+              </div>
+
+              <div>
+                <RadioGroupItem
+                  value="woman"
+                  id="woman"
+                  className="peer sr-only"
+                  aria-label="woman"
+                />
+                <Label
+                  htmlFor="woman"
+                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                >
+                  <FaFemale className="mb-3 h-6 w-6" />
+                  Woman
+                </Label>
+              </div>
+              <div>
+                <RadioGroupItem
+                  value="person"
+                  id="person"
+                  className="peer sr-only"
+                  aria-label="person"
+                />
+                <Label
+                  htmlFor="person"
+                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                >
+                  <FaRainbow className="mb-3 h-6 w-6" />
+                  Unisex
+                </Label>
+              </div>
+            </RadioGroup>
             <FormDescription>
               What kind of images are you uploading.
             </FormDescription>
           </div>
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem className="w-full rounded-md">
-                <FormLabel>Type</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="person"
-                    {...field}
-                    className="outline-1 outline max-w-screen-sm"
-                  />
-                </FormControl>
-                <FormDescription>
-                  This helps the model identify what it is looking at.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div
             {...getRootProps()}
-            className="h-96 py-5 rounded-md justify-center align-middle cursor-pointer"
+            className="h-64 rounded-md justify-center align-middle cursor-pointer flex flex-col gap-4"
           >
+            <FormLabel>Samples</FormLabel>
             <div className="outline-dashed outline-2 outline-gray-100 w-full h-full rounded-md p-4 flex justify-center align-middle">
               <input {...getInputProps()} />
               {isDragActive ? (
                 <p className="self-center">Drop the files here ...</p>
               ) : (
                 <p className="self-center">
-                  Drag some images here, or click to select
+                  Drag 'n' drop some files here, or click to select files.
                 </p>
               )}
             </div>
