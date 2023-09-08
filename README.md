@@ -1,48 +1,114 @@
-# Supabase Starter
+# Headshot AI Leap Starter App
 
-This starter configures Supabase Auth to use cookies, making the user's session available throughout the entire Next.js app - Client Components, Server Components, Route Handlers, Server Actions and Middleware.
+[![Headshot AI Demo](./app/public/demo.png)](https://tryleap.ai/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+![ESLint](https://img.shields.io/badge/code_style-ESLint-5ed9c7.svg)
+[![Next.js](https://img.shields.io/badge/built_with-Next.js-0070f3)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue)](https://www.typescriptlang.org/)
 
-## Deploy your own
+Introducing Headshot AI: an open-source repo that generates Professional AI Headshots in minutes, built on [Leap AI](https://tryleap.ai/).
 
-The Vercel deployment will guide you through creating a Supabase account and project. After installation of the Supabase integration, all relevant environment variables will be set up so that the project is usable immediately after deployment 🚀
+The repo comes with:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&integration-ids=oac_jUduyjQgOyzev1fjrW83NYOv)
+- Next.js app and landing page
+- Supabase DB & Auth
+- Leap AI model training
+- Leap AI to generate headshots
+- Resend to email user when headshots are ready
 
-## How to use
+Just add Stripe and you have a Headshot AI SaaS in a box.
 
-1. Create a [new Supabase project](https://database.new)
-1. Run `npx create-next-app -e with-supabase` to create a Next.js app using the Supabase Starter template
-1. Use `cd` to change into the app's directory
-1. Run `npm install` to install dependencies
-1. Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
-1. Run `npm run dev` to start the local development server
+## Deploy your own Headshot AI
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+[![Deploy with Vercel](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 
-### Create a Supabase client
+## Getting Started
 
-Check out the [`/app/_examples`](./app/_examples/) folder for an example of creating a Supabase client in:
+To create your own Headshot AI app, follow these steps:
 
-- [Client Components](./app/_examples/client-component/page.tsx)
-- [Server Components](./app/_examples/server-component/page.tsx)
-- [Route Handlers](./app/_examples/route-handler/route.ts)
-- [Server Actions](./app/_examples/server-action/page.tsx)
+1. Clone the repository:
 
-### Create `todo` table and seed with data (optional)
+```
+git clone https://github.com/leap-ai/headshots-starter.git
+```
 
-Navigate to [your project's SQL Editor](https://app.supabase.com/project/_/sql), click `New query`, paste the contents of the [init.sql](./supabase/migrations/20230618024722_init.sql) file and click `RUN`.
+2. Enter the `headshots-starter` directory:
 
-This will create a basic `todos` table, enable Row Level Security (RLS), and write RLS policies enabling `select` and `insert` actions for `authenticated` users.
+```
+cd headshots-starter
+```
 
-To seed your `todos` table with some dummy data, run the contents of the [seed.sql](./supabase/seed.sql) file.
+3. Install dependencies:
 
-## Feedback and issues
+   For npm:
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+   ```
+   npm install
+   ```
 
-## More Supabase examples
+   For yarn:
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
-- [Next.js Auth Helpers Docs](https://supabase.com/docs/guides/auth/auth-helpers/nextjs)
+   ```
+   yarn
+   ```
+
+4. Create a [new Supabase project](https://database.new)
+
+   - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+
+5. Create a [Leap AI](https://tryleap.ai/) account
+
+   In your `.env.local` file:
+
+   - Fill in `your_api_key` with your [Leap API key](https://docs.tryleap.ai/authentication)
+   - Fill in `your-hosted-url/leap/train-webhook` with https://{your-hosted-url}/leap/train-webhook
+   - Fill in `your-hosted-url/leap/image-webhook` with https://{your-hosted-url}/leap/image-webhook
+   - Fill in `your-webhook-secret` with
+
+6. Create a [Resend](https://resend.com/) account
+
+   - Fill in `your-resend-api-key` with your Resend API Key
+
+7. Start the development server:
+
+   For npm:
+
+   ```
+   npm run dev
+   ```
+
+   For yarn:
+
+   ```
+   yarn dev
+   ```
+
+8. Visit `http://localhost:3000` in your browser to see the running app.
+
+## Additional Use-Cases
+
+Headshot AI can be easily adapted to support many other use-cases including:
+
+- AI Avatars
+  - [Anime](https://blog.tryleap.ai/transforming-images-into-anime-with-leap-ai/)
+  - [Portraits](https://blog.tryleap.ai/ai-time-machine-images-a-glimpse-into-the-future-with-leap-ai/)
+  - [Story Illustrations](https://blog.tryleap.ai/novel-ai-image-generator-using-leap-ai-a-comprehensive-guide/)
+- Product Shots
+- Food Photography
+- Icons
+- [Style-Consistent Assets](https://blog.tryleap.ai/how-to-generate-style-consistent-assets-finetuning-on-leap/)
+
+& more!
+
+## Contributing
+
+We welcome collaboration and appreciate your contribution to Headshot AI. If you have suggestions for improvement or significant changes in mind, feel free to open an issue!
+
+## Resources and Support
+
+- Discord Community: [Leap Discord](https://discord.gg/NCAKTUayPK)
+- Help Email: help@tryleap.ai
+
+## License
+
+Headshot AI is released under the [MIT License](https://choosealicense.com/licenses/mit/).
