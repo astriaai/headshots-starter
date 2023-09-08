@@ -21,7 +21,7 @@ export default function ClientSideModelsList({ serverModels }: ClientSideModelsL
     const channel = supabase.channel('realtime-models')
     .on(
       'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'models' },
+      { event: '*', schema: 'public', table: 'models' },
       (payload: any) => {
         const dedupedModels = models.filter((model) => model.id !== payload.old?.id);
         setModels([...dedupedModels, payload.new as modelRow]);
