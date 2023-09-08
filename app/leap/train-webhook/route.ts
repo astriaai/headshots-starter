@@ -135,7 +135,7 @@ export async function POST(request: Request) {
         accessToken: leapApiKey,
       });
 
-      for (let index = 0; index < 4; index++) {
+      for (let index = 0; index < prompts.length; index++) {
         const { status, statusText } = await leap.images.generate({
           prompt: prompts[index].replace(
             "{model_type}",
