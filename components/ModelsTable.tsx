@@ -70,7 +70,7 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
                   ))}
                   {model.samples.length > 3 && (
                     <Badge className="rounded-full h-10" variant={"outline"}>
-                      +{model.samples.length}
+                      +{model.samples.length - 3}
                     </Badge>
                   )}
                 </div>
