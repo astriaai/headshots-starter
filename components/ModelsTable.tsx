@@ -3,15 +3,13 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+
 import { Database } from "@/types/supabase";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from 'next/headers';
 import { Icons } from "./icons";
 import { redirect } from "next/navigation";
 
@@ -40,11 +38,16 @@ export default async function ModelsTable({
         {models?.map((model) => (
           <TableRow key={model.id} onClick={() => handleRedirect(model.id)}>
             <TableCell className="font-medium">{model.name}</TableCell>
-            <TableCell>{model.status} {model.status === "processing" && <Icons.spinner className="h-4 w-4 animate-spin" />}</TableCell>
+            <TableCell>
+              {model.status}{" "}
+              {model.status === "processing" && (
+                <Icons.spinner className="h-4 w-4 animate-spin" />
+              )}
+            </TableCell>
             <TableCell>{model.type}</TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
-  )
+  );
 }
