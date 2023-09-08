@@ -87,6 +87,8 @@ export async function POST(request: Request) {
         status: "finished",
       }).eq("model_id", result.id).select("*").single();
 
+      console.log({ modelUpdated });
+
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
       const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
         method: 'POST',
