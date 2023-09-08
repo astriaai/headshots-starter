@@ -6,19 +6,20 @@ Introducing Headshot AI, an open-source repo that generates Professional AI Head
 
 [![Headshot AI Demo](./app/public/demo.png)](https://tryleap.ai/)
 
-The repo comes with:
+## How It Works
 
-- [Next.js](https://nextjs.org/) app and landing page
-- [Supabase](https://supabase.com/) DB & Auth
-- [Leap AI](https://tryleap.ai/) model training
-- [Leap AI](https://tryleap.ai/) to generate headshots
-- [Resend](https://resend.com/) to email user when headshots are ready
+The app is powered by:
+
+- ▲ [Next.js](https://nextjs.org/) for app and landing page
+- 🔋 [Supabase](https://supabase.com/) for DB & Auth
+- 🚀 [Leap AI](https://tryleap.ai/) for Dreambooth model training
+- 🚀 [Leap AI](https://tryleap.ai/) to generate headshots
+- 📩 [Resend](https://resend.com/) to email user when headshots are ready
+- ⭐️ [Shadcn](https://ui.shadcn.com/) with [Tailwind CSS](https://tailwindcss.com/) for styles
 
 Just add Stripe and you have a Headshot AI SaaS in a box.
 
-## How it works
-
-[![Headshot AI Demo](./app/public/explainer.png)]
+[![Headshot AI Demo](./app/public/explainer.png)](https://tryleap.ai/)
 
 ## Running Locally
 
@@ -40,13 +41,13 @@ cd headshots-starter
 
    For npm:
 
-   ```
+   ```bash
    npm install
    ```
 
    For yarn:
 
-   ```
+   ```bash
    yarn
    ```
 
@@ -71,17 +72,22 @@ cd headshots-starter
 
    For npm:
 
-   ```
+   ```bash
    npm run dev
    ```
 
    For yarn:
 
-   ```
+   ```bash
    yarn dev
    ```
 
 8. Visit `http://localhost:3000` in your browser to see the running app.
+
+## One-Click Deploy
+
+Deploy the example using Vercel:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 
 ## Additional Use-Cases
 
