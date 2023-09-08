@@ -83,11 +83,21 @@ export async function POST(request: Request) {
         html: `<h2>We're writing to notify you that your model training was successful!</h2>`
       });
 
-      const { data: modelUpdated } = await supabase.from("models").update({
+      const { data: modelUpdated, error: modelUpdatedError } = await supabase.from("models").update({
         status: "finished",
-      }).eq("model_id", result.id).select("*").single();
+      }).eq("model_id", result.id).select();
 
-      console.log({ modelUpdated });
+      if (modelUpdatedError) {
+        console.log(modelUpdatedError);
+        return NextResponse.json({
+          message: "Something went wrong!"
+        }, { status: 500, statusText: "Something went wrong!" })
+      }
+
+      if (!modelUpdated) {
+        console.log("No model updated!");
+        console.log({ modelUpdated });
+      }
 
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
       const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
@@ -96,7 +106,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           prompt,
           numberOfImages: 4,
-          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated?.id}`
+          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`
         }),
       });
       const { status, statusText } = resp;
