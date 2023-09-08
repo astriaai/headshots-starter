@@ -22,5 +22,7 @@ export default async function RootLayout({ children }: {
     return <Login />
   }
 
-  return (children)
+  return (
+    <>{children}</>
+  )
 }
