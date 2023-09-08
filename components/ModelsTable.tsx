@@ -36,7 +36,7 @@ export default async function ModelsTable({
       </TableHeader>
       <TableBody>
         {models?.map((model) => (
-          <TableRow key={model.id} onClick={() => handleRedirect(model.id)}>
+          <TableRow key={model.id} onClick={() => handleRedirect(model.id)} className="cursor-pointer">
             <TableCell className="font-medium">{model.name}</TableCell>
             <TableCell>
               {model.status}{" "}
