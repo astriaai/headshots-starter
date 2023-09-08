@@ -39,7 +39,7 @@ export default async function Navbar() {
               <AvatarIcon height={24} width={24} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>marfuen98@gmail.com</DropdownMenuLabel>
+              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <form action="/auth/sign-out" method="post">
                 <Button
