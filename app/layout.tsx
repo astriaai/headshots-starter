@@ -20,7 +20,9 @@ export default async function RootLayout({
         <section className="">
           <Navbar />
         </section>
-        <main className="flex flex-1 flex-col items-center">{children}</main>
+        <main className="flex flex-1 flex-col items-center pb-16">
+          {children}
+        </main>
         <Toaster />
       </body>
     </html>
