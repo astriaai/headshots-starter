@@ -19,6 +19,7 @@ import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Icons } from "./icons";
+import { ModelTypeSelector } from "./ModelTypeSelector";
 
 const formSchema = z.object({
   name: z
@@ -102,14 +103,17 @@ export default function TrainModelZone() {
   });
 
   return (
-    <div className="h-full">
+    <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="rounded-md">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="rounded-md flex flex-col gap-4"
+        >
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="w-full py-5 rounded-md">
+              <FormItem className="w-full rounded-md">
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
@@ -125,11 +129,18 @@ export default function TrainModelZone() {
               </FormItem>
             )}
           />
+          <div className="flex flex-col gap-4">
+            <FormLabel>Type</FormLabel>
+            <ModelTypeSelector />
+            <FormDescription>
+              What kind of images are you uploading.
+            </FormDescription>
+          </div>
           <FormField
             control={form.control}
             name="type"
             render={({ field }) => (
-              <FormItem className="w-full py-5 rounded-md">
+              <FormItem className="w-full rounded-md">
                 <FormLabel>Type</FormLabel>
                 <FormControl>
                   <Input
