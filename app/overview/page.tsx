@@ -1,8 +1,7 @@
+import ClientSideModelsList from "@/components/realtime/ClientSideModelsList";
 import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import Login from "../login/page";
-import ClientSideModelsList from "@/components/realtime/ClientSideModelsList";
 
 export const revalidate = 0;
 
@@ -25,8 +24,6 @@ export default async function Index() {
     )`
     )
     .eq("user_id", user.id);
-
-  console.log(models);
 
   return <ClientSideModelsList serverModels={models ?? []} />;
 }
