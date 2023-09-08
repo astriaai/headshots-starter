@@ -11,6 +11,8 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import React from "react";
+import ThemeToggle from "./ThemeToggle";
 
 export default async function Navbar() {
   const supabase = createServerComponentClient({ cookies });
@@ -20,10 +22,12 @@ export default async function Navbar() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="flex flex-row w-full px-8 py-4 justify-between">
+    <div className="flex flex-row w-full px-8 py-4 justify-between border-b">
       <Link href="/">
         <h2>Headshots AI</h2>
       </Link>
+      <ThemeToggle />
+
       {!user && (
         <Link href="/login">
           <Button>Login / Signup</Button>
