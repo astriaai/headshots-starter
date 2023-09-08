@@ -24,34 +24,36 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
   };
 
   return (
-    <Table className="w-full">
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Type</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {models?.map((model) => (
-          <TableRow
-            key={model.id}
-            onClick={() => handleRedirect(model.id)}
-            className="cursor-pointer h-16"
-          >
-            <TableCell className="font-medium">{model.name}</TableCell>
-            <TableCell>
-              <div className="flex gap-2 items-center">
-                {model.status}
-                {model.status === "processing" && (
-                  <Icons.spinner className="h-4 w-4 animate-spin" />
-                )}
-              </div>
-            </TableCell>
-            <TableCell>{model.type}</TableCell>
+    <div className="rounded-md border">
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Type</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {models?.map((model) => (
+            <TableRow
+              key={model.id}
+              onClick={() => handleRedirect(model.id)}
+              className="cursor-pointer h-16"
+            >
+              <TableCell className="font-medium">{model.name}</TableCell>
+              <TableCell>
+                <div className="flex gap-2 items-center">
+                  {model.status}
+                  {model.status === "processing" && (
+                    <Icons.spinner className="h-4 w-4 animate-spin" />
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>{model.type}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
