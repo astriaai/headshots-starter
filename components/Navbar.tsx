@@ -3,6 +3,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default async function Navbar() {
   const supabase = createServerComponentClient({ cookies });
@@ -16,6 +17,13 @@ export default async function Navbar() {
       <Link href="/">
         <h2>Headshots AI</h2>
       </Link>
+      {!user && (
+        <Link href="/login">
+          <Button>
+          Login
+          </Button>
+        </Link>
+      )}
       {user && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -25,13 +33,13 @@ export default async function Navbar() {
             <DropdownMenuLabel>marfuen98@gmail.com</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <form action="/auth/sign-out" method="post">
-             <DropdownMenuItem className="cursor-pointer">
-              <button
-                formAction="/auth/sign-out"
+              <Button
+                type="submit"
+                className="w-full text-left"
               >
                 Log out
-              </button>
-              </DropdownMenuItem>
+
+              </Button>
             </form>
           </DropdownMenuContent>
         </DropdownMenu>

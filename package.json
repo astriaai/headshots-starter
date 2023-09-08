@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "formidable": "^3.5.1",
+    "lucide-react": "^0.274.0",
     "next": "latest",
     "next-multipart": "^0.5.1",
     "node-fetch": "2",

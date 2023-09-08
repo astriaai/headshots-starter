@@ -16,11 +16,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className='min-h-screen flex flex-col'>
         <section className='bg-black'>
           <Navbar />
         </section>
-        <main className="min-h-screen flex flex-col items-center bg-slate-800">
+        <main className="flex flex-1 flex-col items-center bg-slate-800">
           {children}
         </main>
         <Toaster />

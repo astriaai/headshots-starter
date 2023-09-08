@@ -5,11 +5,12 @@ import { useDropzone } from "react-dropzone"
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import * as z from "zod"
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { Icons } from "./icons";
 
 
 const formSchema = z.object({
@@ -19,6 +20,7 @@ const formSchema = z.object({
 
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -33,7 +35,6 @@ export default function TrainModelZone() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
     trainModel();
   }
 
@@ -47,6 +48,7 @@ export default function TrainModelZone() {
   }, []);
 
   const trainModel = useCallback(async () => {
+    setIsLoading(true);
     const formData = new FormData();
     files?.forEach(file => {
       formData.append("image", file); // Add the image Blob to the form data
@@ -57,6 +59,8 @@ export default function TrainModelZone() {
       method: "POST",
       body: formData,
     });
+
+    setIsLoading(false);
 
     if (!response.ok) {
       console.log("Something went wrong! ", response?.statusText);
@@ -128,7 +132,11 @@ export default function TrainModelZone() {
               }
             </div>
           </div>
-          <Button type="submit" className="w-full">Train Model</Button>
+          {isLoading ? (
+            <Icons.spinner className="h-4 w-4 animate-spin" />
+          ) : (
+            <Button type="submit" className="w-full">Train Model</Button>
+          )}
         </form>
       </Form>
     </div>
