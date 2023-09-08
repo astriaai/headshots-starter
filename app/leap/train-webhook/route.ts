@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 
       const { data: modelUpdated, error: modelUpdatedError } = await supabase.from("models").update({
         status: "finished",
-      }).eq("model_id", result.id).select();
+      }).eq("modelId", result.id).select();
 
       if (modelUpdatedError) {
         console.log(modelUpdatedError);
@@ -100,18 +100,19 @@ export async function POST(request: Request) {
       }
 
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
-      const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
-        method: 'POST',
-        headers: { accept: 'application/json', 'content-type': 'application/json', Authorization: `Bearer ${leapApiKey}` },
-        body: JSON.stringify({
-          prompt,
-          numberOfImages: 4,
-          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`
-        }),
-      });
-      const { status, statusText } = resp;
-      console.log({ status, statusText });
-
+      for (let index = 0; index < 3; index++) {
+        const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
+          method: 'POST',
+          headers: { accept: 'application/json', 'content-type': 'application/json', Authorization: `Bearer ${leapApiKey}` },
+          body: JSON.stringify({
+            prompt,
+            numberOfImages: 4,
+            webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`
+          }),
+        });
+        const { status, statusText } = resp;
+        console.log({ status, statusText });
+      }
     } else {
       // Send Email
       await resend.emails.send({
