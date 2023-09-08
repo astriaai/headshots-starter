@@ -54,7 +54,7 @@ export default async function Index({ params }: { params: { id: string } }) {
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
                 {images?.map((image) => (
                   <div key={image.id}>
-                    <img height={256} width={256} src={image.uri} />
+                    <img height={256} width={256} src={image.uri} className="rounded-md" />
                   </div>
                 ))}
               </div>
