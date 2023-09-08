@@ -3,7 +3,7 @@
 import { Database } from "@/types/supabase";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import ModelsTable from "./ModelsTable";
+import ModelsTable from "../ModelsTable";
 import { FaImages } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
