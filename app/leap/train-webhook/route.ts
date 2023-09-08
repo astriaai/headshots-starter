@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 
       await supabase.from("models").update({
         status: "finished",
-      }).eq("id", result.id);
+      }).eq("model_id", result.id);
 
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
       const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
@@ -97,7 +97,6 @@ export async function POST(request: Request) {
         }),
       });
       const { status, statusText } = resp;
-      console.log(resp.body);
       console.log({ status, statusText });
 
     } else {
@@ -111,7 +110,7 @@ export async function POST(request: Request) {
 
       await supabase.from("models").update({
         status: "failed",
-      }).eq("id", result.id);
+      }).eq("model_id", result.id);
     }
     return NextResponse.json({
       message: "success"
