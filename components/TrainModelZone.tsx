@@ -261,28 +261,26 @@ export default function TrainModelZone() {
               )}
             </div>
           </div>
-          <div>
-            {files.length > 0 && (
-              <div className="flex flex-row gap-4 flex-wrap">
-                {files.map((file) => (
-                  <div key={file.name} className="flex flex-col gap-1">
-                    <img
-                      src={URL.createObjectURL(file)}
-                      className="rounded-md w-24 h-24 object-cover"
-                    />
-                    <Button
-                      variant="outline"
-                      size={"sm"}
-                      className="w-full"
-                      onClick={() => removeFile(file)}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {files.length > 0 && (
+            <div className="flex flex-row gap-4 flex-wrap">
+              {files.map((file) => (
+                <div key={file.name} className="flex flex-col gap-1">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    className="rounded-md w-24 h-24 object-cover"
+                  />
+                  <Button
+                    variant="outline"
+                    size={"sm"}
+                    className="w-full"
+                    onClick={() => removeFile(file)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
           {isLoading ? (
             <Icons.spinner className="h-4 w-4 animate-spin" />
           ) : (
