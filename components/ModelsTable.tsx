@@ -11,7 +11,7 @@ import {
 
 import { Database } from "@/types/supabase";
 import { Icons } from "./icons";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type ModelsTableProps = {
   models: Database["public"]["Tables"]["models"]["Row"][];
@@ -20,9 +20,9 @@ type ModelsTableProps = {
 export default async function ModelsTable({
   models,
 }: ModelsTableProps) {
-
-  const handleRedirect = (id: number) => {
-    redirect(`/overview/models/${id}`);
+  const router = useRouter();
+  const handleRedirect = (id: number) => {;
+    router.push(`/overview/models/${id}`);
   }
 
   return (

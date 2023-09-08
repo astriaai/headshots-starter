@@ -1,27 +1,14 @@
+import Login from "@/app/login/page";
+import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import ModelsTable from "@/components/ModelsTable";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Login from "@/app/login/page";
 import { redirect } from "next/navigation";
-import { Database } from "@/types/supabase";
 
-export default async function Index({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Index({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  if (!searchParams?.id) {
-    redirect("/overview");
-  }
 
   if (!user) {
     return <Login />;
@@ -30,7 +17,7 @@ export default async function Index({
   const { data: model } = await supabase
     .from("models")
     .select("*")
-    .eq("id", searchParams?.id)
+    .eq("id", Number(params.id))
     .eq("user_id", user.id)
     .single();
 
