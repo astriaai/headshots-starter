@@ -1,5 +1,6 @@
 import Login from "@/app/login/page";
 import { Icons } from "@/components/icons";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -47,14 +48,24 @@ export default async function Index({ params }: { params: { id: string } }) {
           {model.name}
         </h1>
         <div className="flex flex-1 flex-col w-full gap-8">
-          <b>Status: {model.status} {model.status === "processing" && <Icons.spinner className="h-4 w-4 animate-spin ml-2 inline-block" />}</b>
+          <b>
+            Status: {model.status}{" "}
+            {model.status === "processing" && (
+              <Icons.spinner className="h-4 w-4 animate-spin ml-2 inline-block" />
+            )}
+          </b>
           {model.status === "finished" && (
             <div className="flex flex-1 flex-col gap-4">
               <h2 className="text-xl">Samples</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {images?.map((image) => (
                   <div key={image.id}>
-                    <img height={256} width={256} src={image.uri} className="rounded-md" />
+                    <AspectRatio ratio={1}>
+                      <img
+                        src={image.uri}
+                        className="rounded-md w-96 object-cover"
+                      />
+                    </AspectRatio>
                   </div>
                 ))}
               </div>
