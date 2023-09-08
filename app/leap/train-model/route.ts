@@ -74,12 +74,16 @@ export async function POST(request: Request) {
     console.log(resp);
     console.log({ status, statusText, body });
 
-    const { error: modelError } = await supabase.from("models").insert({
-      modelId: body.id,
-      user_id: user.id,
-      name,
-      type,
-    });
+    const { error: modelError, data } = await supabase
+      .from("models")
+      .insert({
+        modelId: body.id,
+        user_id: user.id,
+        name,
+        type,
+      })
+      .select("id")
+      .single();
 
     if (modelError) {
       console.error(modelError);
@@ -93,7 +97,7 @@ export async function POST(request: Request) {
 
     const { error: samplesError } = await supabase.from("samples").insert(
       body.imageSamples.map((sample) => ({
-        modelId: body.id,
+        modelId: data.id,
         uri: sample,
       }))
     );

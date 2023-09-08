@@ -77,20 +77,27 @@ export interface Database {
       samples: {
         Row: {
           id: number
-          modelId: string
+          modelId: number
           uri: string
         }
         Insert: {
           id?: number
-          modelId: string
+          modelId: number
           uri: string
         }
         Update: {
           id?: number
-          modelId?: string
+          modelId?: number
           uri?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "samples_modelId_fkey"
+            columns: ["modelId"]
+            referencedRelation: "models"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
