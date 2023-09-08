@@ -28,7 +28,7 @@ export default async function Index() {
         <div>
           <div className="flex flex-row w-full justify-between align-middle text-center">
             <h1>Your models</h1>
-            <Link href="/overview/train">
+            <Link href="/overview/models/train">
               <Button className="ml-4">Train model</Button>
             </Link>
           </div>
@@ -39,7 +39,7 @@ export default async function Index() {
         <div className="flex flex-col gap-2">
           <h1>You don't have any models yet, click here to get started</h1>
           <div>
-            <Link href="/overview/train">
+            <Link href="/overview/models/train">
               <Button>Train model</Button>
             </Link>
           </div>
