@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Table,
   TableBody,
@@ -9,12 +11,20 @@ import {
 
 import { Database } from "@/types/supabase";
 import { Icons } from "./icons";
+import { redirect } from "next/navigation";
+
+type ModelsTableProps = {
+  models: Database["public"]["Tables"]["models"]["Row"][];
+}
 
 export default async function ModelsTable({
   models,
-}: {
-  models: Database["public"]["Tables"]["models"]["Row"][];
-}) {
+}: ModelsTableProps) {
+
+  const handleRedirect = (id: number) => {
+    redirect(`/overview/models/${id}`);
+  }
+
   return (
     <Table className="w-full">
       <TableHeader>
@@ -25,8 +35,8 @@ export default async function ModelsTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {models.map((model) => (
-          <TableRow key={model.id}>
+        {models?.map((model) => (
+          <TableRow key={model.id} onClick={() => handleRedirect(model.id)}>
             <TableCell className="font-medium">{model.name}</TableCell>
             <TableCell>
               {model.status}{" "}

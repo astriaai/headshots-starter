@@ -1,19 +1,26 @@
 import ModelsTable from "@/components/ModelsTable";
 import { Button } from "@/components/ui/button";
+import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import Login from "../login/page";
 
 export default async function Index() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (!user) {
+    return <Login />;
+  }
+
   const { data: models } = await supabase
     .from("models")
     .select("*")
-    .eq("user_id", user?.id);
+    .eq("user_id", user.id);
 
   return (
     <div id="train-model-container" className="w-full h-full px-20 py-10">
