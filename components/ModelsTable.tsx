@@ -1,36 +1,20 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { Database } from "@/types/supabase";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import { Icons } from "./icons";
 
 export default async function ModelsTable({
   models,
 }: {
-  models: Database.Model[];
+  models: Database["public"]["Tables"]["models"]["Row"][];
 }) {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return null;
-  }
-
-  const { data: models } = await supabase
-    .from("models")
-    .select("*")
-    .eq("user_id", user.id);
-
   return (
     <Table className="w-full">
       <TableHeader>
