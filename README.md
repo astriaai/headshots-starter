@@ -1,10 +1,10 @@
-# 👨‍💼 Headshot AI - Professional Headshots with AI
+# 👨‍💼 [Headshot AI](https://headshots-starter.vercel.app/) - Professional Headshots with AI
 
 Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.ai/) that generates Professional AI Headshots in minutes.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 
-[![Headshot AI Demo](./app/public/demo.png)](https://tryleap.ai/)
+[![Headshot AI Demo](./app/public/demo.png)](https://headshots-starter.vercel.app/)
 
 ## How It Works
 
