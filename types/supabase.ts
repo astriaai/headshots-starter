@@ -74,6 +74,31 @@ export interface Database {
           }
         ]
       }
+      samples: {
+        Row: {
+          id: number
+          modelId: number
+          uri: string
+        }
+        Insert: {
+          id?: number
+          modelId: number
+          uri: string
+        }
+        Update: {
+          id?: number
+          modelId?: number
+          uri?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "samples_modelId_fkey"
+            columns: ["modelId"]
+            referencedRelation: "models"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never

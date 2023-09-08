@@ -1,9 +1,9 @@
 import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 const leapApiKey = process.env.LEAP_API_KEY;
 const webhookUrl = process.env.LEAP_WEBHOOK_URL;
@@ -28,16 +28,21 @@ export async function POST(request: Request) {
   const name = incomingFormData.get("name") as string;
   const supabase = createRouteHandlerClient<Database>({ cookies });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" })
+    return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
   }
 
   if (images?.length < 1) {
-    return NextResponse.json({
-      message: "Missing sample images!"
-    }, { status: 500, statusText: "Missing sample images!" })
+    return NextResponse.json(
+      {
+        message: "Missing sample images!",
+      },
+      { status: 500, statusText: "Missing sample images!" }
+    );
   }
 
   try {
@@ -46,37 +51,80 @@ export async function POST(request: Request) {
       formData.append("imageSampleFiles", image);
     });
 
-    formData.append('webhookUrl', `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}`);
+    formData.append(
+      "webhookUrl",
+      `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}`
+    );
 
-    let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
-    const resp = await fetch(`https://api.tryleap.ai/api/v2/images/models/new`, options);
+    let options = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${leapApiKey}`,
+      },
+      body: formData,
+    };
+    const resp = await fetch(
+      `https://api.tryleap.ai/api/v2/images/models/new`,
+      options
+    );
 
     const { status, statusText } = resp;
-    const body = await resp.json();
+    const body = (await resp.json()) as { id: string; imageSamples: string[] };
     console.log(resp);
     console.log({ status, statusText, body });
 
-    const { error: modelError } = await supabase.from("models").insert({
-      modelId: body.id || null,
-      user_id: user.id,
-      name,
-      type,
-    });
+    const { error: modelError, data } = await supabase
+      .from("models")
+      .insert({
+        modelId: body.id,
+        user_id: user.id,
+        name,
+        type,
+      })
+      .select("id")
+      .single();
 
     if (modelError) {
-      console.log(modelError);
-      return NextResponse.json({
-        message: "Something went wrong!"
-      }, { status: 500, statusText: "Something went wrong!" })
+      console.error(modelError);
+      return NextResponse.json(
+        {
+          message: "Something went wrong!",
+        },
+        { status: 500, statusText: "Something went wrong!" }
+      );
+    }
+
+    const { error: samplesError } = await supabase.from("samples").insert(
+      body.imageSamples.map((sample) => ({
+        modelId: data.id,
+        uri: sample,
+      }))
+    );
+
+    if (samplesError) {
+      console.error(samplesError);
+      return NextResponse.json(
+        {
+          message: "Something went wrong!",
+        },
+        { status: 500, statusText: "Something went wrong!" }
+      );
     }
   } catch (e) {
     console.log(e);
-    return NextResponse.json({
-      message: "Something went wrong!"
-    }, { status: 500, statusText: "Something went wrong!" })
+    return NextResponse.json(
+      {
+        message: "Something went wrong!",
+      },
+      { status: 500, statusText: "Something went wrong!" }
+    );
   }
 
-  return NextResponse.json({
-    message: "success"
-  }, { status: 200, statusText: "Success" })
+  return NextResponse.json(
+    {
+      message: "success",
+    },
+    { status: 200, statusText: "Success" }
+  );
 }
