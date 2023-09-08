@@ -48,8 +48,6 @@ export async function POST(request: Request) {
     const resp = await fetch(`https://api.tryleap.ai/api/v2/images/models/new`, options);
 
     const { status, statusText } = resp;
-
-    console.log("formData", formData);
     console.log({ status, statusText });
 
     const { error: modelError } = await supabase.from("models").insert({
