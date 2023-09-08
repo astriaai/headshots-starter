@@ -19,7 +19,7 @@ The app is powered by:
 
 Just add Stripe and you have a Headshot AI SaaS in a box.
 
-[![Headshot AI Demo](./app/public/explainer.png)](https://tryleap.ai/)
+[![Headshot AI Explainer](./app/public/explainer.png)](https://tryleap.ai/)
 
 ## Running Locally
 
@@ -87,6 +87,7 @@ cd headshots-starter
 ## One-Click Deploy
 
 Deploy the example using Vercel:
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 
 ## Additional Use-Cases
@@ -97,10 +98,15 @@ Headshot AI can be easily adapted to support many other use-cases on [Leap AI](h
   - [Anime](https://blog.tryleap.ai/transforming-images-into-anime-with-leap-ai/)
   - [Portraits](https://blog.tryleap.ai/ai-time-machine-images-a-glimpse-into-the-future-with-leap-ai/)
   - [Story Illustrations](https://blog.tryleap.ai/novel-ai-image-generator-using-leap-ai-a-comprehensive-guide/)
+
+[![Anime AI Demo](./app/public/anime.png)](https://tryleap.ai/)
+
 - Product Shots
 - Food Photography
 - Icons
 - [Style-Consistent Assets](https://blog.tryleap.ai/how-to-generate-style-consistent-assets-finetuning-on-leap/)
+
+[![Icons AI Demo](./app/public/icons.png)](https://tryleap.ai/)
 
 & more!
 
