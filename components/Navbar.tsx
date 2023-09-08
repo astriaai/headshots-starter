@@ -22,33 +22,36 @@ export default async function Navbar() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="flex flex-row w-full px-8 py-4 justify-between border-b">
-      <Link href="/">
-        <h2>Headshots AI</h2>
-      </Link>
-      <ThemeToggle />
-
-      {!user && (
-        <Link href="/login">
-          <Button>Login / Signup</Button>
+    <div className="flex w-full px-8 py-4 justify-between items-center border-b">
+      <div className="flex gap-2 align-middle h-full">
+        <Link href="/">
+          <h2>Headshots AI</h2>
         </Link>
-      )}
-      {user && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="cursor-pointer">
-            <AvatarIcon height={24} width={24} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>marfuen98@gmail.com</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <form action="/auth/sign-out" method="post">
-              <Button type="submit" className="w-full text-left">
-                Log out
-              </Button>
-            </form>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      </div>
+      <div className="flex gap-2 align-middle">
+        <ThemeToggle />
+        {!user && (
+          <Link href="/login">
+            <Button>Login / Signup</Button>
+          </Link>
+        )}
+        {user && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
+              <AvatarIcon height={24} width={24} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>marfuen98@gmail.com</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <form action="/auth/sign-out" method="post">
+                <Button type="submit" className="w-full text-left">
+                  Log out
+                </Button>
+              </form>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
     </div>
   );
 }
