@@ -14,10 +14,11 @@ const leapImageWebhookUrl = process.env.LEAP_IMAGE_WEBHOOK_URL;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 
 const prompts = [
-  "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, office window",
-  "8k close up linkedin profile picture of @subject {model_type}, linkedin, professional jack suit, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, garden, bokeh",
+  "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window",
+  "8k close up linkedin profile picture of @subject {model_type}, linkedin, professional jack suit, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, garden, bokeh",
   "8k linkedin professional profile photo of @subject {model_type} in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
-  "8k portrait of realistic pencil drawing of a beautiful @subject {model_type}, accurately drawn circular eyes, accurately drawn circles, black and white, sketch, pencil strokes, pencil lines, paper texture, high resolution, high resolution textures, sharp features, 32k, super-resolution, sharp focus",
+  "8k professional headshot of @subject {model_type}, crisp details, studio backdrop, executive attire, confident posture, neutral expression, high-definition, corporate setting, sharp focus, ambient lighting, business professional, cityscape view",
+  "8k portrait of @subject business {model_type} cinematic medium shot, shallow depth of field, studio shoot, professional headshot, professional suit, black background, professional retouched skin",
 ];
 
 if (!resendApiKey) {

@@ -153,7 +153,7 @@ export default async function Index() {
       </div>
 
       {/* FOOTER SECTION */}
-      <footer className="mt-auto text-gray-600 pb-4">
+      <footer className="mt-auto text-gray-600 pb-4 text-center">
         © 2023 Professional AI Headshots. All rights reserved.
       </footer>
     </div>

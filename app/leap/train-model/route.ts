@@ -36,12 +36,12 @@ export async function POST(request: Request) {
     return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
   }
 
-  if (images?.length < 1) {
+  if (images?.length < 4) {
     return NextResponse.json(
       {
-        message: "Missing sample images!",
+        message: "Upload at least 4 sample images",
       },
-      { status: 500, statusText: "Missing sample images!" }
+      { status: 500, statusText: "Upload at least 4 sample images" }
     );
   }
 
@@ -70,7 +70,10 @@ export async function POST(request: Request) {
     );
 
     const { status, statusText } = resp;
-    const body = (await resp.json()) as { id: string; imageSamples: string[] };
+    const body = (await resp.json()) as {
+      id: string;
+      imageSamples: string[];
+    };
     console.log(resp);
     console.log({ status, statusText, body });
 
