@@ -14,13 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import { Database } from "@/types/supabase";
 import { Icons } from "./icons";
 import { useRouter } from "next/navigation";
-
-type ModelsTableRow = Database["public"]["Tables"]["models"]["Row"] & {
-  samples: Database["public"]["Tables"]["samples"]["Row"][];
-};
+import { modelRowWithSamples } from "@/types/utils";
 
 type ModelsTableProps = {
-  models: ModelsTableRow[];
+  models: modelRowWithSamples[];
 };
 
 export default async function ModelsTable({ models }: ModelsTableProps) {

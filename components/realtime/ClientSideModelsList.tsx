@@ -1,37 +1,56 @@
-"use client"
+"use client";
 
-import { Database } from "@/types/supabase";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import ModelsTable from "../ModelsTable";
-import { FaImages } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { Database } from "@/types/supabase";
+import { modelRowWithSamples } from "@/types/utils";
 import { createClient } from "@supabase/supabase-js";
-import { modelRow } from "@/types/utils";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FaImages } from "react-icons/fa";
+import ModelsTable from "../ModelsTable";
 
 type ClientSideModelsListProps = {
-  serverModels: modelRow[] | [];
-}
+  serverModels: modelRowWithSamples[] | [];
+};
 
-export default function ClientSideModelsList({ serverModels }: ClientSideModelsListProps) {
-  const supabase = createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string);
-  const [models, setModels] = useState<modelRow[]>(serverModels);
+export default function ClientSideModelsList({
+  serverModels,
+}: ClientSideModelsListProps) {
+  const supabase = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+  );
+  const [models, setModels] = useState<modelRowWithSamples[]>(serverModels);
 
   useEffect(() => {
-    const channel = supabase.channel('realtime-models')
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'models' },
-      (payload: any) => {
-        const dedupedModels = models.filter((model) => model.id !== payload.old?.id);
-        setModels([...dedupedModels, payload.new as modelRow]);
-      }
-    )
-    .subscribe();
+    const channel = supabase
+      .channel("realtime-models")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "models" },
+        async (payload: any) => {
+          const samples = await supabase
+            .from("samples")
+            .select("*")
+            .eq("modelId", payload.new.id);
+
+          const newModel: modelRowWithSamples = {
+            ...payload.new,
+            samples: samples.data,
+          };
+
+          const dedupedModels = models.filter(
+            (model) => model.id !== payload.old?.id
+          );
+
+          setModels([...dedupedModels, newModel]);
+        }
+      )
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
-    }
+    };
   }, [supabase, models, setModels]);
 
   return (
@@ -63,5 +82,5 @@ export default function ClientSideModelsList({ serverModels }: ClientSideModelsL
         </div>
       )}
     </div>
-  )
+  );
 }
