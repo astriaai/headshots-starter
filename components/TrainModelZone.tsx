@@ -59,7 +59,7 @@ export default function TrainModelZone() {
         files,
       });
 
-      const newFiles =
+      const newFiles: File[] =
         acceptedFiles.filter(
           (file: File) => !files.some((f) => f.name === file.name)
         ) || [];
@@ -83,6 +83,20 @@ export default function TrainModelZone() {
             "Some of the files you selected were already added. They were ignored.",
           duration: 5000,
         });
+      }
+
+      // check that in total images do not exceed a combined 4.5MB
+      const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+      const newSize = newFiles.reduce((acc, file) => acc + file.size, 0);
+
+      if (totalSize + newSize > 4.5 * 1024 * 1024) {
+        toast({
+          title: "Images exceed size limit",
+          description:
+            "The total combined size of the images cannot exceed 4.5MB.",
+          duration: 5000,
+        });
+        return;
       }
 
       setFiles([...files, ...newFiles]);
