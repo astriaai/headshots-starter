@@ -74,6 +74,24 @@ export interface Database {
           }
         ]
       }
+      samples: {
+        Row: {
+          id: number
+          modelId: string
+          uri: string
+        }
+        Insert: {
+          id?: number
+          modelId: string
+          uri: string
+        }
+        Update: {
+          id?: number
+          modelId?: string
+          uri?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
