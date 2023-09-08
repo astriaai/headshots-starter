@@ -30,7 +30,7 @@ export default async function Navbar() {
       <div className="flex gap-4 items-center">
         {!user && (
           <Link href="/login">
-            <Button>Login / Signup</Button>
+            <Button variant={"ghost"}>Login / Signup</Button>
           </Link>
         )}
         {user && (
@@ -42,7 +42,11 @@ export default async function Navbar() {
               <DropdownMenuLabel>marfuen98@gmail.com</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <form action="/auth/sign-out" method="post">
-                <Button type="submit" className="w-full text-left">
+                <Button
+                  type="submit"
+                  className="w-full text-left"
+                  variant={"ghost"}
+                >
                   Log out
                 </Button>
               </form>

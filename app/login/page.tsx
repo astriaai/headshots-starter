@@ -45,11 +45,8 @@ export default async function Login() {
               placeholder="••••••••"
               required
             />
-            <Button className="rounded px-4 py-2">Login</Button>
-            <Button
-              formAction="/auth/sign-up"
-              className="border rounded px-4 py-2 bg-gray-700"
-            >
+            <Button>Login</Button>
+            <Button formAction="/auth/sign-up" variant={"outline"}>
               Sign Up
             </Button>
             <Messages />
