@@ -1,12 +1,10 @@
-# Headshot AI Leap Starter App
-
-[![Headshot AI Demo](./app/public/demo.png)](https://tryleap.ai/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-![ESLint](https://img.shields.io/badge/code_style-ESLint-5ed9c7.svg)
-[![Next.js](https://img.shields.io/badge/built_with-Next.js-0070f3)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue)](https://www.typescriptlang.org/)
+# 👨‍💼 Headshot AI - Professional Headshots with AI
 
 Introducing Headshot AI, an open-source repo that generates Professional AI Headshots in minutes with [Leap AI](https://tryleap.ai/).
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
+
+[![Headshot AI Demo](./app/public/demo.png)](https://tryleap.ai/)
 
 The repo comes with:
 
@@ -18,11 +16,11 @@ The repo comes with:
 
 Just add Stripe and you have a Headshot AI SaaS in a box.
 
-## Deploy your own Headshot AI
+## How it works
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
+[![Headshot AI Demo](./app/public/explainer.png)]
 
-## Getting Started
+## Running Locally
 
 To create your own Headshot AI app, follow these steps:
 
