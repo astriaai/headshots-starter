@@ -66,7 +66,6 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
                   {model.samples.slice(0, 3).map((sample) => (
                     <Avatar key={sample.id}>
                       <AvatarImage src={sample.uri} className="object-cover" />
-                      <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                   ))}
                   {model.samples.length > 3 && (
