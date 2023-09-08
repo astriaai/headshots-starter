@@ -89,13 +89,15 @@ export async function POST(request: Request) {
       }).eq("id", result.id);
 
       const prompt = "8k portrait of professional photo, in an office setting, with a white background";
-      const formData = new FormData();
-      formData.append('prompt', prompt);
-      formData.append('numberOfImages', "4");
-      formData.append('webhookUrl', `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}`);
-
-      let options = { method: 'POST', headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` }, body: formData };
-      const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, options);
+      const resp = await fetch(`https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`, {
+        method: 'POST',
+        headers: { accept: 'application/json', Authorization: `Bearer ${leapApiKey}` },
+        body: JSON.stringify({
+          prompt,
+          numberOfImages: 4,
+          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}`
+        }),
+      });
       const { status, statusText } = resp;
       console.log({ status, statusText });
 
