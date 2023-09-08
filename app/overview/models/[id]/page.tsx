@@ -5,22 +5,25 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-export default async function Index({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function Index({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: {user} } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return <Login />
+    return <Login />;
   }
 
-  const { data: model } = await supabase.from('models').select('*').eq('id', Number(params.id)).eq("user_id", user.id).single();
+  const { data: model } = await supabase
+    .from("models")
+    .select("*")
+    .eq("id", Number(params.id))
+    .eq("user_id", user.id)
+    .single();
 
   if (!model) {
-    redirect('/overview');
+    redirect("/overview");
   }
 
   return (
@@ -34,5 +37,5 @@ export default async function Index({
         <h1 className='text-3xl self-center text-center mx-auto'>{model.name}</h1>
       </div>
     </div>
-  )
+  );
 }

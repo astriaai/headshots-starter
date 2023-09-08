@@ -1,11 +1,12 @@
-import Messages from './messages'
-import { Label } from '@/components/ui/label'
+import { Button } from "@/components/ui/button";
+import Messages from "./messages";
+import { Label } from "@/components/ui/label";
 
 export default async function Login() {
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
       <form
-        className="flex-1 flex flex-col w-full justify-center gap-2 text-white"
+        className="flex-1 flex flex-col w-full justify-center gap-2 "
         action="/auth/sign-in"
         method="post"
       >
@@ -13,7 +14,7 @@ export default async function Login() {
           Email
         </Label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 bg-slate-700"
+          className="rounded-md px-4 py-2 bg-inherit border mb-6 "
           name="email"
           placeholder="you@example.com"
           required
@@ -22,23 +23,21 @@ export default async function Login() {
           Password
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 bg-slate-700"
+          className="rounded-md px-4 py-2 bg-inherit border mb-6 "
           type="password"
           name="password"
           placeholder="••••••••"
           required
         />
-        <button className="bg-green-700 rounded px-4 py-2 mb-2">
-          Sign In
-        </button>
-        <button
+        <Button className="rounded px-4 py-2 mb-2">Sign In</Button>
+        <Button
           formAction="/auth/sign-up"
-          className="border border-gray-700 rounded px-4 py-2 mb-2"
+          className="border rounded px-4 py-2 mb-2"
         >
           Sign Up
-        </button>
+        </Button>
         <Messages />
       </form>
     </div>
-  )
+  );
 }
