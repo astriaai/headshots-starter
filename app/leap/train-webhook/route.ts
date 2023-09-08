@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     return NextResponse.json({}, { status: 500, statusText: "Malformed URL, no webhook_secret detected!" });
   }
 
-  if (webhook_secret !== leapWebhookSecret) {
+  if (webhook_secret.toLowerCase() !== leapWebhookSecret?.toLowerCase()) {
     return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
   }
 
