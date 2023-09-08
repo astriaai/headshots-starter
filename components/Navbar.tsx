@@ -24,7 +24,7 @@ export default async function Navbar() {
     <div className="flex w-full px-8 py-4 justify-between items-center border-b">
       <div className="flex gap-2 align-middle h-full">
         <Link href="/">
-          <h2>Headshots AI</h2>
+          <h2 className="font-bold">Headshots AI</h2>
         </Link>
       </div>
       <div className="flex gap-4 items-center">
