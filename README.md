@@ -103,6 +103,9 @@ Headshot AI can be easily adapted to support many other use-cases on [Leap AI](h
 
 - Product Shots
 - Food Photography
+
+[![Product AI Demo](./app/public/products.png)](https://tryleap.ai/)
+
 - Icons
 - [Style-Consistent Assets](https://blog.tryleap.ai/how-to-generate-style-consistent-assets-finetuning-on-leap/)
 
