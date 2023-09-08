@@ -1,4 +1,5 @@
 import { Database } from "@/types/supabase";
+import { Leap } from "@leap-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
   const urlObj = new URL(request.url);
   const user_id = urlObj.searchParams.get("user_id");
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
+  const model_type = urlObj.searchParams.get("model_type");
 
   if (!webhook_secret) {
     return NextResponse.json(
@@ -123,30 +125,32 @@ export async function POST(request: Request) {
       }
 
       const prompt = [
-        "8k close up linkedin profile picture of @subject, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, office window",
-        "8k linkedin professional profile photo of @subject in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
-        "realistic pencil drawing of a beautiful @subject, accurately drawn circular eyes, accurately drawn circles, black and white, sketch, pencil strokes, pencil lines, paper texture, high resolution, high resolution textures, sharp features, 32k, super-resolution, sharp focus",
-        "professional historical portrait photo of @subject from 1860, sepia tone, meticulous detail, hyperrealistic, medium long hair, facial hair, centered uncropped symmetrical , daguerreotype, framed picture",
+        "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, businessman, blurred background, glass building, office window",
+        "8k linkedin professional profile photo of @subject {model_type} in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
+        "8k portrait of realistic pencil drawing of a beautiful @subject {model_type}, accurately drawn circular eyes, accurately drawn circles, black and white, sketch, pencil strokes, pencil lines, paper texture, high resolution, high resolution textures, sharp features, 32k, super-resolution, sharp focus",
+        "8k professional historical portrait photo of @subject {model_type} from 1860, sepia tone, meticulous detail, hyperrealistic, medium long hair, facial hair, centered uncropped symmetrical , daguerreotype, framed picture",
       ];
 
+      const leap = new Leap({
+        accessToken: leapApiKey,
+      });
+
       for (let index = 0; index < 4; index++) {
-        const resp = await fetch(
-          `https://api.tryleap.ai/api/v1/images/models/${result.id}/inferences`,
-          {
-            method: "POST",
-            headers: {
-              accept: "application/json",
-              "content-type": "application/json",
-              Authorization: `Bearer ${leapApiKey}`,
-            },
-            body: JSON.stringify({
-              prompt: prompt[index],
-              numberOfImages: 4,
-              webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`,
-            }),
-          }
-        );
-        const { status, statusText } = resp;
+        const { status, statusText } = await leap.images.generate({
+          prompt: prompt[index].replace(
+            "{model_type}",
+            (model_type as string) ?? ""
+          ),
+          numberOfImages: 4,
+          height: 512,
+          width: 512,
+          steps: 50,
+          negativePrompt:
+            "(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4), text, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck",
+          modelId: result.id,
+          promptStrength: 7.5,
+          webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`,
+        });
         console.log({ status, statusText });
       }
     } else {

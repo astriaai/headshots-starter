@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     formData.append(
       "webhookUrl",
-      `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}`
+      `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}&model_type=${type}`
     );
 
     let options = {
