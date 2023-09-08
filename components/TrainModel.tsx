@@ -121,7 +121,7 @@ export default function TrainModelZone() {
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="My First Model"
+                    placeholder="e.g. Natalie's Headshots"
                     {...field}
                     className="max-w-screen-sm"
                     autoComplete="off"
