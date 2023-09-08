@@ -99,7 +99,7 @@ export async function POST(request: Request) {
         }),
       });
       const { status, statusText } = resp;
-      console.log({ status, statusText });
+      console.log({ resp });
 
     } else {
       // Send Email
