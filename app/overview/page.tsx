@@ -21,15 +21,12 @@ export default async function Index() {
     .from("models")
     .select(
       `*, samples (
-      modelId,
-      uri
+      *
     )`
     )
     .eq("user_id", user.id);
 
   console.log(models);
 
-  return (
-    <ClientSideModelsList serverModels={models ?? []} />
-  );
+  return <ClientSideModelsList serverModels={models ?? []} />;
 }
