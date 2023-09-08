@@ -281,13 +281,10 @@ export default function TrainModelZone() {
               ))}
             </div>
           )}
-          {isLoading ? (
-            <Icons.spinner className="h-4 w-4 animate-spin" />
-          ) : (
-            <Button type="submit" className="w-full">
-              Train Model
-            </Button>
-          )}
+
+          <Button type="submit" className="w-full" isLoading={isLoading}>
+            Train Model
+          </Button>
         </form>
       </Form>
     </div>
