@@ -1,6 +1,6 @@
 # 👨‍💼 Headshot AI - Professional Headshots with AI
 
-Introducing Headshot AI, an open-source repo that generates Professional AI Headshots in minutes with [Leap AI](https://tryleap.ai/).
+Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.ai/) that generates Professional AI Headshots in minutes.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
 

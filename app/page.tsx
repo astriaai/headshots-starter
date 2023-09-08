@@ -2,12 +2,13 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import blur from "./public/blur.png";
-import example from "./public/example.png";
+
 import hero from "./public/hero.png";
-import result from "./public/result.png";
 
 import { Button } from "@/components/ui/button";
+import ExplainerSection from "@/components/ExplainerSection";
+import PricingSection from "@/components/PricingSection";
+import Footer from "@/components/Footer";
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
@@ -54,149 +55,9 @@ export default async function Index() {
           />
         </div>
       </div>
-      {/* HOW IT WORKS SECTION */}
-      <div className="w-full max-w-6xl mt-16 p-8 bg-gray-100 rounded-lg space-y-8">
-        <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
-
-        {/* Step 1: Upload your images */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center space-x-4">
-            <div className="text-3xl font-bold text-blue-600 bg-white border-2 border-blue-600 rounded-full w-10 h-10 flex items-center justify-center">
-              1
-            </div>
-            <h3 className="text-2xl font-semibold">Upload your images</h3>
-          </div>
-          <p className="text-sm text-gray-600 text-center">
-            Upload 4+ high-quality selfies: front facing, 1 person in frame, no
-            glasses or hats.
-          </p>
-          <img
-            src={example.src}
-            alt="AI Headshot example"
-            className="rounded-lg object-cover w-full md:w-3/4 lg:w-1/2 mx-auto"
-          />
-        </div>
-
-        {/* Step 2: Train your model */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center space-x-4">
-            <div className="text-3xl font-bold text-blue-600 bg-white border-2 border-blue-600 rounded-full w-10 h-10 flex items-center justify-center">
-              2
-            </div>
-            <h3 className="text-2xl font-semibold">Our AI gets to work</h3>
-          </div>
-          <p className="text-sm text-gray-600 text-center">
-            The AI magic takes ~20 minutes. You'll get an email when its ready!
-          </p>
-          <img
-            src={blur.src}
-            alt="AI Headshot blur"
-            className="rounded-lg object-cover w-full md:w-3/4 lg:w-1/2 mx-auto"
-          />
-        </div>
-
-        {/* Step 3: Generate images */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center space-x-4">
-            <div className="text-3xl font-bold text-blue-600 bg-white border-2 border-blue-600 rounded-full w-10 h-10 flex items-center justify-center">
-              3
-            </div>
-            <h3 className="text-2xl font-semibold">Get amazing headshots</h3>
-          </div>
-          <p className="text-sm text-gray-600 text-center">
-            Once your model is trained, we'll give you amazing headshots!
-          </p>
-          <img
-            src={result.src}
-            alt="AI Headshot result"
-            className="rounded-lg object-cover w-full md:w-3/4 lg:w-1/2 mx-auto"
-          />
-        </div>
-      </div>
-      {/* PRICING SECTION */}
-      <div className="w-full max-w-6xl mt-16 mb-16 p-8 rounded-lg space-y-8">
-        <h2 className="text-3xl font-bold text-center mb-8">Pricing</h2>
-        <div className="flex flex-wrap justify-center lg:space-x-4 space-y-4 lg:space-y-0 items-stretch">
-          {pricingOptions.map((option, index) => (
-            <div
-              key={index}
-              className={`flex flex-col border rounded-lg p-4 w-full lg:w-1/4 ${option.bgColor}`}
-            >
-              <div className="flex-grow space-y-4">
-                <h3 className="text-2xl font-semibold text-center">
-                  {option.title}
-                </h3>
-                <p className="text-xl font-bold text-center mb-2">
-                  {option.price}
-                </p>
-                <p className="text-sm text-gray-600 text-center">
-                  {option.description}
-                </p>
-                <ul className="space-y-2 mb-4 pl-4">
-                  {option.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-center space-x-2">
-                      <span className="text-green-500">✔</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 text-center">
-                <Link href="/login">
-                  {" "}
-                  <Button className="w-3/4">{option.buttonText}</Button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* FOOTER SECTION */}
-      <footer className="mt-auto text-gray-600 pb-4 text-center">
-        © 2023 Professional AI Headshots. All rights reserved.
-      </footer>
+      <ExplainerSection />
+      <PricingSection />
+      <Footer />
     </div>
   );
 }
-
-const pricingOptions = [
-  {
-    title: "Starter",
-    price: "$9.99/month",
-    description:
-      "Perfect for individuals looking to enhance their online presence.",
-    features: [
-      "5 AI Headshots",
-      "Standard Resolution Downloads",
-      "Personal Use License",
-    ],
-    buttonText: "Choose Starter",
-    bgColor: "bg-white",
-  },
-  {
-    title: "Basic",
-    price: "$19.99/month",
-    description:
-      "Ideal for professionals requiring frequent updates to their profiles.",
-    features: [
-      "15 AI Headshots",
-      "High-Resolution Downloads",
-      "Commercial Use License",
-    ],
-    buttonText: "Choose Basic",
-    bgColor: "bg-blue-50",
-  },
-  {
-    title: "Premium",
-    price: "$29.99/month",
-    description: "The best value with unlimited possibilities.",
-    features: [
-      "150 AI Headshots",
-      "Ultra High-Resolution Downloads",
-      "Extended Commercial Use License",
-    ],
-    buttonText: "Choose Premium",
-    bgColor: "bg-white",
-  },
-];
