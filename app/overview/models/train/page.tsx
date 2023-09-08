@@ -1,4 +1,4 @@
-import TrainModelZone from "@/components/TrainModel";
+import TrainModelZone from "@/components/TrainModelZone";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,13 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { FaArrowLeft, FaBackward } from "react-icons/fa";
 
 export default async function Index() {
   return (
     <div className="py-8 w-full max-w-2xl mx-auto">
       <div id="train-model-container" className="flex flex-1 flex-col gap-2">
-        <Link href="/overview">
-          <Button>Go Back</Button>
+        <Link href="/overview" className="text-sm">
+          <Button variant={"outline"}>
+            <FaArrowLeft className="mr-2" />
+            Go Back
+          </Button>
         </Link>
         <Card>
           <CardHeader>

@@ -16,17 +16,17 @@ export default async function Index() {
   }
 
   return (
-    <div className="flex flex-1 w-full h-screen flex-col">
+    <div className="flex flex-1 w-full flex-col justify-center items-center">
       <div
         id="train-model-container"
-        className="flex flex-col gap-4 align-middle justify-center p-16"
+        className="flex flex-col gap-4 items-center p-16"
       >
         <h1 className="text-3xl">
           Get professional headshots in minutes with AI
         </h1>
         <div>
           <Link href="/login">
-            <Button>Get Started</Button>
+            <Button size={"lg"}>Get Started</Button>
           </Link>
         </div>
       </div>
