@@ -1,6 +1,6 @@
-import blur from "../app/public/blur.png";
-import example from "../app/public/example.png";
-import result from "../app/public/result.png";
+import blur from "/public/blur.png";
+import example from "/public/example.png";
+import result from "/public/result.png";
 
 export default function ExplainerSection() {
   return (
