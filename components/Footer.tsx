@@ -4,16 +4,25 @@ export default function Footer() {
   return (
     <footer className="text-center pb-4 h-12 sm:h-20 w-full sm:pt-2 pt-4 border-t mt-5 flex sm:flex-row flex-col justify-between items-center px-3 space-y-3 sm:mb-0 mb-3 border-gray-200">
       <div className="text-gray-500">
-        Powered by{" "}
+        <Link
+          className="text-blue-600 hover:underline font-bold"
+          href="https://github.com/leap-ai/headshots-starter"
+          target="_blank"
+        >
+          Open-source
+        </Link>{" "}
+        powered by{" "}
         <Link
           className="text-blue-600 hover:underline font-bold"
           href="https://tryleap.ai/"
+          target="_blank"
         >
           Leap AI,{" "}
         </Link>
         <Link
           className="text-blue-600 hover:underline font-bold"
           href="https://supabase.com/"
+          target="_blank"
         >
           Supabase{" "}
         </Link>
@@ -21,6 +30,7 @@ export default function Footer() {
         <Link
           className="text-blue-600 hover:underline font-bold"
           href="https://vercel.com/"
+          target="_blank"
         >
           Vercel.
         </Link>
@@ -30,6 +40,7 @@ export default function Footer() {
           href="https://twitter.com/leap_api"
           className="group"
           aria-label="Twitter"
+          target="_blank"
         >
           <svg
             aria-hidden="true"
@@ -42,6 +53,7 @@ export default function Footer() {
           href="https://github.com/leap-ai/headshots-starter"
           className="group"
           aria-label="GitHub"
+          target="_blank"
         >
           <svg
             aria-hidden="true"
@@ -52,14 +64,5 @@ export default function Footer() {
         </Link>
       </div>
     </footer>
-    // <footer className="mt-auto text-gray-600 pb-4 text-center">
-    //   Headshot AI is an open-source project by{" "}
-    //   <Link
-    //     className="text-blue-600 hover:underline"
-    //     href="https://tryleap.ai/"
-    //   >
-    //     Leap AI
-    //   </Link>
-    // </footer>
   );
 }
