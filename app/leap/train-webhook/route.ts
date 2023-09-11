@@ -54,8 +54,9 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {},
       {
-        status: 401,
-        statusText: "Unauthorized: Add your Leap API Key to generate headshots",
+        status: 500,
+        statusText:
+          "Missing API Key: Add your Leap API Key to generate headshots",
       }
     );
   }
