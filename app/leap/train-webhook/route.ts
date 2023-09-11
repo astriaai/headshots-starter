@@ -33,10 +33,6 @@ if (!supabaseServiceRoleKey) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_ANON_KEY!");
 }
 
-if (!leapApiKey) {
-  throw new Error("MISSING LEAP_API_KEY!");
-}
-
 if (!leapImageWebhookUrl) {
   throw new Error("MISSING LEAP_IMAGE_WEBHOOK_URL!");
 }
@@ -53,6 +49,16 @@ export async function POST(request: Request) {
   const user_id = urlObj.searchParams.get("user_id");
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
   const model_type = urlObj.searchParams.get("model_type");
+
+  if (!leapApiKey) {
+    return NextResponse.json(
+      {},
+      {
+        status: 401,
+        statusText: "Unauthorized: Add your Leap API Key to generate headshots",
+      }
+    );
+  }
 
   if (!webhook_secret) {
     return NextResponse.json(
