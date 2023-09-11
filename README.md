@@ -57,7 +57,7 @@ cd headshots-starter
 
    ** For this starter repo we disabled Row level permissions, you can enable them as needed for your own security, in the supasbase table settings **
 
-   ![Visualized Schemas](https://headhots-starter.vercel.app/visualized_schemas.png)
+   ![Visualized Schemas](https://headshots-starter.vercel.app/visualized_schemas.png)
 
    [images]
    - id (int8)
