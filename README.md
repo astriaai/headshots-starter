@@ -55,7 +55,7 @@ cd headshots-starter
 
    - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
 
-   ** For this starter repo we disabled Row level permissions, you can enable them as needed for your own security, in the supasbase table settings **
+   **For this starter repo we disabled Row level permissions, you can enable them as needed for your own security, in the supasbase table settings**
 
    ![Visualized Schemas](https://headshots-starter.vercel.app/visualized_schemas.png)
 
