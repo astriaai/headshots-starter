@@ -59,25 +59,29 @@ cd headshots-starter
 
    ![Visualized Schemas](https://headshots-starter.vercel.app/visualized_schemas.png)
 
-   [images]
-   - id (int8)
-   - modelId (int8) (foreign_key)*
-   - uri (text)
-   - created_at (timestamptz)
+   This code block defines the schema for three tables: `images`, `models`, and `samples`. 
 
-   [models] - (Make sure to enable realtime on this table)
-   - id (int8)
-   - name (text)
-   - type (text)
-   - created_at (timestamptz)
-   - user_id (uuid) (foreign_key)*
-   - status (text)
-   - modelId (text)
+   For any table column with `foreign_key`, make sure to link it while creating the column in Supabase.
 
-   [samples]
-   - id (int8)
-   - uri (text)
-   - modelId (int8) (foreign_key)*
+      [images]
+      - id (int8)
+      - modelId (int8) (foreign_key)*
+      - uri (text)
+      - created_at (timestamptz)
+
+      [models] - (Make sure to enable realtime on this table)
+      - id (int8)
+      - name (text)
+      - type (text)
+      - created_at (timestamptz)
+      - user_id (uuid) (foreign_key)*
+      - status (text)
+      - modelId (text)
+
+      [samples]
+      - id (int8)
+      - uri (text)
+      - modelId (int8) (foreign_key)*
 
 5. Create a [Leap AI](https://tryleap.ai/) account
 
