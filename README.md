@@ -59,29 +59,32 @@ cd headshots-starter
 
    ![Visualized Schemas](https://headshots-starter.vercel.app/visualized_schemas.png)
 
-   This code block defines the schema for three tables: `images`, `models`, and `samples`. 
+   This code block defines the schema for three tables: `images`, `models`, and `samples`.
 
    For any table column with `foreign_key`, make sure to link it while creating the column in Supabase.
 
-      [images]
-      - id (int8)
-      - modelId (int8) (foreign_key)*
-      - uri (text)
-      - created_at (timestamptz)
+   [images]
 
-      [models] - (Make sure to enable realtime on this table)
-      - id (int8)
-      - name (text)
-      - type (text)
-      - created_at (timestamptz)
-      - user_id (uuid) (foreign_key)*
-      - status (text)
-      - modelId (text)
+   - id (int8)
+   - modelId (int8) (foreign_key)\*
+   - uri (text)
+   - created_at (timestamptz)
 
-      [samples]
-      - id (int8)
-      - uri (text)
-      - modelId (int8) (foreign_key)*
+   [models] - (Make sure to enable realtime on this table)
+
+   - id (int8)
+   - name (text)
+   - type (text)
+   - created_at (timestamptz)
+   - user_id (uuid) (foreign_key)\*
+   - status (text)
+   - modelId (text)
+
+   [samples]
+
+   - id (int8)
+   - uri (text)
+   - modelId (int8) (foreign_key)\*
 
 5. Create a [Leap AI](https://tryleap.ai/) account
 
@@ -117,6 +120,8 @@ cd headshots-starter
 Deploy the example using Vercel:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-api/headshots-starter.git)
+
+Or fork the repo and Deploy using [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI).
 
 ## Additional Use-Cases
 
