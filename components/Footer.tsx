@@ -24,7 +24,14 @@ export default function Footer() {
           href="https://supabase.com/"
           target="_blank"
         >
-          Supabase{" "}
+          Supabase,{" "}
+        </Link>
+        <Link
+          className="text-blue-600 hover:underline font-bold"
+          href="https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI"
+          target="_blank"
+        >
+          Replit{" "}
         </Link>
         and{" "}
         <Link
