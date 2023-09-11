@@ -51,9 +51,33 @@ cd headshots-starter
    yarn
    ```
 
-4. Create a [new Supabase project](https://database.new)
+4. Create a [new Supabase project](https://database.new) and create the tables required for the app:
 
    - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+
+   ** For this starter repo we disabled Row level permissions, you can enable them as needed for your own security, in the supasbase table settings **
+
+   ![Visualized Schemas](https://headhots-starter.vercel.app/visualized_schemas.png)
+
+   [images]
+   - id (int8)
+   - modelId (int8) (foreign_key)*
+   - uri (text)
+   - created_at (timestamptz)
+
+   [models] - (Make sure to enable realtime on this table)
+   - id (int8)
+   - name (text)
+   - type (text)
+   - created_at (timestamptz)
+   - user_id (uuid) (foreign_key)*
+   - status (text)
+   - modelId (text)
+
+   [samples]
+   - id (int8)
+   - uri (text)
+   - modelId (int8) (foreign_key)*
 
 5. Create a [Leap AI](https://tryleap.ai/) account
 
