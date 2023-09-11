@@ -34,7 +34,9 @@ export async function POST(request: Request) {
 
   if (!leapApiKey) {
     return NextResponse.json(
-      {},
+      {
+        message: "Missing API Key: Add your Leap API Key to generate headshots",
+      },
       {
         status: 500,
         statusText:

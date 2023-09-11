@@ -133,10 +133,11 @@ export default function TrainModelZone() {
     setIsLoading(false);
 
     if (!response.ok) {
-      console.log("Something went wrong! ", response?.statusText);
+      const responseData = await response.json();
+      console.log("Something went wrong! ", responseData.message);
       toast({
         title: "Something went wrong!",
-        description: response?.statusText,
+        description: responseData.message,
         duration: 5000,
       });
       return;
