@@ -22,7 +22,7 @@ export default async function Index() {
   }
 
   return (
-    <div className="flex flex-col items-center h-screen pt-16">
+    <div className="flex flex-col items-center pt-16">
       <div className="flex flex-col lg:flex-row items-center gap-8 p-8 max-w-6xl w-full">
         <div className="flex flex-col space-y-4 lg:w-1/2 w-full">
           <h1 className="text-5xl font-bold">
@@ -57,7 +57,6 @@ export default async function Index() {
       </div>
       <ExplainerSection />
       <PricingSection />
-      <Footer />
     </div>
   );
 }
