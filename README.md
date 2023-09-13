@@ -94,7 +94,7 @@ cd headshots-starter
    - Fill in `your_api_key` with your [Leap API key](https://docs.tryleap.ai/authentication)
    - Fill in `your-hosted-url/leap/train-webhook` with https://{your-hosted-url}/leap/train-webhook
    - Fill in `your-hosted-url/leap/image-webhook` with https://{your-hosted-url}/leap/image-webhook
-   - Fill in `your-webhook-secret` with
+   - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
 
 6. Create a [Resend](https://resend.com/) account
 
