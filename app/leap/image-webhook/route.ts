@@ -27,7 +27,7 @@ if (!leapWebhookSecret) {
 
 export async function POST(request: Request) {
   const incomingData = await request.json();
-  const urlObj = new URL(request.url);
+  const urlObj = new URL(request.url)
   const user_id = urlObj.searchParams.get('user_id');
   const model_id = urlObj.searchParams.get('model_id');
   const webhook_secret = urlObj.searchParams.get('webhook_secret');
