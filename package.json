@@ -1,4 +1,10 @@
 {
+  "name": "headshots-ai-by-leap",
+  "author": {
+    "name": "Leap AI",
+    "email": "help@tryleap.ai"
+  },
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev",
