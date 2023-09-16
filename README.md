@@ -96,6 +96,8 @@ cd headshots-starter
    - Fill in `your-hosted-url/leap/image-webhook` with https://{your-hosted-url}/leap/image-webhook
    - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
 
+   Note - on your first deploy you can use https://headshots-starter.vercel.app as a placeholder for `your-hosted-url`. Once you deploy your own app, swap the url in.
+
 6. Create a [Resend](https://resend.com/) account
 
    - Fill in `your-resend-api-key` with your Resend API Key
