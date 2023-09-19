@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const leapApiKey = process.env.LEAP_API_KEY;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 
@@ -13,7 +13,7 @@ if (!supabaseUrl) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_URL!");
 }
 
-if (!supabaseServiceRoleKey) {
+if (!supabaseAnonKey) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_ANON_KEY!");
 }
 
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
 
   const supabase = createClient<Database>(
     supabaseUrl as string,
-    supabaseServiceRoleKey as string,
+    supabaseAnonKey as string,
     {
       auth: {
         autoRefreshToken: false,
