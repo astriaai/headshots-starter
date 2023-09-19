@@ -18,7 +18,7 @@ export default async function Navbar() {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.refreshSession();
 
   return (
     <div className="flex w-full px-8 py-4 justify-between items-center border-b">
