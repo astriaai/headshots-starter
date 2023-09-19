@@ -12,7 +12,7 @@ export default async function Index({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.refreshSession();
 
   if (!user) {
     return <Login />;

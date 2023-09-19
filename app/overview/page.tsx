@@ -10,7 +10,7 @@ export default async function Index() {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.refreshSession();
 
   if (!user) {
     return <div>User not found</div>;

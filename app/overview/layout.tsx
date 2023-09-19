@@ -13,7 +13,7 @@ export default async function RootLayout({
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.refreshSession();
 
   if (!user) {
     return <Login />;
