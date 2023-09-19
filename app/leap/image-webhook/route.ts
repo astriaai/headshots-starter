@@ -1,3 +1,4 @@
+import { LeapWebhookImage } from "@/types/leap";
 import { Database } from "@/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
@@ -29,8 +30,6 @@ export async function POST(request: Request) {
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
   const model_db_id = urlObj.searchParams.get("model_db_id");
   const result = incomingData?.result;
-
-  console.log({ user_id, model_id, webhook_secret });
 
   if (!leapApiKey) {
     return NextResponse.json(
@@ -105,16 +104,16 @@ export async function POST(request: Request) {
   }
 
   try {
-    const images = result.images;
-    console.log({ images });
+    const images = result.images as LeapWebhookImage[];
+
     await Promise.all(
-      images.map(async (image: any) => {
+      images.map(async (image) => {
         const { error: imageError } = await supabase.from("images").insert({
           modelId: Number(model_db_id),
           uri: image.uri,
         });
         if (imageError) {
-          console.log({ imageError });
+          console.error({ imageError });
         }
       })
     );
@@ -125,7 +124,7 @@ export async function POST(request: Request) {
       { status: 200, statusText: "Success" }
     );
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json(
       {
         message: "Something went wrong!",

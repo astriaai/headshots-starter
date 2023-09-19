@@ -12,7 +12,7 @@ import { FaArrowLeft, FaBackward } from "react-icons/fa";
 
 export default async function Index() {
   return (
-    <div className="py-8 w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <div
         id="train-model-container"
         className="flex flex-1 flex-col gap-2 px-2"
