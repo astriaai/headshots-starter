@@ -1,3 +1,4 @@
+import { LeapWebhookImage } from "@/types/leap";
 import { Database } from "@/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
@@ -103,10 +104,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const images = result.images;
+    const images = result.images as LeapWebhookImage[];
 
     await Promise.all(
-      images.map(async (image: any) => {
+      images.map(async (image) => {
         const { error: imageError } = await supabase.from("images").insert({
           modelId: Number(model_db_id),
           uri: image.uri,

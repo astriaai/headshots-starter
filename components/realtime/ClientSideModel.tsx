@@ -29,8 +29,8 @@ export default function ClientSideModel({
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "models" },
-        (payload: any) => {
-          setModel(payload.new as modelRow);
+        (payload: { new: modelRow }) => {
+          setModel(payload.new);
         }
       )
       .subscribe();
