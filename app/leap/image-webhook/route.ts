@@ -30,8 +30,6 @@ export async function POST(request: Request) {
   const model_db_id = urlObj.searchParams.get("model_db_id");
   const result = incomingData?.result;
 
-  console.log({ user_id, model_id, webhook_secret });
-
   if (!leapApiKey) {
     return NextResponse.json(
       {
@@ -106,7 +104,7 @@ export async function POST(request: Request) {
 
   try {
     const images = result.images;
-    console.log({ images });
+
     await Promise.all(
       images.map(async (image: any) => {
         const { error: imageError } = await supabase.from("images").insert({
@@ -114,7 +112,7 @@ export async function POST(request: Request) {
           uri: image.uri,
         });
         if (imageError) {
-          console.log({ imageError });
+          console.error({ imageError });
         }
       })
     );
@@ -125,7 +123,7 @@ export async function POST(request: Request) {
       { status: 200, statusText: "Success" }
     );
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json(
       {
         message: "Something went wrong!",

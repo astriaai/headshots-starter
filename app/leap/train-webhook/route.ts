@@ -127,7 +127,7 @@ export async function POST(request: Request) {
         .select();
 
       if (modelUpdatedError) {
-        console.log(modelUpdatedError);
+        console.error(modelUpdatedError);
         return NextResponse.json(
           {
             message: "Something went wrong!",
@@ -137,8 +137,8 @@ export async function POST(request: Request) {
       }
 
       if (!modelUpdated) {
-        console.log("No model updated!");
-        console.log({ modelUpdated });
+        console.error("No model updated!");
+        console.error({ modelUpdated });
       }
 
       const leap = new Leap({
@@ -161,7 +161,6 @@ export async function POST(request: Request) {
           promptStrength: 7.5,
           webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`,
         });
-        console.log({ status, statusText });
       }
     } else {
       // Send Email
@@ -186,7 +185,7 @@ export async function POST(request: Request) {
       { status: 200, statusText: "Success" }
     );
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json(
       {
         message: "Something went wrong!",

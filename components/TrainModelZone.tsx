@@ -54,11 +54,6 @@ export default function TrainModelZone() {
 
   const onDrop = useCallback(
     async (acceptedFiles: any) => {
-      console.log({
-        acceptedFiles,
-        files,
-      });
-
       const newFiles: File[] =
         acceptedFiles.filter(
           (file: File) => !files.some((f) => f.name === file.name)
@@ -134,7 +129,7 @@ export default function TrainModelZone() {
 
     if (!response.ok) {
       const responseData = await response.json();
-      console.log("Something went wrong! ", responseData.message);
+      console.error("Something went wrong! ", responseData.message);
       toast({
         title: "Something went wrong!",
         description: responseData.message,
@@ -201,7 +196,6 @@ export default function TrainModelZone() {
               className="grid grid-cols-3 gap-4"
               value={modelType}
               onValueChange={(value) => {
-                console.log(value);
                 form.setValue("type", value);
               }}
             >

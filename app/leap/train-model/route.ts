@@ -83,8 +83,6 @@ export async function POST(request: Request) {
       id: string;
       imageSamples: string[];
     };
-    console.log(resp);
-    console.log({ status, statusText, body });
 
     const { error: modelError, data } = await supabase
       .from("models")
@@ -124,7 +122,7 @@ export async function POST(request: Request) {
       );
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json(
       {
         message: "Something went wrong!",
