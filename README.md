@@ -87,6 +87,16 @@ cd headshots-starter
    - uri (text)
    - modelId (int8) (foreign_key)\*
 
+6.  Magic Link Auth
+
+   In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
+
+   ```
+   <h2>Magic Link</h2>
+   <p>Follow this link to login:</p>
+   <p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Log In</a></p>
+   ```
+
 5. Create a [Leap AI](https://tryleap.ai/) account
 
    In your `.env.local` file:
