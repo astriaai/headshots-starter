@@ -17,8 +17,10 @@ export default async function Navbar() {
   const supabase = createServerComponentClient({ cookies });
 
   const {
-    data: { user },
-  } = await supabase.auth.refreshSession();
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const user = session?.user;
 
   return (
     <div className="flex w-full px-8 py-4 justify-between items-center border-b">
