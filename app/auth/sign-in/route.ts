@@ -12,9 +12,6 @@ export async function POST(request: Request) {
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: {
-      emailRedirectTo: requestUrl.origin,
-    }
   })
 
   if (error) {
