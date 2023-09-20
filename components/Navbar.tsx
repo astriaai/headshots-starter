@@ -20,6 +20,8 @@ export default async function Navbar() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  console.log({session});
+
   const user = session?.user;
 
   return (

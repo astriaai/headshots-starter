@@ -16,6 +16,9 @@ export default async function Index() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  console.log({session});
+  console.log({cookies});
+
   const user = session?.user;
 
   if (user) {
