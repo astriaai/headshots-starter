@@ -35,7 +35,7 @@ export default async function Login() {
               placeholder="you@example.com"
               required
             />
-            <Button>Login</Button>
+            <Button>Continue</Button>
             <Messages />
           </CardContent>
           <CardFooter>
