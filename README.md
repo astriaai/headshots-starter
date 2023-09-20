@@ -108,9 +108,9 @@ cd headshots-starter
 
    Note - on your first deploy you can use https://headshots-starter.vercel.app as a placeholder for `your-hosted-url`. Once you deploy your own app, swap the url in.
 
-6. Create a [Resend](https://resend.com/) account
+6. Create a [Resend](https://resend.com/) account (Optional)
 
-   - Fill in `your-resend-api-key` with your Resend API Key
+   - Fill in `your-resend-api-key` with your Resend API Key if you wish to use Resend to email users when their model has finished training.
 
 7. Start the development server:
 

@@ -22,7 +22,7 @@ const prompts = [
 ];
 
 if (!resendApiKey) {
-  throw new Error("MISSING RESEND_API_KEY!");
+  console.warn("We detected that the RESEND_API_KEY is missing from your environment variables. The app should still work but email notifications will not be sent. Please add your RESEND_API_KEY to your environment variables if you want to enable email notifications.");
 }
 
 if (!supabaseUrl) {
@@ -42,7 +42,6 @@ if (!leapWebhookSecret) {
 }
 
 export async function POST(request: Request) {
-  const resend = new Resend(resendApiKey);
   const incomingData = await request.json();
   const { result } = incomingData;
   const urlObj = new URL(request.url);
@@ -111,12 +110,15 @@ export async function POST(request: Request) {
   try {
     if (result.status === "finished") {
       // Send Email
-      await resend.emails.send({
-        from: "noreply@headshots.tryleap.ai",
-        to: user?.email ?? "",
-        subject: "Your model was successfully trained!",
-        html: `<h2>We're writing to notify you that your model training was successful!</h2>`,
-      });
+      if (resendApiKey) {
+        const resend = new Resend(resendApiKey);
+        await resend.emails.send({
+          from: "noreply@headshots.tryleap.ai",
+          to: user?.email ?? "",
+          subject: "Your model was successfully trained!",
+          html: `<h2>We're writing to notify you that your model training was successful!</h2>`,
+        });
+      }
 
       const { data: modelUpdated, error: modelUpdatedError } = await supabase
         .from("models")
@@ -164,12 +166,15 @@ export async function POST(request: Request) {
       }
     } else {
       // Send Email
-      await resend.emails.send({
-        from: "noreply@headshots.tryleap.ai",
-        to: user?.email ?? "",
-        subject: "Your model failed to train!",
-        html: `<h2>We're writing to notify you that your model training failed!.</h2>`,
-      });
+      if (resendApiKey) {
+        const resend = new Resend(resendApiKey);
+        await resend.emails.send({
+          from: "noreply@headshots.tryleap.ai",
+          to: user?.email ?? "",
+          subject: "Your model failed to train!",
+          html: `<h2>We're writing to notify you that your model training failed!.</h2>`,
+        });
+      }
 
       await supabase
         .from("models")
