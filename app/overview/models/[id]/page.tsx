@@ -11,10 +11,8 @@ import { FaArrowLeft } from "react-icons/fa";
 export default async function Index({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const user = session?.user;
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     return <Login />;

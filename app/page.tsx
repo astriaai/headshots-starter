@@ -13,13 +13,11 @@ export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  console.log({session});
+  console.log({user});
   console.log({cookies});
-
-  const user = session?.user;
 
   if (user) {
     return redirect("/overview");

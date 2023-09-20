@@ -9,10 +9,11 @@ export default async function Index() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user }, error,
+  } = await supabase.auth.getUser();
 
-  const user = session?.user;
+  console.log({user});
+  console.log({error});
 
   if (!user) {
     return <div>User not found</div>;
