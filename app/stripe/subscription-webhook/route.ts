@@ -19,6 +19,8 @@ const creditsPerPriceId: {
 export async function POST(request: Request) {
   const headersObj = headers();
   const sig = headersObj.get('stripe-signature');
+
+  console.log({ headersObj });
   if (!request.body) {
     return NextResponse.json(
       {
