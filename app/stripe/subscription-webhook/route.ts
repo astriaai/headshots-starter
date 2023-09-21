@@ -1,7 +1,7 @@
 import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { streamToString } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,8 @@ const creditsPerPriceId: {
 }
 
 export async function POST(request: Request) {
-  const sig = request.headers.get('stripe-signature');
+  const headersObj = headers();
+  const sig = headersObj.get('stripe-signature');
   if (!request.body) {
     return NextResponse.json(
       {
