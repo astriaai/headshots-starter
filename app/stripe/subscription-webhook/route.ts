@@ -4,9 +4,21 @@ import { NextResponse } from "next/server";
 import { headers, cookies } from "next/headers";
 import { streamToString } from "@/lib/utils";
 import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
 export const dynamic = "force-dynamic";
+
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl) {
+  throw new Error("MISSING NEXT_PUBLIC_SUPABASE_URL!");
+}
+
+if (!supabaseServiceRoleKey) {
+  throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
+}
 
 if (!stripeSecretKey) {
   throw new Error("STRIPE_SECRET_KEY is not set");
@@ -67,7 +79,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const supabase = createClient<Database>(
+    supabaseUrl as string,
+    supabaseServiceRoleKey as string,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false,
+      },
+    }
+  );
 
   // Handle the event
   switch (event.type) {

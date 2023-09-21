@@ -54,7 +54,8 @@ cd headshots-starter
 
 4. Create a [new Supabase project](https://database.new) and create the tables required for the app:
 
-   - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+   - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+
 
    **Make sure to configure your row level permissions on your tables, in the supabase dashboard**
 
