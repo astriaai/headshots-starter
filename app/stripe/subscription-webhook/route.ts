@@ -21,6 +21,7 @@ export async function POST(request: Request) {
   const sig = headersObj.get('stripe-signature');
 
   console.log({ headersObj });
+  console.log({ sig });
   if (!request.body) {
     return NextResponse.json(
       {
