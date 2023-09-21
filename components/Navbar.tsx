@@ -27,14 +27,14 @@ export default async function Navbar() {
   } = await supabase.from("credits").select("*").eq("user_id", user?.id ?? '').single()
 
   return (
-    <div className="flex w-full px-8 py-4 items-center border-b text-center gap-8">
+    <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
       <div className="flex gap-2 h-full">
         <Link href="/">
           <h2 className="font-bold">Headshots AI</h2>
         </Link>
       </div>
       {user && (
-        <div className="flex flex-row gap-2">
+        <div className="hidden lg:flex flex-row gap-2">
           <Link href="/overview">
             <Button variant={"ghost"}>Home</Button>
           </Link>
@@ -43,7 +43,7 @@ export default async function Navbar() {
           </Link>
         </div>
       )}
-      <div className="flex gap-4 ml-auto">
+      <div className="flex gap-4 lg:ml-auto">
         {!user && (
           <Link href="/login">
             <Button variant={"ghost"}>Login / Signup</Button>
@@ -58,10 +58,10 @@ export default async function Navbar() {
             )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="cursor-pointer">
-                <AvatarIcon height={24} width={24} />
+                <AvatarIcon height={24} width={24} className="text-primary" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-primary text-center">{user.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <form action="/auth/sign-out" method="post">
                   <Button

@@ -2,7 +2,7 @@
 
 import { Icons } from "@/components/icons";
 import { Database } from "@/types/supabase";
-import { imageRow, modelRow } from "@/types/utils";
+import { imageRow, modelRow, sampleRow } from "@/types/utils";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { AspectRatio } from "../ui/aspect-ratio";
@@ -11,11 +11,13 @@ import { Badge } from "../ui/badge";
 type ClientSideModelProps = {
   serverModel: modelRow;
   serverImages: imageRow[];
+  samples: sampleRow[];
 };
 
 export default function ClientSideModel({
   serverModel,
   serverImages,
+  samples,
 }: ClientSideModelProps) {
   const supabase = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -43,36 +45,37 @@ export default function ClientSideModel({
   return (
     <div id="train-model-container" className="w-full h-full">
       <div className="flex flex-col w-full mt-4 gap-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl">{model.name}</h1>
-          <div>
-            <Badge
-              variant={model.status === "finished" ? "default" : "secondary"}
-            >
-              {model.status}
-              {model.status === "processing" && (
-                <Icons.spinner className="h-4 w-4 animate-spin ml-2 inline-block" />
-              )}
-            </Badge>
-          </div>
-        </div>
-        <div className="flex flex-1 flex-col w-full gap-8">
-          {model.status === "finished" && (
-            <div className="flex flex-1 flex-col gap-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {serverImages?.map((image) => (
-                  <div key={image.id}>
-                    <AspectRatio ratio={1}>
-                      <img
-                        src={image.uri}
-                        className="rounded-md w-96 object-cover"
-                      />
-                    </AspectRatio>
-                  </div>
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-0">
+          {samples && (
+            <div className="flex w-full lg:w-1/2 flex-col gap-2">
+              <h2 className="text-xl">Training Data</h2>
+              <div className="flex flex-row gap-4 flex-wrap">
+                {samples.map((sample) => (
+                  <img
+                    src={sample.uri}
+                    className="rounded-md w-60 h-60 object-cover"
+                  />
                 ))}
               </div>
             </div>
           )}
+          <div className="flex flex-col w-full lg:w-1/2 rounded-md">
+            {model.status === "finished" && (
+              <div className="flex flex-1 flex-col gap-2">
+                <h1 className="text-xl">Results</h1>
+                <div className="flex flex-row flex-wrap gap-4">
+                  {serverImages?.map((image) => (
+                    <div key={image.id}>
+                      <img
+                        src={image.uri}
+                        className="rounded-md w-60 object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
