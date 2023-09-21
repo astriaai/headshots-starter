@@ -42,7 +42,7 @@
     "cmdk": "^0.2.0",
     "formidable": "^3.5.1",
     "lucide-react": "^0.274.0",
-    "next": "13.3",
+    "next": "13.4",
     "next-multipart": "^0.5.1",
     "node-fetch": "2",
     "postcss": "8.4.24",
