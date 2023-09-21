@@ -12,9 +12,6 @@ export default async function Index() {
     data: { user }, error,
   } = await supabase.auth.getUser();
 
-  console.log({user});
-  console.log({error});
-
   if (!user) {
     return <div>User not found</div>;
   }

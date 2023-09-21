@@ -54,13 +54,13 @@ export default function ClientSideModelsList({
   }, [supabase, models, setModels]);
 
   return (
-    <div id="train-model-container" className="w-full p-8">
+    <div id="train-model-container" className="w-full px-8">
       {models && models.length > 0 && (
         <div className="flex flex-col gap-4">
           <div className="flex flex-row gap-4 w-full justify-between items-center text-center">
             <h1>Your models</h1>
-            <Link href="/overview/models/train">
-              <Button className="ml-4" size={"sm"}>
+            <Link href="/overview/models/train" className="w-fit">
+              <Button size={"sm"}>
                 Train model
               </Button>
             </Link>

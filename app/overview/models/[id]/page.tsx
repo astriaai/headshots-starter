@@ -35,8 +35,8 @@ export default async function Index({ params }: { params: { id: string } }) {
     .eq("modelId", model.id);
 
   return (
-    <div id="train-model-container" className="w-full h-full px-20 py-10">
-      <Link href="/overview" className="text-sm">
+    <div id="train-model-container" className="w-full h-full px-20">
+      <Link href="/overview" className="text-sm w-fit">
         <Button variant={"outline"}>
           <FaArrowLeft className="mr-2" />
           Go Back

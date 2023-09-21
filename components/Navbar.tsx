@@ -21,13 +21,23 @@ export default async function Navbar() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="flex w-full px-8 py-4 justify-between items-center border-b">
-      <div className="flex gap-2 align-middle h-full">
+    <div className="flex w-full px-8 py-4 items-center border-b text-center gap-8">
+      <div className="flex gap-2 h-full">
         <Link href="/">
           <h2 className="font-bold">Headshots AI</h2>
         </Link>
       </div>
-      <div className="flex gap-4 items-center">
+      {user && (
+        <div className="flex flex-row gap-2">
+          <Link href="/overview">
+            <Button variant={"ghost"}>Home</Button>
+          </Link>
+          <Link href="/get-credits">
+            <Button variant={"ghost"}>Get Credits</Button>
+          </Link>
+        </div>
+      )}
+      <div className="flex gap-4 ml-auto">
         {!user && (
           <Link href="/login">
             <Button variant={"ghost"}>Login / Signup</Button>
