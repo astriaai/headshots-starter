@@ -18,10 +18,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
-        <section className="">
+        <section>
           <Navbar />
         </section>
-        <main className="flex flex-1 flex-col items-center pb-16">
+        <main className="flex flex-1 flex-col items-center py-16">
           {children}
         </main>
         <Footer />

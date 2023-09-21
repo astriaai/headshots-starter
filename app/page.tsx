@@ -8,7 +8,6 @@ import hero from "/public/hero.png";
 import { Button } from "@/components/ui/button";
 import ExplainerSection from "@/components/ExplainerSection";
 import PricingSection from "@/components/PricingSection";
-import Footer from "@/components/Footer";
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
@@ -16,6 +15,9 @@ export default async function Index() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  console.log({user});
+  console.log({cookies});
 
   if (user) {
     return redirect("/overview");

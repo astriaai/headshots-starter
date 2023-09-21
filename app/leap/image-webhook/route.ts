@@ -1,3 +1,4 @@
+import { LeapWebhookImage } from "@/types/leap";
 import { Database } from "@/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
@@ -5,7 +6,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const leapApiKey = process.env.LEAP_API_KEY;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 
@@ -13,7 +14,7 @@ if (!supabaseUrl) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_URL!");
 }
 
-if (!supabaseServiceRoleKey) {
+if (!supabaseAnonKey) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_ANON_KEY!");
 }
 
@@ -29,8 +30,6 @@ export async function POST(request: Request) {
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
   const model_db_id = urlObj.searchParams.get("model_db_id");
   const result = incomingData?.result;
-
-  console.log({ user_id, model_id, webhook_secret });
 
   if (!leapApiKey) {
     return NextResponse.json(
@@ -79,7 +78,7 @@ export async function POST(request: Request) {
 
   const supabase = createClient<Database>(
     supabaseUrl as string,
-    supabaseServiceRoleKey as string,
+    supabaseAnonKey as string,
     {
       auth: {
         autoRefreshToken: false,
@@ -105,16 +104,16 @@ export async function POST(request: Request) {
   }
 
   try {
-    const images = result.images;
-    console.log({ images });
+    const images = result.images as LeapWebhookImage[];
+
     await Promise.all(
-      images.map(async (image: any) => {
+      images.map(async (image) => {
         const { error: imageError } = await supabase.from("images").insert({
           modelId: Number(model_db_id),
           uri: image.uri,
         });
         if (imageError) {
-          console.log({ imageError });
+          console.error({ imageError });
         }
       })
     );
@@ -125,7 +124,7 @@ export async function POST(request: Request) {
       { status: 200, statusText: "Success" }
     );
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json(
       {
         message: "Something went wrong!",

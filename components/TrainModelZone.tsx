@@ -18,47 +18,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaFemale, FaImages, FaMale, FaRainbow } from "react-icons/fa";
 import * as z from "zod";
-import { Icons } from "./icons";
+import { fileUploadFormSchema } from "@/types/zod";
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(1)
-    .max(50)
-    .regex(/^[a-zA-Z ]+$/, "Only letters and spaces are allowed"),
-  type: z.string().min(1).max(50),
-});
+type FormInput = z.infer<typeof fileUploadFormSchema>;
 
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormInput>({
+    resolver: zodResolver(fileUploadFormSchema),
     defaultValues: {
       name: "",
       type: "man",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit: SubmitHandler<FormInput> = () => {
     trainModel();
   }
 
   const onDrop = useCallback(
-    async (acceptedFiles: any) => {
-      console.log({
-        acceptedFiles,
-        files,
-      });
-
+    async (acceptedFiles: File[]) => {
       const newFiles: File[] =
         acceptedFiles.filter(
           (file: File) => !files.some((f) => f.name === file.name)
@@ -134,7 +120,7 @@ export default function TrainModelZone() {
 
     if (!response.ok) {
       const responseData = await response.json();
-      console.log("Something went wrong! ", responseData.message);
+      console.error("Something went wrong! ", responseData.message);
       toast({
         title: "Something went wrong!",
         description: responseData.message,
@@ -201,7 +187,6 @@ export default function TrainModelZone() {
               className="grid grid-cols-3 gap-4"
               value={modelType}
               onValueChange={(value) => {
-                console.log(value);
                 form.setValue("type", value);
               }}
             >
