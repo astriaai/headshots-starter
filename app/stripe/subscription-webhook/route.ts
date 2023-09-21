@@ -1,7 +1,7 @@
 import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import { headers, cookies } from "next/headers";
 import { streamToString } from "@/lib/utils";
 import Stripe from "stripe";
 export const dynamic = "force-dynamic";
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // const supabase = createRouteHandlerClient<Database>({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
 
   // Handle the event
   switch (event.type) {
@@ -76,7 +76,8 @@ export async function POST(request: Request) {
       const checkoutSessionCompleted = event.data.object as Stripe.Checkout.Session;
       const userId = checkoutSessionCompleted.client_reference_id;
 
-      console.log(checkoutSessionCompleted)
+      console.log(checkoutSessionCompleted);
+      console.log("userId: " + userId);
 
       if (!userId) {
         return NextResponse.json(
@@ -93,6 +94,54 @@ export async function POST(request: Request) {
       const creditsPerUnit = creditsPerPriceId[priceId];
       const totalCreditsPurchased = quantity! * creditsPerUnit;
       console.log("totalCreditsPurchased: " + totalCreditsPurchased);
+
+      const { data: existingCredits } = await supabase.from("credits").select("*").eq("user_id", userId).single();
+
+      // If user has existing credits, add to it.
+      if (existingCredits) {
+        const newCredits = existingCredits.credits + totalCreditsPurchased;
+        const {
+          data, error,
+        } = await supabase.from("credits").update({
+          credits: newCredits,
+        }).eq("user_id", userId);
+
+        if (error) {
+          console.log(error);
+          return NextResponse.json(
+            {
+              message: "error",
+            },
+            { status: 400, statusText: `Error updating credits: ${error}\n ${data}` }
+          );
+        }
+
+        return NextResponse.json(
+          {
+            message: "success",
+          },
+          { status: 200, statusText: "Success" }
+        );
+      } else {
+        // Else create new credits row.
+        const {
+          data, error,
+        } = await supabase.from("credits").insert({
+          user_id: userId,
+          credits: totalCreditsPurchased,
+        });
+
+        if (error) {
+          console.log(error);
+          return NextResponse.json(
+            {
+              message: "error",
+            },
+            { status: 400, statusText: `Error creating credits: ${error}\n ${data}` }
+          );
+        }
+      }
+
       return NextResponse.json(
         {
           message: "success",
@@ -100,15 +149,12 @@ export async function POST(request: Request) {
         { status: 200, statusText: "Success" }
       );
 
-      // const {
-      //   data: { user }, error,
-      // } = await supabase.credits.update({
-      //   credits: 1,
-      // }).eq('stripe_customer_id', checkoutSessionCompleted.customer);
-
-      // Then define and call a function to handle the event checkout.session.completed
-      break;
     default:
-      console.log(`Unhandled event type ${event.type}`);
+      return NextResponse.json(
+        {
+          message: "error",
+        },
+        { status: 400, statusText: `Unhandled event type ${event.type}` }
+      );
   }
 }
