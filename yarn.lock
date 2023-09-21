@@ -2079,17 +2079,10 @@ react-style-singleton@^2.2.1:
     invariant "^2.2.4"
     tslib "^2.0.0"
 
-react@18.2.0:
+react@18.2.0, react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
-  dependencies:
-    loose-envify "^1.1.0"
-
-react@^18.3.0-canary-3c27178a2-20230920:
-  version "18.3.0-canary-3c27178a2-20230920"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.3.0-canary-3c27178a2-20230920.tgz#3712661753bedc0cf5e8993132330c5821c245c2"
-  integrity sha512-25zQSTObWh7qTVxEHMPo297AFmHPRsftAYVJ5KS4nJj5zfbiaGcVMzg2dXrHnU+SdEJ5q+TSbL1dO3wFFh5hGA==
   dependencies:
     loose-envify "^1.1.0"
 

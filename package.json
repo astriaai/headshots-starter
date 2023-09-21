@@ -46,7 +46,7 @@
     "next-multipart": "^0.5.1",
     "node-fetch": "2",
     "postcss": "8.4.24",
-    "react": "^18.3.0-canary-3c27178a2-20230920",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.46.1",
