@@ -97,9 +97,6 @@ export async function POST(request: Request) {
       const checkoutSessionCompleted = event.data.object as Stripe.Checkout.Session;
       const userId = checkoutSessionCompleted.client_reference_id;
 
-      console.log(checkoutSessionCompleted);
-      console.log("userId: " + userId);
-
       if (!userId) {
         return NextResponse.json(
           {
@@ -114,6 +111,7 @@ export async function POST(request: Request) {
       const priceId = lineItems.data[0].price!.id;
       const creditsPerUnit = creditsPerPriceId[priceId];
       const totalCreditsPurchased = quantity! * creditsPerUnit;
+
       console.log("totalCreditsPurchased: " + totalCreditsPurchased);
 
       const { data: existingCredits } = await supabase.from("credits").select("*").eq("user_id", userId).single();

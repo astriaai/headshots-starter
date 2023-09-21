@@ -104,16 +104,19 @@ export interface Database {
       }
       samples: {
         Row: {
+          created_at: string
           id: number
           modelId: number
           uri: string
         }
         Insert: {
+          created_at?: string
           id?: number
           modelId: number
           uri: string
         }
         Update: {
+          created_at?: string
           id?: number
           modelId?: number
           uri?: string

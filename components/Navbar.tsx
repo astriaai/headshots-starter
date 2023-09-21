@@ -12,13 +12,19 @@ import {
 import Link from "next/link";
 import { Button } from "./ui/button";
 import React from "react";
+import { Database } from "@/types/supabase";
+import ClientSideCredits from "./realtime/ClientSideCredits";
 
 export default async function Navbar() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const {
+    data: credits,
+  } = await supabase.from("credits").select("*").eq("user_id", user?.id ?? '').single()
 
   return (
     <div className="flex w-full px-8 py-4 items-center border-b text-center gap-8">
@@ -44,24 +50,31 @@ export default async function Navbar() {
           </Link>
         )}
         {user && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="cursor-pointer">
-              <AvatarIcon height={24} width={24} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <form action="/auth/sign-out" method="post">
-                <Button
-                  type="submit"
-                  className="w-full text-left"
-                  variant={"ghost"}
-                >
-                  Log out
-                </Button>
-              </form>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex flex-row gap-4 text-center align-middle justify-center">
+            {credits ? (
+              <ClientSideCredits creditsRow={credits} />
+            ) : (
+              <ClientSideCredits creditsRow={null} />
+            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild className="cursor-pointer">
+                <AvatarIcon height={24} width={24} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <form action="/auth/sign-out" method="post">
+                  <Button
+                    type="submit"
+                    className="w-full text-left"
+                    variant={"ghost"}
+                    >
+                    Log out
+                  </Button>
+                </form>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         )}
       </div>
     </div>

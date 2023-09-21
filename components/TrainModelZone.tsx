@@ -120,10 +120,21 @@ export default function TrainModelZone() {
 
     if (!response.ok) {
       const responseData = await response.json();
-      console.error("Something went wrong! ", responseData.message);
+      const responseMessage: string = responseData.message;
+      console.error("Something went wrong! ", responseMessage);
+      const messageWithButton = (
+        <div className="flex flex-col gap-4">
+          {responseMessage}
+          <a href="/get-credits" >
+            <Button size="sm">
+              Get Credits
+            </Button>
+          </a>
+        </div>
+      );
       toast({
         title: "Something went wrong!",
-        description: responseData.message,
+        description: responseMessage.includes("Not enough credits") ? messageWithButton : responseMessage,
         duration: 5000,
       });
       return;
@@ -283,7 +294,7 @@ export default function TrainModelZone() {
           )}
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Train Model
+            Train Model (1 Credit)
           </Button>
         </form>
       </Form>

@@ -3,13 +3,11 @@ import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-export const revalidate = 0;
-
 export default async function Index() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
-    data: { user }, error,
+    data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {

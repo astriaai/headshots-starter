@@ -45,6 +45,31 @@ export async function POST(request: Request) {
     );
   }
 
+  const { error: creditError, data: credits } = await supabase
+    .from("credits")
+    .select("credits")
+    .eq("user_id", user.id)
+    .single();
+
+  if (creditError) {
+    console.error(creditError);
+    return NextResponse.json(
+      {
+        message: "Something went wrong!",
+      },
+      { status: 500, statusText: "Something went wrong!" }
+    );
+  }
+
+  if (credits?.credits < 1) {
+    return NextResponse.json(
+      {
+        message: "Not enough credits, please purchase some credits and try again.",
+      },
+      { status: 500, statusText: "Not enough credits" }
+    );
+  }
+
   if (images?.length < 4) {
     return NextResponse.json(
       {

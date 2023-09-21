@@ -91,6 +91,7 @@ export async function POST(request: Request) {
       },
     }
   );
+
   const {
     data: { user },
     error,
@@ -116,7 +117,7 @@ export async function POST(request: Request) {
           from: "noreply@headshots.tryleap.ai",
           to: user?.email ?? "",
           subject: "Your model was successfully trained!",
-          html: `<h2>We're writing to notify you that your model training was successful!</h2>`,
+          html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,
         });
       }
 
@@ -129,7 +130,7 @@ export async function POST(request: Request) {
         .select();
 
       if (modelUpdatedError) {
-        console.error(modelUpdatedError);
+        console.error({ modelUpdatedError });
         return NextResponse.json(
           {
             message: "Something went wrong!",
@@ -163,7 +164,25 @@ export async function POST(request: Request) {
           promptStrength: 7.5,
           webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`,
         });
+
+        console.log({ status, statusText });
       }
+
+      const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
+      const credits = data?.credits;
+
+      if (!credits) {
+        console.error("No credits found for user: ", user.id);
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500, statusText: "Something went wrong!" }
+        );
+      }
+
+      const updatedCredits = credits - 1;
+      await supabase.from("credits").update({ credits: updatedCredits }).eq("user_id", user.id);
     } else {
       // Send Email
       if (resendApiKey) {
@@ -172,7 +191,7 @@ export async function POST(request: Request) {
           from: "noreply@headshots.tryleap.ai",
           to: user?.email ?? "",
           subject: "Your model failed to train!",
-          html: `<h2>We're writing to notify you that your model training failed!.</h2>`,
+          html: `<h2>We're writing to notify you that your model training failed!. Since this failed, you will not be billed for it</h2>`,
         });
       }
 
