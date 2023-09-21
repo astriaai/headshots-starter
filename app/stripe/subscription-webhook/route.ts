@@ -1,10 +1,10 @@
 import { Database } from "@/types/supabase";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
-import { headers, cookies } from "next/headers";
+import { headers } from "next/headers";
 import { streamToString } from "@/lib/utils";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
+
 export const dynamic = "force-dynamic";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
