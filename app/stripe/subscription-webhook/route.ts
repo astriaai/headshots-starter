@@ -3,10 +3,23 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { streamToString } from "@/lib/utils";
+import Stripe from "stripe";
 export const dynamic = "force-dynamic";
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+if (!stripeSecretKey) {
+  throw new Error("STRIPE_SECRET_KEY is not set");
+}
+if (!endpointSecret) {
+  throw new Error("STRIPE_WEBHOOK_SECRET is not set");
+}
+
+const stripe = new Stripe(stripeSecretKey, {
+  apiVersion: "2023-08-16",
+  typescript: true,
+});
 
 const creditsPerPriceId: {
   [key: string]: number;
@@ -20,8 +33,15 @@ export async function POST(request: Request) {
   const headersObj = headers();
   const sig = headersObj.get('stripe-signature');
 
-  console.log({ headersObj });
-  console.log({ sig });
+  if (!sig) {
+    return NextResponse.json(
+      {
+        message: "error",
+      },
+      { status: 400, statusText: `Missing signature` }
+    );
+  }
+
   if (!request.body) {
     return NextResponse.json(
       {
@@ -36,10 +56,10 @@ export async function POST(request: Request) {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret!);
   } catch (err) {
     const error = err as Error;
-    console.log(err);
+    console.log("Error verifying webhook signature: " + error.message);
     return NextResponse.json(
       {
         message: "error",
@@ -53,7 +73,7 @@ export async function POST(request: Request) {
   // Handle the event
   switch (event.type) {
     case 'checkout.session.completed':
-      const checkoutSessionCompleted = event.data.object;
+      const checkoutSessionCompleted = event.data.object as Stripe.Checkout.Session;
       const userId = checkoutSessionCompleted.client_reference_id;
 
       console.log(checkoutSessionCompleted)
@@ -67,31 +87,17 @@ export async function POST(request: Request) {
         );
       }
 
-      stripe.checkout.sessions.listLineItems(
-        checkoutSessionCompleted.id,
-        { limit: 5 },
-        function (err: any, lineItems: any) {
-          if (err) {
-            console.log(err);
-            return NextResponse.json(
-              {
-                message: "error",
-              },
-              { status: 400, statusText: `Error fetching line items` }
-            );
-          }
-          const quantity = lineItems.data[0].quantity;
-          const priceId = lineItems.data[0].price.id;
-          const creditsPerUnit = creditsPerPriceId[priceId];
-          const totalCreditsPurchased = quantity * creditsPerUnit;
-          console.log("totalCreditsPurchased: " + totalCreditsPurchased);
-          return NextResponse.json(
-            {
-              message: "success",
-            },
-            { status: 200, statusText: "Success" }
-          );
-        }
+      const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSessionCompleted.id, { limit: 5 });
+      const quantity = lineItems.data[0].quantity;
+      const priceId = lineItems.data[0].price!.id;
+      const creditsPerUnit = creditsPerPriceId[priceId];
+      const totalCreditsPurchased = quantity! * creditsPerUnit;
+      console.log("totalCreditsPurchased: " + totalCreditsPurchased);
+      return NextResponse.json(
+        {
+          message: "success",
+        },
+        { status: 200, statusText: "Success" }
       );
 
       // const {
