@@ -5,7 +5,6 @@ import { headers, cookies } from "next/headers";
 import { streamToString } from "@/lib/utils";
 import Stripe from "stripe";
 export const dynamic = "force-dynamic";
-
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
