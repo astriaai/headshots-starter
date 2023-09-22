@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!credits) {
+    if (credits.length === 0) {
       // create credits for user.
       const { error: errorCreatingCredits } = await supabase.from("credits").insert({
         user_id: user.id,
@@ -86,9 +86,7 @@ export async function POST(request: Request) {
         },
         { status: 500, statusText: "Not enough credits" }
       );
-    }
-
-    if (credits[0].credits < 1) {
+    } else if (credits[0]?.credits < 1) {
       return NextResponse.json(
         {
           message: "Not enough credits, please purchase some credits and try again.",
