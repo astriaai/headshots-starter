@@ -16,9 +16,6 @@ export default async function Index() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log({user});
-  console.log({cookies});
-
   if (user) {
     return redirect("/overview");
   }

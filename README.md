@@ -54,7 +54,8 @@ cd headshots-starter
 
 4. Create a [new Supabase project](https://database.new) and create the tables required for the app:
 
-   - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+   - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+
 
    **Make sure to configure your row level permissions on your tables, in the supabase dashboard**
 
@@ -111,6 +112,34 @@ cd headshots-starter
 6. Create a [Resend](https://resend.com/) account (Optional)
 
    - Fill in `your-resend-api-key` with your Resend API Key if you wish to use Resend to email users when their model has finished training.
+
+7. Configure [Stripe](https://stripe.com) to bill users on a credit basis. (Optional)
+
+   The current setup is for a credit based system. 1 credit = 1 model train.
+
+   To enable Stripe billing, you will need to fill out the following fields in your `.env.local` file:
+   - STRIPE_SECRET_KEY=your-stripe-secret-key
+   - STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+   - STRIPE_PRICE_ID_ONE_CREDIT=your-stripe-price-id-one-credit
+   - STRIPE_PRICE_ID_THREE_CREDIT=your-stripe-price-id-three-credit
+   - STRIPE_PRICE_ID_FIVE_CREDIT=your-stripe-price-id-five-credit
+   - NEXT_PUBLIC_STRIPE_IS_ENABLED=false # set to true to enable Stripe payments
+
+   You need to do multiple things to get Stripe working:
+   - Get your Stripe API secret key from the [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
+   - Create a [Stripe Webhook](https://dashboard.stripe.com/test/webhooks) that will point to your hosted URL. The webhook should be listening for the `checkout.session.completed` event. The webhook should point to `your-hosted-url/stripe/subscription-webhook`.
+   - Create a [Stripe Price](https://dashboard.stripe.com/test/products) for each credit package you want to offer.
+   - Create a [Stripe Pricing Table](https://dashboard.stripe.com/test/pricing-tables) and replace the script @/components/stripe/StripeTable.tsx with your own values. It should look like this:
+
+   ```js
+   <stripe-pricing-table 
+      pricing-table-id="your-stripe-pricing-table-id" 
+      publishable-key="your-stripe-publishable-key" 
+      client-reference-id={user.id}
+      customer-email={user.email}
+      >
+   </stripe-pricing-table>
+   ```
 
 7. Start the development server:
 

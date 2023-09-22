@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 const leapApiKey = process.env.LEAP_API_KEY;
 const webhookUrl = process.env.LEAP_WEBHOOK_URL;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
 if (!webhookUrl) {
   throw new Error("MISSING LEAP_WEBHOOK_URL!");
@@ -43,6 +44,54 @@ export async function POST(request: Request) {
           "Missing API Key: Add your Leap API Key to generate headshots",
       }
     );
+  }
+
+  console.log({ stripeIsConfigured });
+  if (stripeIsConfigured) {
+    const { error: creditError, data: credits } = await supabase
+      .from("credits")
+      .select("credits")
+      .eq("user_id", user.id)
+      .single();
+
+    if (creditError) {
+      console.error({ creditError });
+      return NextResponse.json(
+        {
+          message: "Something went wrong!",
+        },
+        { status: 500, statusText: "Something went wrong!" }
+      );
+    }
+
+    if (credits?.credits < 1) {
+      return NextResponse.json(
+        {
+          message: "Not enough credits, please purchase some credits and try again.",
+        },
+        { status: 500, statusText: "Not enough credits" }
+      );
+    } else {
+      const subtractedCredits = credits.credits - 1;
+      const { error: updateCreditError, data } = await supabase
+        .from("credits")
+        .update({ credits: subtractedCredits })
+        .eq("user_id", user.id)
+        .select("*");
+
+      console.log({ data });
+      console.log({ subtractedCredits })
+
+      if (updateCreditError) {
+        console.error({ updateCreditError });
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500, statusText: "Something went wrong!" }
+        );
+      }
+    }
   }
 
   if (images?.length < 4) {
