@@ -108,8 +108,6 @@ cd headshots-starter
    - Fill in `your-hosted-url/leap/image-webhook` with https://{your-hosted-url}/leap/image-webhook
    - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
 
-   Note - on your first deploy you can use https://headshots-starter.vercel.app as a placeholder for `your-hosted-url`. Once you deploy your own app, swap the url in.
-
 6. Create a [Resend](https://resend.com/) account (Optional)
 
    - Fill in `your-resend-api-key` with your Resend API Key if you wish to use Resend to email users when their model has finished training.
@@ -144,7 +142,7 @@ cd headshots-starter
 
    Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
 
-   To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too.
+   To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too. After creating the products make sure to update the variables in the .env.local [your-stripe-price-id-one-credit, your-stripe-price-id-three-credit, your-stripe-price-id-five-credit] with their respective price ids, each price id is found in the product page at the bottom.
 
 7. Start the development server:
 
