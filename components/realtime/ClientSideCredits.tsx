@@ -5,6 +5,8 @@ import { creditsRow } from "@/types/utils";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
+export const revalidate = 0;
+
 type ClientSideCreditsProps = {
   creditsRow: creditsRow | null;
 };
@@ -25,7 +27,7 @@ export default function ClientSideCredits({
 
   useEffect(() => {
     const channel = supabase
-      .channel("realtime-credits")
+      .channel("realtime credits")
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "credits" },

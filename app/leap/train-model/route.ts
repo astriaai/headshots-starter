@@ -46,6 +46,7 @@ export async function POST(request: Request) {
     );
   }
 
+  console.log({ stripeIsConfigured });
   if (stripeIsConfigured) {
     const { error: creditError, data: credits } = await supabase
       .from("credits")
@@ -72,10 +73,14 @@ export async function POST(request: Request) {
       );
     } else {
       const subtractedCredits = credits.credits - 1;
-      const { error: updateCreditError } = await supabase
+      const { error: updateCreditError, data } = await supabase
         .from("credits")
         .update({ credits: subtractedCredits })
-        .eq("user_id", user.id);
+        .eq("user_id", user.id)
+        .select("*");
+
+      console.log({ data });
+      console.log({ subtractedCredits })
 
       if (updateCreditError) {
         console.error({ updateCreditError });

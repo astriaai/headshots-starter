@@ -17,6 +17,8 @@ import ClientSideCredits from "./realtime/ClientSideCredits";
 
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
+export const revalidate = 0;
+
 export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({ cookies });
 

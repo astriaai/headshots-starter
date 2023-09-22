@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Badge } from "../ui/badge";
 
+export const revalidate = 0;
+
 type ClientSideModelProps = {
   serverModel: modelRow;
   serverImages: imageRow[];
