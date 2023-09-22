@@ -25,6 +25,8 @@ import { fileUploadFormSchema } from "@/types/zod";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -120,10 +122,21 @@ export default function TrainModelZone() {
 
     if (!response.ok) {
       const responseData = await response.json();
-      console.error("Something went wrong! ", responseData.message);
+      const responseMessage: string = responseData.message;
+      console.error("Something went wrong! ", responseMessage);
+      const messageWithButton = (
+        <div className="flex flex-col gap-4">
+          {responseMessage}
+          <a href="/get-credits" >
+            <Button size="sm">
+              Get Credits
+            </Button>
+          </a>
+        </div>
+      );
       toast({
         title: "Something went wrong!",
-        description: responseData.message,
+        description: responseMessage.includes("Not enough credits") ? messageWithButton : responseMessage,
         duration: 5000,
       });
       return;
@@ -283,7 +296,7 @@ export default function TrainModelZone() {
           )}
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Train Model
+            Train Model {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
           </Button>
         </form>
       </Form>

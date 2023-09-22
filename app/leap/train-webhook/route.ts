@@ -8,17 +8,17 @@ export const dynamic = "force-dynamic";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const leapApiKey = process.env.LEAP_API_KEY;
 const leapImageWebhookUrl = process.env.LEAP_IMAGE_WEBHOOK_URL;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
 const prompts = [
   "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window",
   "8k close up linkedin profile picture of @subject {model_type}, linkedin, professional jack suit, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, garden, bokeh",
   "8k linkedin professional profile photo of @subject {model_type} in a suit with studio lighting, bokeh, corporate portrait headshot photograph best corporate photography photo winner, meticulous detail, hyperrealistic, centered uncropped symmetrical beautiful",
   "8k professional headshot of @subject {model_type}, crisp details, studio backdrop, executive attire, confident posture, neutral expression, high-definition, corporate setting, sharp focus, ambient lighting, business professional, cityscape view",
-  "8k portrait of @subject business {model_type} cinematic medium shot, shallow depth of field, studio shoot, professional headshot, professional suit, black background, professional retouched skin",
 ];
 
 if (!resendApiKey) {
@@ -29,8 +29,8 @@ if (!supabaseUrl) {
   throw new Error("MISSING NEXT_PUBLIC_SUPABASE_URL!");
 }
 
-if (!supabaseAnonKey) {
-  throw new Error("MISSING NEXT_PUBLIC_SUPABASE_ANON_KEY!");
+if (!supabaseServiceRoleKey) {
+  throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
 }
 
 if (!leapImageWebhookUrl) {
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
 
   const supabase = createClient<Database>(
     supabaseUrl as string,
-    supabaseAnonKey as string,
+    supabaseServiceRoleKey as string,
     {
       auth: {
         autoRefreshToken: false,
@@ -91,6 +91,7 @@ export async function POST(request: Request) {
       },
     }
   );
+
   const {
     data: { user },
     error,
@@ -116,7 +117,7 @@ export async function POST(request: Request) {
           from: "noreply@headshots.tryleap.ai",
           to: user?.email ?? "",
           subject: "Your model was successfully trained!",
-          html: `<h2>We're writing to notify you that your model training was successful!</h2>`,
+          html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,
         });
       }
 
@@ -129,7 +130,7 @@ export async function POST(request: Request) {
         .select();
 
       if (modelUpdatedError) {
-        console.error(modelUpdatedError);
+        console.error({ modelUpdatedError });
         return NextResponse.json(
           {
             message: "Something went wrong!",
@@ -163,6 +164,8 @@ export async function POST(request: Request) {
           promptStrength: 7.5,
           webhookUrl: `${leapImageWebhookUrl}?user_id=${user.id}&model_id=${result.id}&webhook_secret=${leapWebhookSecret}&model_db_id=${modelUpdated[0]?.id}`,
         });
+
+        console.log({ status, statusText });
       }
     } else {
       // Send Email
@@ -172,16 +175,42 @@ export async function POST(request: Request) {
           from: "noreply@headshots.tryleap.ai",
           to: user?.email ?? "",
           subject: "Your model failed to train!",
-          html: `<h2>We're writing to notify you that your model training failed!.</h2>`,
+          html: `<h2>We're writing to notify you that your model training failed!. Since this failed, you will not be billed for it</h2>`,
         });
       }
 
+      // Update model status to failed.
       await supabase
         .from("models")
         .update({
           status: "failed",
         })
         .eq("modelId", result.id);
+
+      if (stripeIsConfigured) {
+        // Refund the user.
+        const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
+        const credits = data!.credits;
+
+        // We are adding a credit back to the user, since we charged them for the model training earlier. Since it failed we need to refund it.
+        const addCredit = credits + 1;
+        const { error: updateCreditError } = await supabase
+          .from("credits")
+          .update({ credits: addCredit })
+          .eq("user_id", user.id);
+
+        if (updateCreditError) {
+          console.error({ updateCreditError });
+          return NextResponse.json(
+            {
+              message: "Something went wrong!",
+            },
+            { status: 500, statusText: "Something went wrong!" }
+          );
+        }
+
+        console.log("Refunded user 1 credit! User Id: ", user.id);
+      }
     }
     return NextResponse.json(
       {

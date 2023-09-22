@@ -53,7 +53,7 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
                       model.status === "finished" ? "default" : "secondary"
                     }
                   >
-                    {model.status}
+                    {model.status === "processing" ? "training" : model.status }
                     {model.status === "processing" && (
                       <Icons.spinner className="h-4 w-4 animate-spin" />
                     )}
