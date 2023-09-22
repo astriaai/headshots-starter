@@ -32,12 +32,16 @@ const stripe = new Stripe(stripeSecretKey, {
   typescript: true,
 });
 
+const oneCreditPriceId = process.env.STRIPE_PRICE_ID_ONE_CREDIT as string;
+const threeCreditsPriceId = process.env.STRIPE_PRICE_ID_THREE_CREDITS as string;
+const fiveCreditsPriceId = process.env.STRIPE_PRICE_ID_FIVE_CREDITS as string;
+
 const creditsPerPriceId: {
   [key: string]: number;
 } = {
-  "price_1NsYS7CMCmxSLOnrWjmE920O": 1,
-  "price_1NsYY8CMCmxSLOnrhgdttBX2": 3,
-  "price_1NsYZCCMCmxSLOnrZiw1mPXw": 5,
+  [oneCreditPriceId]: 1,
+  [threeCreditsPriceId]: 3,
+  [fiveCreditsPriceId]: 5,
 }
 
 export async function POST(request: Request) {
