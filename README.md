@@ -14,9 +14,10 @@ The app is powered by:
 - 🚀 [Leap AI](https://tryleap.ai/) to generate headshots
 - ▲ [Next.js](https://nextjs.org/) for app and landing page
 - 🔋 [Supabase](https://supabase.com/) for DB & Auth
-- 📩 [Resend](https://resend.com/) to email user when headshots are ready
+- 📩 [Resend](https://resend.com/) (optional) to email user when headshots are ready
 - ⭐️ [Shadcn](https://ui.shadcn.com/) with [Tailwind CSS](https://tailwindcss.com/) for styles
 - 🔥 [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI) for 1-click app run in the browser
+- 💳 [Stripe](https://stripe.com/) for billing (optional)
 
 Just add Stripe and you have a Headshot AI SaaS in a box.
 
