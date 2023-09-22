@@ -58,6 +58,7 @@ cd headshots-starter
 
 
    **Make sure to configure your row level permissions on your tables, in the supabase dashboard**
+   You can find out how to set them up [Here](/public/Supabase-policies/);
 
    ![Visualized Schemas](https://headshots-starter.vercel.app/visualized_schemas.png)
 
@@ -140,6 +141,10 @@ cd headshots-starter
       >
    </stripe-pricing-table>
    ```
+
+   Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
+
+   To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too.
 
 7. Start the development server:
 
