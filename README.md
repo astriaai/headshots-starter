@@ -90,9 +90,14 @@ cd headshots-starter
    - uri (text)
    - modelId (int8) (foreign_key)\*
 
-6.  Magic Link Auth
+6.  Magic Link Auth (Supabase)
 
    In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
+
+   Make sure to setup your site URL and redirect urls in the supabase dashboard under Authentication -> URL Configuration.
+   For example:
+   Site URL: https://headshots-starter.vercel.app
+   Redirect URL: https://headshots-starter.vercel.app/**
 
    ```
    <h2>Magic Link</h2>
