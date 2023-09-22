@@ -12,6 +12,7 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const leapApiKey = process.env.LEAP_API_KEY;
 const leapImageWebhookUrl = process.env.LEAP_IMAGE_WEBHOOK_URL;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
 const prompts = [
   "8k close up linkedin profile picture of @subject {model_type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window",
@@ -167,21 +168,23 @@ export async function POST(request: Request) {
         console.log({ status, statusText });
       }
 
-      const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
-      const credits = data?.credits;
+      if (stripeIsConfigured) {
+        const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
+        const credits = data?.credits;
 
-      if (!credits) {
-        console.error("No credits found for user: ", user.id);
-        return NextResponse.json(
-          {
-            message: "Something went wrong!",
-          },
-          { status: 500, statusText: "Something went wrong!" }
-        );
+        if (!credits) {
+          console.error("No credits found for user: ", user.id);
+          return NextResponse.json(
+            {
+              message: "Something went wrong!",
+            },
+            { status: 500, statusText: "Something went wrong!" }
+          );
+        }
+
+        const updatedCredits = credits - 1;
+        await supabase.from("credits").update({ credits: updatedCredits }).eq("user_id", user.id);
       }
-
-      const updatedCredits = credits - 1;
-      await supabase.from("credits").update({ credits: updatedCredits }).eq("user_id", user.id);
     } else {
       // Send Email
       if (resendApiKey) {

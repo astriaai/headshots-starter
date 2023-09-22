@@ -20,17 +20,9 @@ if (!supabaseServiceRoleKey) {
   throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
 }
 
-if (!stripeSecretKey) {
-  throw new Error("STRIPE_SECRET_KEY is not set");
-}
 if (!endpointSecret) {
   throw new Error("STRIPE_WEBHOOK_SECRET is not set");
 }
-
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2023-08-16",
-  typescript: true,
-});
 
 const oneCreditPriceId = process.env.STRIPE_PRICE_ID_ONE_CREDIT as string;
 const threeCreditsPriceId = process.env.STRIPE_PRICE_ID_THREE_CREDITS as string;
@@ -47,6 +39,20 @@ const creditsPerPriceId: {
 export async function POST(request: Request) {
   const headersObj = headers();
   const sig = headersObj.get('stripe-signature');
+
+  if (!stripeSecretKey) {
+    return NextResponse.json(
+      {
+        message: "error",
+      },
+      { status: 400, statusText: `Missing stripeSecretKey` }
+    );
+  }
+
+  const stripe = new Stripe(stripeSecretKey, {
+    apiVersion: "2023-08-16",
+    typescript: true,
+  });
 
   if (!sig) {
     return NextResponse.json(

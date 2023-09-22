@@ -25,6 +25,8 @@ import { fileUploadFormSchema } from "@/types/zod";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -294,7 +296,7 @@ export default function TrainModelZone() {
           )}
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Train Model (1 Credit)
+            Train Model {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
           </Button>
         </form>
       </Form>

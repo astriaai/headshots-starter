@@ -15,6 +15,8 @@ import React from "react";
 import { Database } from "@/types/supabase";
 import ClientSideCredits from "./realtime/ClientSideCredits";
 
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+
 export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -38,9 +40,11 @@ export default async function Navbar() {
           <Link href="/overview">
             <Button variant={"ghost"}>Home</Button>
           </Link>
-          <Link href="/get-credits">
-            <Button variant={"ghost"}>Get Credits</Button>
-          </Link>
+          {stripeIsConfigured && (
+            <Link href="/get-credits">
+              <Button variant={"ghost"}>Get Credits</Button>
+            </Link>
+          )}
         </div>
       )}
       <div className="flex gap-4 lg:ml-auto">
@@ -51,10 +55,8 @@ export default async function Navbar() {
         )}
         {user && (
           <div className="flex flex-row gap-4 text-center align-middle justify-center">
-            {credits ? (
-              <ClientSideCredits creditsRow={credits} />
-            ) : (
-              <ClientSideCredits creditsRow={null} />
+            {stripeIsConfigured && (
+              <ClientSideCredits creditsRow={credits ? credits : null} />
             )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="cursor-pointer">
