@@ -167,24 +167,6 @@ export async function POST(request: Request) {
 
         console.log({ status, statusText });
       }
-
-      if (stripeIsConfigured) {
-        const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
-        const credits = data?.credits;
-
-        if (!credits) {
-          console.error("No credits found for user: ", user.id);
-          return NextResponse.json(
-            {
-              message: "Something went wrong!",
-            },
-            { status: 500, statusText: "Something went wrong!" }
-          );
-        }
-
-        const updatedCredits = credits - 1;
-        await supabase.from("credits").update({ credits: updatedCredits }).eq("user_id", user.id);
-      }
     } else {
       // Send Email
       if (resendApiKey) {
@@ -197,12 +179,38 @@ export async function POST(request: Request) {
         });
       }
 
+      // Update model status to failed.
       await supabase
         .from("models")
         .update({
           status: "failed",
         })
         .eq("modelId", result.id);
+
+      if (stripeIsConfigured) {
+        // Refund the user.
+        const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
+        const credits = data!.credits;
+
+        // We are adding a credit back to the user, since we charged them for the model training earlier. Since it failed we need to refund it.
+        const addCredit = credits + 1;
+        const { error: updateCreditError } = await supabase
+          .from("credits")
+          .update({ credits: addCredit })
+          .eq("user_id", user.id);
+
+        if (updateCreditError) {
+          console.error({ updateCreditError });
+          return NextResponse.json(
+            {
+              message: "Something went wrong!",
+            },
+            { status: 500, statusText: "Something went wrong!" }
+          );
+        }
+
+        console.log("Refunded user 1 credit! User Id: ", user.id);
+      }
     }
     return NextResponse.json(
       {

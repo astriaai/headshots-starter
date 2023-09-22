@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       .single();
 
     if (creditError) {
-      console.error(creditError);
+      console.error({ creditError });
       return NextResponse.json(
         {
           message: "Something went wrong!",
@@ -70,6 +70,22 @@ export async function POST(request: Request) {
         },
         { status: 500, statusText: "Not enough credits" }
       );
+    } else {
+      const subtractedCredits = credits.credits - 1;
+      const { error: updateCreditError } = await supabase
+        .from("credits")
+        .update({ credits: subtractedCredits })
+        .eq("user_id", user.id);
+
+      if (updateCreditError) {
+        console.error({ updateCreditError });
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500, statusText: "Something went wrong!" }
+        );
+      }
     }
   }
 
