@@ -63,7 +63,32 @@ export async function POST(request: Request) {
       );
     }
 
-    if (credits[0]?.credits < 1) {
+    if (!credits) {
+      // create credits for user.
+      const { error: errorCreatingCredits } = await supabase.from("credits").insert({
+        user_id: user.id,
+        credits: 0,
+      });
+
+      if (errorCreatingCredits) {
+        console.error({ errorCreatingCredits });
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500, statusText: "Something went wrong!" }
+        );
+      }
+
+      return NextResponse.json(
+        {
+          message: "Not enough credits, please purchase some credits and try again.",
+        },
+        { status: 500, statusText: "Not enough credits" }
+      );
+    }
+
+    if (credits[0].credits < 1) {
       return NextResponse.json(
         {
           message: "Not enough credits, please purchase some credits and try again.",
