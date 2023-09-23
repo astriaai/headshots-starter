@@ -1,5 +1,8 @@
 "use client";
 
+import React from 'react';
+
+
 import { Icons } from "@/components/icons";
 import { Database } from "@/types/supabase";
 import { imageRow, modelRow, sampleRow } from "@/types/utils";
@@ -68,10 +71,13 @@ export default function ClientSideModel({
                 <div className="flex flex-row flex-wrap gap-4">
                   {serverImages?.map((image) => (
                     <div key={image.id}>
-                      <img
-                        src={image.uri}
-                        className="rounded-md w-60 object-cover"
-                      />
+                      <a href={image.uri} download={`image_${index + 1}.jpg`}>
+                        <img
+                          src={image.uri}
+                          alt="Image Description"
+                          className="rounded-md w-60 object-cover"
+                        />
+                      </a>
                     </div>
                   ))}
                 </div>
