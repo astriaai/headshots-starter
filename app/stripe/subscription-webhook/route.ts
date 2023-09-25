@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const stripeWebhookSecretVercel = process.env.STRIPE_WEBHOOK_SECRET_VERCEL;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -78,7 +79,8 @@ export async function POST(request: Request) {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret!);
+    const secretToUse = request.url.includes("vercel") ? stripeWebhookSecretVercel : endpointSecret;
+    event = stripe.webhooks.constructEvent(rawBody, sig, secretToUse!);
   } catch (err) {
     const error = err as Error;
     console.log("Error verifying webhook signature: " + error.message);
