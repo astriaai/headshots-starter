@@ -116,7 +116,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSessionCompleted.id, { limit: 5 });
+      const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSessionCompleted.id);
       const quantity = lineItems.data[0].quantity;
       const priceId = lineItems.data[0].price!.id;
       const creditsPerUnit = creditsPerPriceId[priceId];
