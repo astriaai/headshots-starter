@@ -122,6 +122,11 @@ export async function POST(request: Request) {
       const creditsPerUnit = creditsPerPriceId[priceId];
       const totalCreditsPurchased = quantity! * creditsPerUnit;
 
+      console.log({ lineItems });
+      console.log({ quantity });
+      console.log({ priceId });
+      console.log({ creditsPerUnit });
+
       console.log("totalCreditsPurchased: " + totalCreditsPurchased);
 
       const { data: existingCredits } = await supabase.from("credits").select("*").eq("user_id", userId).single();
