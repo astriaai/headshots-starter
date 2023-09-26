@@ -5,7 +5,8 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  const requestUrl = new URL(request.url);
+  const forwardedHost = request.headers.get("X-Forwarded-Host");
+  const requestUrl = new URL(forwardedHost || request.url);
   const supabase = createRouteHandlerClient({ cookies });
 
   await supabase.auth.signOut();
