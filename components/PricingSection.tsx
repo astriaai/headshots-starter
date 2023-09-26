@@ -46,38 +46,32 @@ export default function PricingSection() {
 const pricingOptions = [
   {
     title: "Starter",
-    price: "$9.99/month",
+    price: "1 Credit",
     description:
       "Perfect for individuals looking to enhance their online presence.",
     features: [
-      "5 AI Headshots",
-      "Standard Resolution Downloads",
-      "Personal Use License",
+      "4 AI Headshots",
     ],
     buttonText: "Choose Starter",
     bgColor: "bg-white",
   },
   {
     title: "Basic",
-    price: "$19.99/month",
+    price: "3 Credits",
     description:
       "Ideal for professionals requiring frequent updates to their profiles.",
     features: [
-      "15 AI Headshots",
-      "High-Resolution Downloads",
-      "Commercial Use License",
+      "12 AI Headshots",
     ],
     buttonText: "Choose Basic",
     bgColor: "bg-blue-50",
   },
   {
     title: "Premium",
-    price: "$29.99/month",
+    price: "5 Credits",
     description: "The best value with unlimited possibilities.",
     features: [
-      "150 AI Headshots",
-      "Ultra High-Resolution Downloads",
-      "Extended Commercial Use License",
+      "20 AI Headshots",
     ],
     buttonText: "Choose Premium",
     bgColor: "bg-white",

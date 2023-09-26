@@ -8,16 +8,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { FaArrowLeft, FaBackward } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default async function Index() {
   return (
-    <div className="py-8 w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       <div
         id="train-model-container"
         className="flex flex-1 flex-col gap-2 px-2"
       >
-        <Link href="/overview" className="text-sm">
+        <Link href="/overview" className="text-sm w-fit">
           <Button variant={"outline"}>
             <FaArrowLeft className="mr-2" />
             Go Back

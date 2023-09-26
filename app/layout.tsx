@@ -1,7 +1,7 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
-import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Headshots AI",
@@ -10,18 +10,14 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: any) {
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
-        <section className="">
+        <section>
           <Navbar />
         </section>
-        <main className="flex flex-1 flex-col items-center pb-16">
+        <main className="flex flex-1 flex-col items-center py-16">
           {children}
         </main>
         <Footer />

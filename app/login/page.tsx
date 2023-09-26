@@ -35,20 +35,7 @@ export default async function Login() {
               placeholder="you@example.com"
               required
             />
-            <label className="text-md" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="rounded-md px-4 py-2 bg-inherit border"
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              required
-            />
-            <Button>Login</Button>
-            <Button formAction="/auth/sign-up" variant={"outline"}>
-              Sign Up
-            </Button>
+            <Button>Continue</Button>
             <Messages />
           </CardContent>
           <CardFooter>
