@@ -90,6 +90,13 @@ cd headshots-starter
    - uri (text)
    - modelId (int8) (foreign_key)\*
 
+   [credits]
+
+   - id (int8)
+   - created_at (timestamptz)
+   - credits (int4)
+   - user_id (uuid) (foreign_key)\*
+
 6.  Magic Link Auth (Supabase)
 
    In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
