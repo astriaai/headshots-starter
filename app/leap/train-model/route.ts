@@ -51,8 +51,7 @@ export async function POST(request: Request) {
     const { error: creditError, data: credits } = await supabase
       .from("credits")
       .select("credits")
-      .eq("user_id", user.id)
-      .single();
+      .eq("user_id", user.id);
 
     if (creditError) {
       console.error({ creditError });
@@ -64,7 +63,30 @@ export async function POST(request: Request) {
       );
     }
 
-    if (credits?.credits < 1) {
+    if (credits.length === 0) {
+      // create credits for user.
+      const { error: errorCreatingCredits } = await supabase.from("credits").insert({
+        user_id: user.id,
+        credits: 0,
+      });
+
+      if (errorCreatingCredits) {
+        console.error({ errorCreatingCredits });
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500, statusText: "Something went wrong!" }
+        );
+      }
+
+      return NextResponse.json(
+        {
+          message: "Not enough credits, please purchase some credits and try again.",
+        },
+        { status: 500, statusText: "Not enough credits" }
+      );
+    } else if (credits[0]?.credits < 1) {
       return NextResponse.json(
         {
           message: "Not enough credits, please purchase some credits and try again.",
@@ -72,7 +94,7 @@ export async function POST(request: Request) {
         { status: 500, statusText: "Not enough credits" }
       );
     } else {
-      const subtractedCredits = credits.credits - 1;
+      const subtractedCredits = credits[0].credits - 1;
       const { error: updateCreditError, data } = await supabase
         .from("credits")
         .update({ credits: subtractedCredits })

@@ -37,6 +37,8 @@ const creditsPerPriceId: {
 }
 
 export async function POST(request: Request) {
+  console.log("Request from: ", request.url);
+  console.log("Request: ", request)
   const headersObj = headers();
   const sig = headersObj.get('stripe-signature');
 
@@ -116,11 +118,16 @@ export async function POST(request: Request) {
         );
       }
 
-      const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSessionCompleted.id, { limit: 5 });
+      const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSessionCompleted.id);
       const quantity = lineItems.data[0].quantity;
       const priceId = lineItems.data[0].price!.id;
       const creditsPerUnit = creditsPerPriceId[priceId];
       const totalCreditsPurchased = quantity! * creditsPerUnit;
+
+      console.log({ lineItems });
+      console.log({ quantity });
+      console.log({ priceId });
+      console.log({ creditsPerUnit });
 
       console.log("totalCreditsPurchased: " + totalCreditsPurchased);
 
