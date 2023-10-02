@@ -192,12 +192,12 @@ The image samples used to teach the model what your face looks like are critical
 - Avoid accessories in samples like sunglasses and hats.
 - Ensure the face is clearly visible. (For face detection, consider using tools like [Cloudinary API](https://cloudinary.com/documentation/face_detection_based_transformations?ref=blog.tryleap.ai)).
 
-[![Avoid mutiple faces](/public/multiple_faces.png)](https://blog.tryleap.ai/create-an-ai-headshot-generator-fine-tune-stable-diffusion-with-leap-api/#how-to-avoid-multiple-faces-in-results-%E2%9D%8C)
+[![Avoid multiple faces](/public/multiple_faces.png)](https://blog.tryleap.ai/create-an-ai-headshot-generator-fine-tune-stable-diffusion-with-leap-api/#how-to-avoid-multiple-faces-in-results-%E2%9D%8C)
 
 If you get distorted results with multiple faces, repeated subjects, multiple limbs, etc, make sure to follow these steps and minimize the chance of this happening:
 
 - Make sure any samples uploaded are the same 1:1 height / width aspect ratio, for example 512x512, 1024x1024, etc.
-- Avoid mutiple people in the samples uploaded.
+- Avoid multiple people in the samples uploaded.
 - Add "double torso, totem pole" to the negative prompt when generating.
 - Make sure your dimensions when generating are also 1:1 with the same height / width ratios of the samples.
 
