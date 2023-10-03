@@ -9,6 +9,8 @@ export const metadata = {
   description: "Generate awesome headshots in minutes using AI",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({ children }: any) {
   return (
     <html lang="en">
