@@ -8,6 +8,8 @@ Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.a
 
 ## How It Works
 
+Live demo [here](https://getheadshots.ai).
+
 The app is powered by:
 
 - 🚀 [Leap AI](https://tryleap.ai/) for AI model training
@@ -16,10 +18,9 @@ The app is powered by:
 - 🔋 [Supabase](https://supabase.com/) for DB & Auth
 - 📩 [Resend](https://resend.com/) (optional) to email user when headshots are ready
 - ⭐️ [Shadcn](https://ui.shadcn.com/) with [Tailwind CSS](https://tailwindcss.com/) for styles
-- 🔥 [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI) for 1-click app run in the browser
-- 💳 [Stripe](https://stripe.com/) for billing (optional)
+- 💳 [Stripe](https://stripe.com/) for billing
 
-Just add Stripe and you have a Headshot AI SaaS in a box.
+Just clone, configure, deploy and you have an Headshot AI SaaS in a box.
 
 [![Headshot AI Explainer](/public/explainer.png)](https://tryleap.ai/)
 
@@ -57,7 +58,6 @@ cd headshots-starter
 
    - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
 
-
    **Make sure to configure your row level permissions on your tables, in the supabase dashboard**
    You can find out how to set them up [Here](/public/Supabase-policies/);
 
@@ -90,27 +90,20 @@ cd headshots-starter
    - uri (text)
    - modelId (int8) (foreign_key)\*
 
-   [credits]
+5. Magic Link Auth (Supabase)
 
-   - id (int8)
-   - created_at (timestamptz)
-   - credits (int4)
-   - user_id (uuid) (foreign_key)\*
+In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
 
-6.  Magic Link Auth (Supabase)
+Make sure to setup your site URL and redirect urls in the supabase dashboard under Authentication -> URL Configuration.
+For example:
+Site URL: https://headshots-starter.vercel.app
+Redirect URL: https://headshots-starter.vercel.app/**
 
-   In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
-
-   Make sure to setup your site URL and redirect urls in the supabase dashboard under Authentication -> URL Configuration.
-   For example:
-   Site URL: https://headshots-starter.vercel.app
-   Redirect URL: https://headshots-starter.vercel.app/**
-
-   ```
-   <h2>Magic Link</h2>
-   <p>Follow this link to login:</p>
-   <p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Log In</a></p>
-   ```
+```
+<h2>Magic Link</h2>
+<p>Follow this link to login:</p>
+<p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Log In</a></p>
+```
 
 5. Create a [Leap AI](https://tryleap.ai/) account
 
@@ -130,6 +123,7 @@ cd headshots-starter
    The current setup is for a credit based system. 1 credit = 1 model train.
 
    To enable Stripe billing, you will need to fill out the following fields in your `.env.local` file:
+
    - STRIPE_SECRET_KEY=your-stripe-secret-key
    - STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
    - STRIPE_PRICE_ID_ONE_CREDIT=your-stripe-price-id-one-credit
@@ -138,26 +132,26 @@ cd headshots-starter
    - NEXT_PUBLIC_STRIPE_IS_ENABLED=false # set to true to enable Stripe payments
 
    You need to do multiple things to get Stripe working:
+
    - Get your Stripe API secret key from the [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
    - Create a [Stripe Webhook](https://dashboard.stripe.com/test/webhooks) that will point to your hosted URL. The webhook should be listening for the `checkout.session.completed` event. The webhook should point to `your-hosted-url/stripe/subscription-webhook`.
    - Create a [Stripe Price](https://dashboard.stripe.com/test/products) for each credit package you want to offer.
    - Create a [Stripe Pricing Table](https://dashboard.stripe.com/test/pricing-tables) and replace the script @/components/stripe/StripeTable.tsx with your own values. It should look like this:
 
    ```js
-   <stripe-pricing-table 
-      pricing-table-id="your-stripe-pricing-table-id" 
-      publishable-key="your-stripe-publishable-key" 
-      client-reference-id={user.id}
-      customer-email={user.email}
-      >
-   </stripe-pricing-table>
+   <stripe-pricing-table
+     pricing-table-id="your-stripe-pricing-table-id"
+     publishable-key="your-stripe-publishable-key"
+     client-reference-id={user.id}
+     customer-email={user.email}
+   ></stripe-pricing-table>
    ```
 
    Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
 
    To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too. After creating the products make sure to update the variables in the .env.local [your-stripe-price-id-one-credit, your-stripe-price-id-three-credit, your-stripe-price-id-five-credit] with their respective price ids, each price id is found in the product page at the bottom.
 
-7. Start the development server:
+8. Start the development server:
 
    For npm:
 
@@ -171,15 +165,15 @@ cd headshots-starter
    yarn dev
    ```
 
-8. Visit `http://localhost:3000` in your browser to see the running app.
+9. Visit `http://localhost:3000` in your browser to see the running app.
 
 ## One-Click Deploy
 
-Deploy the example using Vercel:
+Default deploy using Vercel:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git)
 
-Or fork the repo and Deploy using [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI).
+Deployment also supported on [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI).
 
 ## How To Get Good Results
 
