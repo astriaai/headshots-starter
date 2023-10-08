@@ -8,7 +8,7 @@ Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.a
 
 ## How It Works
 
-Live demo [here](https://getheadshots.ai).
+Live demo **[here](https://getheadshots.ai)**.
 
 The app is powered by:
 
@@ -18,6 +18,7 @@ The app is powered by:
 - 🔋 [Supabase](https://supabase.com/) for DB & Auth
 - 📩 [Resend](https://resend.com/) (optional) to email user when headshots are ready
 - ⭐️ [Shadcn](https://ui.shadcn.com/) with [Tailwind CSS](https://tailwindcss.com/) for styles
+- ▲ [Vercel]([https://nextjs.org/](https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git)) for deployments
 - 💳 [Stripe](https://stripe.com/) for billing
 
 Just clone, configure, deploy and you have an Headshot AI SaaS in a box.
