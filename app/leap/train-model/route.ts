@@ -46,6 +46,16 @@ export async function POST(request: Request) {
     );
   }
 
+  if (images?.length < 4) {
+    return NextResponse.json(
+      {
+        message: "Upload at least 4 sample images",
+      },
+      { status: 500, statusText: "Upload at least 4 sample images" }
+    );
+  }
+  let _credits = null;
+
   console.log({ stripeIsConfigured });
   if (stripeIsConfigured) {
     const { error: creditError, data: credits } = await supabase
@@ -94,35 +104,8 @@ export async function POST(request: Request) {
         { status: 500, statusText: "Not enough credits" }
       );
     } else {
-      const subtractedCredits = credits[0].credits - 1;
-      const { error: updateCreditError, data } = await supabase
-        .from("credits")
-        .update({ credits: subtractedCredits })
-        .eq("user_id", user.id)
-        .select("*");
-
-      console.log({ data });
-      console.log({ subtractedCredits })
-
-      if (updateCreditError) {
-        console.error({ updateCreditError });
-        return NextResponse.json(
-          {
-            message: "Something went wrong!",
-          },
-          { status: 500, statusText: "Something went wrong!" }
-        );
-      }
+      _credits = credits;
     }
-  }
-
-  if (images?.length < 4) {
-    return NextResponse.json(
-      {
-        message: "Upload at least 4 sample images",
-      },
-      { status: 500, statusText: "Upload at least 4 sample images" }
-    );
   }
 
   try {
@@ -191,6 +174,28 @@ export async function POST(request: Request) {
         },
         { status: 500, statusText: "Something went wrong!" }
       );
+    }
+
+    if (stripeIsConfigured && _credits && _credits.length > 0) {
+      const subtractedCredits = _credits[0].credits - 1;
+      const { error: updateCreditError, data } = await supabase
+        .from("credits")
+        .update({ credits: subtractedCredits })
+        .eq("user_id", user.id)
+        .select("*");
+
+      console.log({ data });
+      console.log({ subtractedCredits })
+
+      if (updateCreditError) {
+        console.error({ updateCreditError });
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500, statusText: "Something went wrong!" }
+        );
+      }
     }
   } catch (e) {
     console.error(e);
