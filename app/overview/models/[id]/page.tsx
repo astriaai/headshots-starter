@@ -10,6 +10,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
+export const dynamic = "force-dynamic";
+
 export default async function Index({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {
