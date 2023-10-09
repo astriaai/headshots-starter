@@ -6,13 +6,10 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const leapApiKey = process.env.LEAP_API_KEY;
-const webhookUrl = process.env.LEAP_WEBHOOK_URL;
+// For local development, recommend using an Ngrok tunnel for the domain
+const webhookUrl = `https://${process.env.VERCEL_URL}/leap/train-webhook`;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
-
-if (!webhookUrl) {
-  throw new Error("MISSING LEAP_WEBHOOK_URL!");
-}
 
 if (!leapWebhookSecret) {
   throw new Error("MISSING LEAP_WEBHOOK_SECRET!");
@@ -75,10 +72,12 @@ export async function POST(request: Request) {
 
     if (credits.length === 0) {
       // create credits for user.
-      const { error: errorCreatingCredits } = await supabase.from("credits").insert({
-        user_id: user.id,
-        credits: 0,
-      });
+      const { error: errorCreatingCredits } = await supabase
+        .from("credits")
+        .insert({
+          user_id: user.id,
+          credits: 0,
+        });
 
       if (errorCreatingCredits) {
         console.error({ errorCreatingCredits });
@@ -92,14 +91,16 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
-          message: "Not enough credits, please purchase some credits and try again.",
+          message:
+            "Not enough credits, please purchase some credits and try again.",
         },
         { status: 500, statusText: "Not enough credits" }
       );
     } else if (credits[0]?.credits < 1) {
       return NextResponse.json(
         {
-          message: "Not enough credits, please purchase some credits and try again.",
+          message:
+            "Not enough credits, please purchase some credits and try again.",
         },
         { status: 500, statusText: "Not enough credits" }
       );
@@ -185,7 +186,7 @@ export async function POST(request: Request) {
         .select("*");
 
       console.log({ data });
-      console.log({ subtractedCredits })
+      console.log({ subtractedCredits });
 
       if (updateCreditError) {
         console.error({ updateCreditError });
