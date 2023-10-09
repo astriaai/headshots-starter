@@ -10,7 +10,8 @@ const resendApiKey = process.env.RESEND_API_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const leapApiKey = process.env.LEAP_API_KEY;
-const leapImageWebhookUrl = process.env.LEAP_IMAGE_WEBHOOK_URL;
+// For local development, recommend using an Ngrok tunnel for the domain
+const leapImageWebhookUrl = `https://${process.env.VERCEL_URL}/leap/image-webhook`;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
@@ -22,7 +23,9 @@ const prompts = [
 ];
 
 if (!resendApiKey) {
-  console.warn("We detected that the RESEND_API_KEY is missing from your environment variables. The app should still work but email notifications will not be sent. Please add your RESEND_API_KEY to your environment variables if you want to enable email notifications.");
+  console.warn(
+    "We detected that the RESEND_API_KEY is missing from your environment variables. The app should still work but email notifications will not be sent. Please add your RESEND_API_KEY to your environment variables if you want to enable email notifications."
+  );
 }
 
 if (!supabaseUrl) {
@@ -31,10 +34,6 @@ if (!supabaseUrl) {
 
 if (!supabaseServiceRoleKey) {
   throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
-}
-
-if (!leapImageWebhookUrl) {
-  throw new Error("MISSING LEAP_IMAGE_WEBHOOK_URL!");
 }
 
 if (!leapWebhookSecret) {
@@ -189,7 +188,11 @@ export async function POST(request: Request) {
 
       if (stripeIsConfigured) {
         // Refund the user.
-        const { data } = await supabase.from("credits").select("*").eq("user_id", user.id).single();
+        const { data } = await supabase
+          .from("credits")
+          .select("*")
+          .eq("user_id", user.id)
+          .single();
         const credits = data!.credits;
 
         // We are adding a credit back to the user, since we charged them for the model training earlier. Since it failed we need to refund it.
