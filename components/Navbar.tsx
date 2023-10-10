@@ -67,7 +67,7 @@ export default async function Navbar() {
                 <AvatarIcon height={24} width={24} className="text-primary" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel className="text-primary text-center">{user.email}</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-primary text-center overflow-hidden text-ellipsis">{user.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <form action="/auth/sign-out" method="post">
                   <Button
