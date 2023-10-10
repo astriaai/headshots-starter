@@ -21,7 +21,7 @@ The app is powered by:
 - ▲ [Vercel](https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git) for deployments
 - 💳 [Stripe](https://stripe.com/) for billing
 
-Just clone, configure, deploy and you have an Headshot AI SaaS in a box.
+Just clone, configure, deploy and you have a Headshot AI SaaS in a box.
 
 [![Headshot AI Explainer](/public/explainer.png)](https://tryleap.ai/)
 
