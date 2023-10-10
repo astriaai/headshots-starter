@@ -23,7 +23,6 @@ Just clone, configure, deploy and you have an Headshot AI SaaS in a box.
 
 [![Headshot AI Explainer](/public/explainer.png)](https://tryleap.ai/)
 
-
 ## Running Locally
 
 To create your own Headshot AI app, follow these steps:
@@ -31,12 +30,13 @@ To create your own Headshot AI app, follow these steps:
 1. To setup Supabase/Vercel and your github repo, click on the Vercel Deploy Button and follow the steps.
 
    IMPORTANT: In the Supabase integration step: Make sure you leave the Create sample tables option checked. This might take a few minutes to complete.
-   
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup)
+
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-description=A+Professional+AI+headshot+generator+starter+kit+powered+by+Next.js%2C+Leap+AI%2C+and+Vercel.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&demo-title=AI+Headshot+Generator&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup)
 
    The Vercel Deployment will create a new repository with this template on your GitHub account and guide your through a new Supabase project creation. The Supabase Vercel Deploy Integration will set up the necessary Supabase environment variables and run the SQL migrations to set up the Database schema on your account. You can inspect the created tables in your project's Table editor.
 
    This will create the tables with their respective columns and RLS policies:
+
    - credits
    - images
    - models
@@ -149,7 +149,7 @@ Redirect URL: https://headshots-starter.vercel.app/**
 
 Default deploy using Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-description=A+Professional+AI+headshot+generator+starter+kit+powered+by+Next.js%2C+Leap+AI%2C+and+Vercel.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&demo-title=AI+Headshot+Generator&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmariano-simplify-setup)
 
 Deployment also supported on [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI).
 
