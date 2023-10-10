@@ -25,6 +25,7 @@ Just clone, configure, deploy and you have an Headshot AI SaaS in a box.
 
 [![Headshot AI Explainer](/public/explainer.png)](https://tryleap.ai/)
 
+
 ## Running Locally
 
 To create your own Headshot AI app, follow these steps:
@@ -55,41 +56,17 @@ cd headshots-starter
    yarn
    ```
 
-4. Create a [new Supabase project](https://database.new) and create the tables required for the app:
+4. Supabase - To setup supabase and vercel follow the steps for the Vercel Deploy Button.
+   
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain)
 
-   - Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+   The Vercel Deployment will create a new repository with this template on your GitHub account and guide your through a new Supabase project creation. The Supabase Vercel Deploy Integration will set up the necessary Supabase environment variables and run the SQL migrations to set up the Database schema on your account. You can inspect the created tables in your project's Table editor.
 
-   **Make sure to configure your row level permissions on your tables, in the supabase dashboard**
-   You can find out how to set them up [Here](/public/Supabase-policies/);
-
-   ![Visualized Schemas](https://headshots-starter.vercel.app/visualized_schemas.png)
-
-   This code block defines the schema for three tables: `images`, `models`, and `samples`.
-
-   For any table column with `foreign_key`, make sure to link it while creating the column in Supabase.
-
-   [images]
-
-   - id (int8)
-   - modelId (int8) (foreign_key)\*
-   - uri (text)
-   - created_at (timestamptz)
-
-   [models] - (Make sure to enable realtime on this table)
-
-   - id (int8)
-   - name (text)
-   - type (text)
-   - created_at (timestamptz)
-   - user_id (uuid) (foreign_key)\*
-   - status (text)
-   - modelId (text)
-
-   [samples]
-
-   - id (int8)
-   - uri (text)
-   - modelId (int8) (foreign_key)\*
+   This will create the tables with their respective columns and RLS policies:
+   - credits
+   - images
+   - models
+   - samples
 
 5. Magic Link Auth (Supabase)
 
@@ -128,8 +105,8 @@ Redirect URL: https://headshots-starter.vercel.app/**
    - STRIPE_SECRET_KEY=your-stripe-secret-key
    - STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
    - STRIPE_PRICE_ID_ONE_CREDIT=your-stripe-price-id-one-credit
-   - STRIPE_PRICE_ID_THREE_CREDIT=your-stripe-price-id-three-credit
-   - STRIPE_PRICE_ID_FIVE_CREDIT=your-stripe-price-id-five-credit
+   - STRIPE_PRICE_ID_THREE_CREDITS=your-stripe-price-id-three-credit
+   - STRIPE_PRICE_ID_FIVE_CREDITS=your-stripe-price-id-five-credit
    - NEXT_PUBLIC_STRIPE_IS_ENABLED=false # set to true to enable Stripe payments
 
    You need to do multiple things to get Stripe working:
