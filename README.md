@@ -148,7 +148,7 @@ Redirect URL: https://headshots-starter.vercel.app/**
    ></stripe-pricing-table>
    ```
 
-   Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
+   Here are the products you need to create to get Stripe working with our example, checkout the Images [Here](/public/Stripe/)
 
    To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too. After creating the products make sure to update the variables in the .env.local [your-stripe-price-id-one-credit, your-stripe-price-id-three-credit, your-stripe-price-id-five-credit] with their respective price ids, each price id is found in the product page at the bottom.
 
