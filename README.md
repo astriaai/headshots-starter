@@ -40,10 +40,10 @@ To create your own Headshot AI app, follow these steps:
    - models
    - samples
 
-2. Enter the `headshots-starter` directory:
+2. Enter your newly created repo's directory:
 
 ```
-cd headshots-starter
+cd {{your-repo-name}}
 ```
 
 3. Install dependencies:
