@@ -2,8 +2,6 @@
 
 Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.ai/) that generates Professional AI Headshots in minutes.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git)
-
 [![Headshot AI Demo](/public/demo.png)](https://headshots-starter.vercel.app/)
 
 ## How It Works
@@ -30,11 +28,17 @@ Just clone, configure, deploy and you have an Headshot AI SaaS in a box.
 
 To create your own Headshot AI app, follow these steps:
 
-1. Clone the repository:
+1. To setup Supabase/Vercel and your github repo, click on the Vercel Deploy Button and follow the steps.
+   
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain)
 
-```
-git clone https://github.com/leap-ai/headshots-starter.git
-```
+   The Vercel Deployment will create a new repository with this template on your GitHub account and guide your through a new Supabase project creation. The Supabase Vercel Deploy Integration will set up the necessary Supabase environment variables and run the SQL migrations to set up the Database schema on your account. You can inspect the created tables in your project's Table editor.
+
+   This will create the tables with their respective columns and RLS policies:
+   - credits
+   - images
+   - models
+   - samples
 
 2. Enter the `headshots-starter` directory:
 
@@ -56,19 +60,7 @@ cd headshots-starter
    yarn
    ```
 
-4. Supabase - To setup supabase and vercel follow the steps for the Vercel Deploy Button.
-   
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain)
-
-   The Vercel Deployment will create a new repository with this template on your GitHub account and guide your through a new Supabase project creation. The Supabase Vercel Deploy Integration will set up the necessary Supabase environment variables and run the SQL migrations to set up the Database schema on your account. You can inspect the created tables in your project's Table editor.
-
-   This will create the tables with their respective columns and RLS policies:
-   - credits
-   - images
-   - models
-   - samples
-
-5. Magic Link Auth (Supabase)
+4. Magic Link Auth (Supabase)
 
 In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
 
@@ -149,7 +141,7 @@ Redirect URL: https://headshots-starter.vercel.app/**
 
 Default deploy using Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,RESEND_API_KEY,STRIPE_SECRET_KEY,STRIPE_WEBHOOK_SECRET,STRIPE_PRICE_ID_ONE_CREDIT,STRIPE_PRICE_ID_THREE_CREDITS,STRIPE_PRICE_ID_FIVE_CREDITS,NEXT_PUBLIC_STRIPE_IS_ENABLED,SUPABASE_SERVICE_ROLE_KEY&envDescription=API%20Keys%20needed%20to%20run%20all%20features&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain)
 
 Deployment also supported on [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI).
 
