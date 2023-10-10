@@ -2,7 +2,7 @@
 
 Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.ai/) that generates Professional AI Headshots in minutes.
 
-[![Deploy with Vercel](https://vercel.com/button)]([https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git](https://vercel.com/new/clone?demo-description=A+Professional+AI+headshot+generator+starter+kit+powered+by+Next.js%2C+Leap+AI%2C+and+Vercel.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&demo-title=AI+Headshot+Generator&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&env=LEAP_API_KEY%2CLEAP_WEBHOOK_SECRET&envDescription=How+to+get+these+env+vars%3A&from=templates&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&project-name=AI+Headshot+Generator&repository-name=headshot-ai&repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter))
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-description=A+Professional+AI+headshot+generator+starter+kit+powered+by+Next.js%2C+Leap+AI%2C+and+Vercel.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&demo-title=AI+Headshot+Generator&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&env=LEAP_API_KEY%2CLEAP_WEBHOOK_SECRET&envDescription=How+to+get+these+env+vars%3A&from=templates&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&project-name=AI+Headshot+Generator&repository-name=headshot-ai&repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter)
 
 [![Headshot AI Demo](/public/demo.png)](https://headshots-starter.vercel.app/)
 
@@ -172,7 +172,7 @@ Redirect URL: https://headshots-starter.vercel.app/**
 
 Default deploy using Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)]([https://vercel.com/import/project?template=https://github.com/leap-ai/headshots-starter.git](https://vercel.com/new/clone?demo-description=A+Professional+AI+headshot+generator+starter+kit+powered+by+Next.js%2C+Leap+AI%2C+and+Vercel.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&demo-title=AI+Headshot+Generator&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&env=LEAP_API_KEY%2CLEAP_WEBHOOK_SECRET&envDescription=How+to+get+these+env+vars%3A&from=templates&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&project-name=AI+Headshot+Generator&repository-name=headshot-ai&repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter))
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-description=A+Professional+AI+headshot+generator+starter+kit+powered+by+Next.js%2C+Leap+AI%2C+and+Vercel.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&demo-title=AI+Headshot+Generator&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&env=LEAP_API_KEY%2CLEAP_WEBHOOK_SECRET&envDescription=How+to+get+these+env+vars%3A&from=templates&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&project-name=AI+Headshot+Generator&repository-name=headshot-ai&repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter)
 
 Deployment also supported on [Replit](https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI).
 
