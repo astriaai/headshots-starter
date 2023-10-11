@@ -134,6 +134,27 @@ export async function POST(request: Request) {
     );
 
     const { status, statusText } = resp;
+
+    if (status !== 201) {
+      console.error({ status, statusText });
+      if (status === 400) {
+        return NextResponse.json(
+          {
+            message: "webhookUrl must be a URL address",
+          },
+          { status, statusText }
+        );
+      }
+      if (status === 402) {
+        return NextResponse.json(
+          {
+            message: "Training models is only available on paid plans.",
+          },
+          { status, statusText }
+        );
+      }
+    }
+
     const body = (await resp.json()) as {
       id: string;
       imageSamples: string[];
