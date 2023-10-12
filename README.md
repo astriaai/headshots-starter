@@ -29,6 +29,8 @@ Just clone, configure, deploy and you have a Headshot AI SaaS in a box.
 
 To create your own Headshot AI app, follow these steps:
 
+> **Note**<br/>Training models is only available on paid plans. Make sure you have an active [Leap AI plan](<[url](https://tryleap.ai/pricing)>) to train models.
+
 1. To setup Supabase/Vercel and your github repo, click on the Vercel Deploy Button and follow the steps.
 
    IMPORTANT: In the Supabase integration step: Make sure you leave the Create sample tables option checked. This might take a few minutes to complete.
