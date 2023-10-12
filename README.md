@@ -72,7 +72,7 @@ cd {{your-repo-name}}
    yarn
    ```
 
-5. Magic Link Auth (Supabase)
+## 5. Magic Link Auth (Supabase)
 
 In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), make sure to update the email template for magic link correctly. You can use the following template:
 
