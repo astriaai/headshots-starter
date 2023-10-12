@@ -20,10 +20,6 @@ if (!supabaseServiceRoleKey) {
   throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
 }
 
-if (!endpointSecret) {
-  throw new Error("STRIPE_WEBHOOK_SECRET is not set");
-}
-
 const oneCreditPriceId = process.env.STRIPE_PRICE_ID_ONE_CREDIT as string;
 const threeCreditsPriceId = process.env.STRIPE_PRICE_ID_THREE_CREDITS as string;
 const fiveCreditsPriceId = process.env.STRIPE_PRICE_ID_FIVE_CREDITS as string;
