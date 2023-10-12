@@ -87,7 +87,7 @@ Redirect URL: https://headshots-starter.vercel.app/**
 <p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Log In</a></p>
 ```
 
-6. Create a [Leap AI](https://tryleap.ai/) account
+## 6. Create a [Leap AI](https://tryleap.ai/) account
 
    In your `.env.local` file:
 
