@@ -85,7 +85,9 @@ In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/
 Then, make sure to setup your site URL and redirect urls in the supabase dashboard under Authentication -> URL Configuration.
 
 For example:
+
 Site URL: https://headshots-starter.vercel.app
+
 Redirect URL: https://headshots-starter.vercel.app/**
 
 ## 6. Create a [Leap AI](https://tryleap.ai/) account
