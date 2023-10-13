@@ -111,7 +111,7 @@ export default function TrainModelZone() {
     [files]
   );
 
-    const compressImage = async (file: File) => {
+  const compressImage = async (file: File) => {
     try {
       const maxSizeMB = 1;
       const maxWidthOrHeight = 1920;
