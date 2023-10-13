@@ -76,7 +76,7 @@ cd {{your-repo-name}}
 
 ### 5. Magic Link Auth (Supabase)
 
-In your supabase [dashboard](https://supabase.com/dashboard/project/{projectId}/auth/templates), click Email Templates -> Magic Link and paste the following template:
+In your supabase [dashboard](https://supabase.com/dashboard/), select newly created project, go to Authentication -> Email Templates -> Magic Link and paste the following template:
 
 ```
 <h2>Magic Link</h2>
