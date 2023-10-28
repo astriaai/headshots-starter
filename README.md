@@ -41,7 +41,7 @@ To setup Supabase/Vercel and your github repo, click on the Vercel Deploy Button
 
 The Vercel Deployment will create a new repository with this template on your GitHub account and guide you through a new Supabase project creation. The Supabase Vercel Deploy Integration will set up the necessary Supabase environment variables and run the SQL migrations to set up the Database schema on your account. You can inspect the created tables in your project's Table editor.
 
-This will create the tables with their respective columns and RLS policies:
+This will create tables with their respective columns and RLS policies:
 
 - credits
 - images
