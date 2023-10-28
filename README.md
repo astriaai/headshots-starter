@@ -184,6 +184,11 @@ If you get distorted results with multiple faces, repeated subjects, multiple li
 
 For more information on how to improve quality, read the blog [here](https://blog.tryleap.ai/create-an-ai-headshot-generator-fine-tune-stable-diffusion-with-leap-api/#step-1-gather-your-image-samples-%F0%9F%93%B8).
 
+### All Thanks To Our Contributors :
+<a href="https://github.com/leap-ai/headshots-starter/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=leap-ai/headshots-starter" />
+</a>
+
 ## Additional Use-Cases
 
 Headshot AI can be easily adapted to support many other use-cases on [Leap AI](https://tryleap.ai/) including:
