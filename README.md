@@ -220,7 +220,7 @@ Headshot AI can be easily adapted to support many other use-cases of [Leap AI](h
 
 We welcome collaboration and appreciate your contribution to Headshot AI. If you have suggestions for improvement or significant changes in mind, feel free to open an issue!
 
-If you want to contribute to the codebase make sure you create a new branch and open a pull request that points to `dev`.
+If you want to contribute to the codebase make sure you fork the repository, create a new branch in the forked repository and open a pull request that points to `dev` branch.
 
 ## Resources and Support
 
