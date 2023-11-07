@@ -38,41 +38,52 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-        statusText:
-          "Missing API Key: Add your Leap API Key to generate headshots",
       }
     );
   }
 
   if (!webhook_secret) {
     return NextResponse.json(
-      {},
-      { status: 500, statusText: "Malformed URL, no webhook_secret detected!" }
+      {
+        message: "Malformed URL, no webhook_secret detected!",
+      },
+      { status: 500 }
     );
   }
 
   if (webhook_secret.toLowerCase() !== leapWebhookSecret?.toLowerCase()) {
-    return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
+    return NextResponse.json(
+      {
+        message: "Unauthorized!",
+      },
+      { status: 401 }
+    );
   }
 
   if (!user_id) {
     return NextResponse.json(
-      {},
-      { status: 500, statusText: "Malformed URL, no user_id detected!" }
+      {
+        message: "Malformed URL, no user_id detected!",
+      },
+      { status: 500 }
     );
   }
 
   if (!model_id) {
     return NextResponse.json(
-      {},
-      { status: 500, statusText: "Malformed URL, no model_id detected!" }
+      {
+        message: "Malformed URL, no model_id detected!",
+      },
+      { status: 500 }
     );
   }
 
   if (!model_db_id) {
     return NextResponse.json(
-      {},
-      { status: 500, statusText: "Malformed URL, no model_db_id detected!" }
+      {
+        message: "Malformed URL, no model_db_id detected!",
+      },
+      { status: 500 }
     );
   }
 
@@ -94,13 +105,20 @@ export async function POST(request: Request) {
   } = await supabase.auth.admin.getUserById(user_id);
 
   if (error) {
-    return NextResponse.json({}, { status: 401, statusText: error.message });
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      { status: 401 }
+    );
   }
 
   if (!user) {
     return NextResponse.json(
-      {},
-      { status: 401, statusText: "User not found!" }
+      {
+        message: "User not found!",
+      },
+      { status: 401 }
     );
   }
 
@@ -122,7 +140,7 @@ export async function POST(request: Request) {
       {
         message: "success",
       },
-      { status: 200, statusText: "Success" }
+      { status: 200 }
     );
   } catch (e) {
     console.error(e);
@@ -130,7 +148,7 @@ export async function POST(request: Request) {
       {
         message: "Something went wrong!",
       },
-      { status: 500, statusText: "Something went wrong!" }
+      { status: 500 }
     );
   }
 }

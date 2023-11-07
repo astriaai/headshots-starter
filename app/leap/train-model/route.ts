@@ -30,7 +30,12 @@ export async function POST(request: Request) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+      },
+      { status: 401 }
+    );
   }
 
   if (!leapApiKey) {
@@ -40,8 +45,6 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-        statusText:
-          "Missing API Key: Add your Leap API Key to generate headshots",
       }
     );
   }
@@ -59,16 +62,18 @@ export async function POST(request: Request) {
         {
           message: "Something went wrong!",
         },
-        { status: 500, statusText: "Something went wrong!" }
+        { status: 500 }
       );
     }
 
     if (credits.length === 0) {
       // create credits for user.
-      const { error: errorCreatingCredits } = await supabase.from("credits").insert({
-        user_id: user.id,
-        credits: 0,
-      });
+      const { error: errorCreatingCredits } = await supabase
+        .from("credits")
+        .insert({
+          user_id: user.id,
+          credits: 0,
+        });
 
       if (errorCreatingCredits) {
         console.error({ errorCreatingCredits });
@@ -76,22 +81,24 @@ export async function POST(request: Request) {
           {
             message: "Something went wrong!",
           },
-          { status: 500, statusText: "Something went wrong!" }
+          { status: 500 }
         );
       }
 
       return NextResponse.json(
         {
-          message: "Not enough credits, please purchase some credits and try again.",
+          message:
+            "Not enough credits, please purchase some credits and try again.",
         },
-        { status: 500, statusText: "Not enough credits" }
+        { status: 500 }
       );
     } else if (credits[0]?.credits < 1) {
       return NextResponse.json(
         {
-          message: "Not enough credits, please purchase some credits and try again.",
+          message:
+            "Not enough credits, please purchase some credits and try again.",
         },
-        { status: 500, statusText: "Not enough credits" }
+        { status: 500 }
       );
     } else {
       const subtractedCredits = credits[0].credits - 1;
@@ -102,7 +109,7 @@ export async function POST(request: Request) {
         .select("*");
 
       console.log({ data });
-      console.log({ subtractedCredits })
+      console.log({ subtractedCredits });
 
       if (updateCreditError) {
         console.error({ updateCreditError });
@@ -110,7 +117,7 @@ export async function POST(request: Request) {
           {
             message: "Something went wrong!",
           },
-          { status: 500, statusText: "Something went wrong!" }
+          { status: 500 }
         );
       }
     }
@@ -121,7 +128,7 @@ export async function POST(request: Request) {
       {
         message: "Upload at least 4 sample images",
       },
-      { status: 500, statusText: "Upload at least 4 sample images" }
+      { status: 500 }
     );
   }
 
@@ -149,7 +156,6 @@ export async function POST(request: Request) {
       options
     );
 
-    const { status, statusText } = resp;
     const body = (await resp.json()) as {
       id: string;
       imageSamples: string[];
@@ -172,7 +178,7 @@ export async function POST(request: Request) {
         {
           message: "Something went wrong!",
         },
-        { status: 500, statusText: "Something went wrong!" }
+        { status: 500 }
       );
     }
 
@@ -189,7 +195,7 @@ export async function POST(request: Request) {
         {
           message: "Something went wrong!",
         },
-        { status: 500, statusText: "Something went wrong!" }
+        { status: 500 }
       );
     }
   } catch (e) {
@@ -198,7 +204,7 @@ export async function POST(request: Request) {
       {
         message: "Something went wrong!",
       },
-      { status: 500, statusText: "Something went wrong!" }
+      { status: 500 }
     );
   }
 
@@ -206,6 +212,6 @@ export async function POST(request: Request) {
     {
       message: "success",
     },
-    { status: 200, statusText: "Success" }
+    { status: 200 }
   );
 }
