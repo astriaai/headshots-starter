@@ -26,21 +26,24 @@ export default function Footer() {
         >
           Supabase,{" "}
         </Link>
-        <Link
-          className="text-blue-600 hover:underline font-bold"
-          href="https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI"
-          target="_blank"
-        >
-          Replit{" "}
-        </Link>
         and{" "}
-        <Link
-          className="text-blue-600 hover:underline font-bold"
-          href="https://vercel.com/"
-          target="_blank"
-        >
-          Vercel.
-        </Link>
+        {process.env.DEPLOYMENT_PROVIDER === "replit" ? (
+          <Link
+            className="text-blue-600 hover:underline font-bold"
+            href="https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI"
+            target="_blank"
+          >
+            Replit{" "}
+          </Link>
+        ) : (
+          <Link
+            className="text-blue-600 hover:underline font-bold"
+            href="https://vercel.com/"
+            target="_blank"
+          >
+            Vercel.
+          </Link>
+        )}
       </div>
       <div className="flex space-x-4 pb-4 sm:pb-0">
         <Link

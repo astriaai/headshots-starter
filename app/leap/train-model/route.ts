@@ -6,13 +6,10 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const leapApiKey = process.env.LEAP_API_KEY;
-const webhookUrl = process.env.LEAP_WEBHOOK_URL;
+// For local development, recommend using an Ngrok tunnel for the domain
+const webhookUrl = `https://${process.env.VERCEL_URL}/leap/train-webhook`;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
-
-if (!webhookUrl) {
-  throw new Error("MISSING LEAP_WEBHOOK_URL!");
-}
 
 if (!leapWebhookSecret) {
   throw new Error("MISSING LEAP_WEBHOOK_SECRET!");
@@ -48,6 +45,16 @@ export async function POST(request: Request) {
       }
     );
   }
+
+  if (images?.length < 4) {
+    return NextResponse.json(
+      {
+        message: "Upload at least 4 sample images",
+      },
+      { status: 500 }
+    );
+  }
+  let _credits = null;
 
   console.log({ stripeIsConfigured });
   if (stripeIsConfigured) {
@@ -101,35 +108,8 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     } else {
-      const subtractedCredits = credits[0].credits - 1;
-      const { error: updateCreditError, data } = await supabase
-        .from("credits")
-        .update({ credits: subtractedCredits })
-        .eq("user_id", user.id)
-        .select("*");
-
-      console.log({ data });
-      console.log({ subtractedCredits });
-
-      if (updateCreditError) {
-        console.error({ updateCreditError });
-        return NextResponse.json(
-          {
-            message: "Something went wrong!",
-          },
-          { status: 500 }
-        );
-      }
+      _credits = credits;
     }
-  }
-
-  if (images?.length < 4) {
-    return NextResponse.json(
-      {
-        message: "Upload at least 4 sample images",
-      },
-      { status: 500 }
-    );
   }
 
   try {
@@ -155,6 +135,28 @@ export async function POST(request: Request) {
       `https://api.tryleap.ai/api/v2/images/models/new`,
       options
     );
+
+    const { status } = resp;
+
+    if (status !== 201) {
+      console.error({ status });
+      if (status === 400) {
+        return NextResponse.json(
+          {
+            message: "webhookUrl must be a URL address",
+          },
+          { status }
+        );
+      }
+      if (status === 402) {
+        return NextResponse.json(
+          {
+            message: "Training models is only available on paid plans.",
+          },
+          { status }
+        );
+      }
+    }
 
     const body = (await resp.json()) as {
       id: string;
@@ -197,6 +199,28 @@ export async function POST(request: Request) {
         },
         { status: 500 }
       );
+    }
+
+    if (stripeIsConfigured && _credits && _credits.length > 0) {
+      const subtractedCredits = _credits[0].credits - 1;
+      const { error: updateCreditError, data } = await supabase
+        .from("credits")
+        .update({ credits: subtractedCredits })
+        .eq("user_id", user.id)
+        .select("*");
+
+      console.log({ data });
+      console.log({ subtractedCredits });
+
+      if (updateCreditError) {
+        console.error({ updateCreditError });
+        return NextResponse.json(
+          {
+            message: "Something went wrong!",
+          },
+          { status: 500 }
+        );
+      }
     }
   } catch (e) {
     console.error(e);
