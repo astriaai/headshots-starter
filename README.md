@@ -93,9 +93,12 @@ Redirect URL: https://headshots-starter.vercel.app/**
 
 ### 6. Create a [Leap AI](https://tryleap.ai/) account
 
+In your Leap Workflows dashboard, clone the `Headshot Generator` template, then publish the workflow.
+
 In your `.env.local` file:
 
 - Fill in `your_api_key` with your [Leap API key](https://alpha.tryleap.ai)
+- Fill in `your-workflow-id` with your [Leap workflowId](https://alpha.tryleap.ai) after publishing your Headshot Generator template.
 - Fill in `your-hosted-url/leap/train-webhook` with https://{your-hosted-url}/leap/train-webhook
 - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
 - Fill in `your-vercel-url` with a url to catch webhooks from Leap. This will be your vercel deployment url or Ngrok tunnel locally
