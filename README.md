@@ -99,6 +99,7 @@ In your `.env.local` file:
 - Fill in `your-hosted-url/leap/train-webhook` with https://{your-hosted-url}/leap/train-webhook
 - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
 - Fill in `your-vercel-url` with a url to catch webhooks from Leap. This will be your vercel deployment url or Ngrok tunnel locally
+- Fill in `your-blob-read-write-token` using the steps below
 
 ### 7. Configure [Vercel Blob](https://vercel.com/docs/storage/vercel-blob/quickstart#client-uploads) for image uploads
 
@@ -107,10 +108,10 @@ In your Vercel project, create a [Blob store](https://vercel.com/docs/storage/ve
 - In your Vercel dashboard, select the Storage tab, then select the Connect Database button.
 - Under the Create New tab, select Blob and then the Continue button.
 
-Then to configure locally:
+Then to configure in your .env:
 
 - In your Vercel dashboard, select the Settings tab, then select the Environment Variables tab.
-- Copy your `BLOB_READ_WRITE_TOKEN` to your .env.local
+- Copy your `BLOB_READ_WRITE_TOKEN` to your .env
 
 ### 8. Create a [Resend](https://resend.com/) account (Optional)
 
