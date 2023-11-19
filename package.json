@@ -15,6 +15,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
     "@leap-ai/sdk": "^1.1.3",
+    "@leap-ai/workflows": "^1.0.1",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-context-menu": "^2.1.4",
@@ -35,6 +36,7 @@
     "@supabase/supabase-js": "^2.34.0",
     "@types/formidable": "^3.4.2",
     "@types/node-fetch": "^2.6.4",
+    "@vercel/blob": "^0.14.0",
     "autoprefixer": "10.4.14",
     "busboy": "^1.6.0",
     "class-variance-authority": "^0.7.0",
