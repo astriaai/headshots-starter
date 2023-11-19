@@ -30,20 +30,20 @@ const creditsPerPriceId: {
   [oneCreditPriceId]: 1,
   [threeCreditsPriceId]: 3,
   [fiveCreditsPriceId]: 5,
-}
+};
 
 export async function POST(request: Request) {
   console.log("Request from: ", request.url);
-  console.log("Request: ", request)
+  console.log("Request: ", request);
   const headersObj = headers();
-  const sig = headersObj.get('stripe-signature');
+  const sig = headersObj.get("stripe-signature");
 
   if (!stripeSecretKey) {
     return NextResponse.json(
       {
-        message: "error",
+        message: `Missing stripeSecretKey`,
       },
-      { status: 400, statusText: `Missing stripeSecretKey` }
+      { status: 400 }
     );
   }
 
@@ -55,18 +55,18 @@ export async function POST(request: Request) {
   if (!sig) {
     return NextResponse.json(
       {
-        message: "error",
+        message: `Missing signature`,
       },
-      { status: 400, statusText: `Missing signature` }
+      { status: 400 }
     );
   }
 
   if (!request.body) {
     return NextResponse.json(
       {
-        message: "error",
+        message: `Missing body`,
       },
-      { status: 400, statusText: `Missing body` }
+      { status: 400 }
     );
   }
 
@@ -81,9 +81,9 @@ export async function POST(request: Request) {
     console.log("Error verifying webhook signature: " + error.message);
     return NextResponse.json(
       {
-        message: "error",
+        message: `Webhook Error: ${error?.message}`,
       },
-      { status: 400, statusText: `Webhook Error: ${error?.message}` }
+      { status: 400 }
     );
   }
 
@@ -101,20 +101,23 @@ export async function POST(request: Request) {
 
   // Handle the event
   switch (event.type) {
-    case 'checkout.session.completed':
-      const checkoutSessionCompleted = event.data.object as Stripe.Checkout.Session;
+    case "checkout.session.completed":
+      const checkoutSessionCompleted = event.data
+        .object as Stripe.Checkout.Session;
       const userId = checkoutSessionCompleted.client_reference_id;
 
       if (!userId) {
         return NextResponse.json(
           {
-            message: "error",
+            message: `Missing client_reference_id`,
           },
-          { status: 400, statusText: `Missing client_reference_id` }
+          { status: 400 }
         );
       }
 
-      const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSessionCompleted.id);
+      const lineItems = await stripe.checkout.sessions.listLineItems(
+        checkoutSessionCompleted.id
+      );
       const quantity = lineItems.data[0].quantity;
       const priceId = lineItems.data[0].price!.id;
       const creditsPerUnit = creditsPerPriceId[priceId];
@@ -127,24 +130,31 @@ export async function POST(request: Request) {
 
       console.log("totalCreditsPurchased: " + totalCreditsPurchased);
 
-      const { data: existingCredits } = await supabase.from("credits").select("*").eq("user_id", userId).single();
+      const { data: existingCredits } = await supabase
+        .from("credits")
+        .select("*")
+        .eq("user_id", userId)
+        .single();
 
       // If user has existing credits, add to it.
       if (existingCredits) {
         const newCredits = existingCredits.credits + totalCreditsPurchased;
-        const {
-          data, error,
-        } = await supabase.from("credits").update({
-          credits: newCredits,
-        }).eq("user_id", userId);
+        const { data, error } = await supabase
+          .from("credits")
+          .update({
+            credits: newCredits,
+          })
+          .eq("user_id", userId);
 
         if (error) {
           console.log(error);
           return NextResponse.json(
             {
-              message: "error",
+              message: `Error updating credits: ${error}\n ${data}`,
             },
-            { status: 400, statusText: `Error updating credits: ${error}\n ${data}` }
+            {
+              status: 400,
+            }
           );
         }
 
@@ -152,13 +162,11 @@ export async function POST(request: Request) {
           {
             message: "success",
           },
-          { status: 200, statusText: "Success" }
+          { status: 200 }
         );
       } else {
         // Else create new credits row.
-        const {
-          data, error,
-        } = await supabase.from("credits").insert({
+        const { data, error } = await supabase.from("credits").insert({
           user_id: userId,
           credits: totalCreditsPurchased,
         });
@@ -167,9 +175,11 @@ export async function POST(request: Request) {
           console.log(error);
           return NextResponse.json(
             {
-              message: "error",
+              message: `Error creating credits: ${error}\n ${data}`,
             },
-            { status: 400, statusText: `Error creating credits: ${error}\n ${data}` }
+            {
+              status: 400,
+            }
           );
         }
       }
@@ -178,15 +188,15 @@ export async function POST(request: Request) {
         {
           message: "success",
         },
-        { status: 200, statusText: "Success" }
+        { status: 200 }
       );
 
     default:
       return NextResponse.json(
         {
-          message: "error",
+          message: `Unhandled event type ${event.type}`,
         },
-        { status: 400, statusText: `Unhandled event type ${event.type}` }
+        { status: 400 }
       );
   }
 }

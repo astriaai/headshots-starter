@@ -29,7 +29,12 @@ export async function POST(request: Request) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({}, { status: 401, statusText: "Unauthorized!" });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+      },
+      { status: 401 }
+    );
   }
 
   if (!leapApiKey) {
@@ -39,8 +44,6 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-        statusText:
-          "Missing API Key: Add your Leap API Key to generate headshots",
       }
     );
   }
@@ -50,7 +53,7 @@ export async function POST(request: Request) {
       {
         message: "Upload at least 4 sample images",
       },
-      { status: 500, statusText: "Upload at least 4 sample images" }
+      { status: 500 }
     );
   }
   let _credits = null;
@@ -68,7 +71,7 @@ export async function POST(request: Request) {
         {
           message: "Something went wrong!",
         },
-        { status: 500, statusText: "Something went wrong!" }
+        { status: 500 }
       );
     }
 
@@ -87,7 +90,7 @@ export async function POST(request: Request) {
           {
             message: "Something went wrong!",
           },
-          { status: 500, statusText: "Something went wrong!" }
+          { status: 500 }
         );
       }
 
@@ -96,7 +99,7 @@ export async function POST(request: Request) {
           message:
             "Not enough credits, please purchase some credits and try again.",
         },
-        { status: 500, statusText: "Not enough credits" }
+        { status: 500 }
       );
     } else if (credits[0]?.credits < 1) {
       return NextResponse.json(
@@ -104,7 +107,7 @@ export async function POST(request: Request) {
           message:
             "Not enough credits, please purchase some credits and try again.",
         },
-        { status: 500, statusText: "Not enough credits" }
+        { status: 500 }
       );
     } else {
       _credits = credits;
@@ -132,13 +135,13 @@ export async function POST(request: Request) {
     // console.log("workflows response: ", workflowResponse);
 
     if (status !== 201) {
-      console.error({ status, statusText });
+      console.error({ status });
       if (status === 400) {
         return NextResponse.json(
           {
             message: "webhookUrl must be a URL address",
           },
-          { status, statusText }
+          { status }
         );
       }
       if (status === 402) {
@@ -146,7 +149,7 @@ export async function POST(request: Request) {
           {
             message: "Training models is only available on paid plans.",
           },
-          { status, statusText }
+          { status }
         );
       }
     }
@@ -168,7 +171,7 @@ export async function POST(request: Request) {
         {
           message: "Something went wrong!",
         },
-        { status: 500, statusText: "Something went wrong!" }
+        { status: 500 }
       );
     }
 
@@ -188,7 +191,7 @@ export async function POST(request: Request) {
         {
           message: "Something went wrong!",
         },
-        { status: 500, statusText: "Something went wrong!" }
+        { status: 500 }
       );
     }
 
@@ -209,7 +212,7 @@ export async function POST(request: Request) {
           {
             message: "Something went wrong!",
           },
-          { status: 500, statusText: "Something went wrong!" }
+          { status: 500 }
         );
       }
     }
@@ -219,7 +222,7 @@ export async function POST(request: Request) {
       {
         message: "Something went wrong!",
       },
-      { status: 500, statusText: "Something went wrong!" }
+      { status: 500 }
     );
   }
 
@@ -227,6 +230,6 @@ export async function POST(request: Request) {
     {
       message: "success",
     },
-    { status: 200, statusText: "Success" }
+    { status: 200 }
   );
 }
