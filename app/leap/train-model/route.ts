@@ -2,6 +2,7 @@ import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { Leap } from "@leap-ai/workflows";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +17,11 @@ if (!leapWebhookSecret) {
 }
 
 export async function POST(request: Request) {
-  const incomingFormData = await request.formData();
-  const images = incomingFormData.getAll("image") as File[];
-  const type = incomingFormData.get("type") as string;
-  const name = incomingFormData.get("name") as string;
+  const payload = await request.json();
+  const images = payload.urls;
+  const type = payload.type;
+  const name = payload.name;
+
   const supabase = createRouteHandlerClient<Database>({ cookies });
 
   const {
@@ -110,30 +112,24 @@ export async function POST(request: Request) {
   }
 
   try {
-    const formData = new FormData();
-    images.forEach((image) => {
-      formData.append("imageSampleFiles", image);
+    const webhookUrlString = `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}&model_type=${type}`;
+
+    const leap = new Leap({
+      apiKey: leapApiKey,
     });
 
-    formData.append(
-      "webhookUrl",
-      `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}&model_type=${type}`
-    );
-
-    let options = {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${leapApiKey}`,
+    const response = await leap.workflowRuns.workflow({
+      workflow_id: process.env.LEAP_WORKFLOW_ID as string,
+      webhook_url: webhookUrlString,
+      input: {
+        title: name, // title of the model
+        name: type, // name of the model type
+        image_urls: images,
       },
-      body: formData,
-    };
-    const resp = await fetch(
-      `https://api.tryleap.ai/api/v2/images/models/new`,
-      options
-    );
+    });
 
-    const { status, statusText } = resp;
+    const { status, statusText, data: workflowResponse } = response;
+    // console.log("workflows response: ", workflowResponse);
 
     if (status !== 201) {
       console.error({ status, statusText });
@@ -155,15 +151,10 @@ export async function POST(request: Request) {
       }
     }
 
-    const body = (await resp.json()) as {
-      id: string;
-      imageSamples: string[];
-    };
-
     const { error: modelError, data } = await supabase
       .from("models")
       .insert({
-        modelId: body.id,
+        modelId: workflowResponse.id, // store workflowRunId field to retrieve workflow object if needed later
         user_id: user.id,
         name,
         type,
@@ -172,7 +163,7 @@ export async function POST(request: Request) {
       .single();
 
     if (modelError) {
-      console.error(modelError);
+      console.error("modelError: ", modelError);
       return NextResponse.json(
         {
           message: "Something went wrong!",
@@ -181,15 +172,18 @@ export async function POST(request: Request) {
       );
     }
 
+    // Get the modelId from the created model
+    const modelId = data?.id;
+
     const { error: samplesError } = await supabase.from("samples").insert(
-      body.imageSamples.map((sample) => ({
-        modelId: data.id,
+      images.map((sample: string) => ({
+        modelId: modelId,
         uri: sample,
       }))
     );
 
     if (samplesError) {
-      console.error(samplesError);
+      console.error("samplesError: ", samplesError);
       return NextResponse.json(
         {
           message: "Something went wrong!",

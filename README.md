@@ -2,7 +2,7 @@
 
 Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.ai/) that generates Professional AI Headshots in minutes.
 
-This project was built to give developers & makers a great starting point into building AI applications. This is simply your launch pad - fork the code, modify it, and make it your own to get familiar with the building blocks needed to build a popular AI SaaS app.
+This project was built to give developers & makers a great starting point into building AI applications. This is your launch pad - fork the code, modify it, and make it your own to get familiar with the building blocks needed to build a popular AI SaaS app.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET&envDescription=Set%20up%20environment%20variables%20for%20Leap%20AI%20and%20redirect%20URL%20in%20Supabase%20Auth%20dashboard.%20See%20.env.local.example%20for%20full%20config%20with%20Resend%20and%20Stripe.&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&project-name=headshots-starter-clone&repository-name=headshots-starter-clone&demo-title=AI%20Headshot%20Generator&demo-description=A%20Professional%20AI%20headshot%20generator%20starter%20kit%20powered%20by%20Next.js%2C%20Leap%20AI%2C%20and%20Vercel&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&demo-image=https%3A%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain)
 
@@ -14,8 +14,7 @@ Live demo **[here](https://getheadshots.ai)**.
 
 The app is powered by:
 
-- 🚀 [Leap AI](https://tryleap.ai/) for AI model training
-- 🚀 [Leap AI](https://tryleap.ai/) to generate headshots
+- 🚀 [Leap AI](https://tryleap.ai/) for AI model training & inference
 - ▲ [Next.js](https://nextjs.org/) for app and landing page
 - 🔋 [Supabase](https://supabase.com/) for DB & Auth
 - 📩 [Resend](https://resend.com/) (optional) to email user when headshots are ready
@@ -35,7 +34,7 @@ To create your own Headshot AI app, follow these steps:
 
 To setup Supabase/Vercel and your github repo, click on the Vercel Deploy Button and follow the steps.
 
-   IMPORTANT: In the Supabase integration step: Make sure you leave the Create sample tables option checked. This might take a few minutes to complete.
+IMPORTANT: In the Supabase integration step: Make sure you leave the Create sample tables option checked. This might take a few minutes to complete.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET&envDescription=Set%20up%20environment%20variables%20for%20Leap%20AI%20and%20redirect%20URL%20in%20Supabase%20Auth%20dashboard.%20See%20.env.local.example%20for%20full%20config%20with%20Resend%20and%20Stripe.&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&project-name=headshots-starter-clone&repository-name=headshots-starter-clone&demo-title=AI%20Headshot%20Generator&demo-description=A%20Professional%20AI%20headshot%20generator%20starter%20kit%20powered%20by%20Next.js%2C%20Leap%20AI%2C%20and%20Vercel&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&demo-image=https%3A%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain)
 
@@ -62,17 +61,17 @@ cd {{your-repo-name}}
 
 ### 4. Install dependencies:
 
-   For npm:
+For npm:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-   For yarn:
+For yarn:
 
-   ```bash
-   yarn
-   ```
+```bash
+yarn
+```
 
 ### 5. Magic Link Auth (Supabase)
 
@@ -94,65 +93,77 @@ Redirect URL: https://headshots-starter.vercel.app/**
 
 ### 6. Create a [Leap AI](https://tryleap.ai/) account
 
-   In your `.env.local` file:
+In your `.env.local` file:
 
-   - Fill in `your_api_key` with your [Leap API key](https://docs.tryleap.ai/authentication)
-   - Fill in `your-hosted-url/leap/train-webhook` with https://{your-hosted-url}/leap/train-webhook
-   - Fill in `your-hosted-url/leap/image-webhook` with https://{your-hosted-url}/leap/image-webhook
-   - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
+- Fill in `your_api_key` with your [Leap API key](https://alpha.tryleap.ai)
+- Fill in `your-hosted-url/leap/train-webhook` with https://{your-hosted-url}/leap/train-webhook
+- Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
+- Fill in `your-vercel-url` with a url to catch webhooks from Leap. This will be your vercel deployment url or Ngrok tunnel locally
 
-### 7. Create a [Resend](https://resend.com/) account (Optional)
+### 7. Configure [Vercel Blob](https://vercel.com/docs/storage/vercel-blob/quickstart#client-uploads) for image uploads
 
-   - Fill in `your-resend-api-key` with your Resend API Key if you wish to use Resend to email users when their model has finished training.
+In your Vercel project, create a [Blob store](https://vercel.com/docs/storage/vercel-blob/quickstart#create-a-blob-store)
 
-### 8. Configure [Stripe](https://stripe.com) to bill users on a credit basis. (Optional)
+- In your Vercel dashboard, select the Storage tab, then select the Connect Database button.
+- Under the Create New tab, select Blob and then the Continue button.
 
-   The current setup is for a credit based system. 1 credit = 1 model train.
+Then to configure locally:
 
-   To enable Stripe billing, you will need to fill out the following fields in your `.env.local` file:
+- In your Vercel dashboard, select the Settings tab, then select the Environment Variables tab.
+- Copy your `BLOB_READ_WRITE_TOKEN` to your .env.local
 
-   - STRIPE_SECRET_KEY=your-stripe-secret-key
-   - STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
-   - STRIPE_PRICE_ID_ONE_CREDIT=your-stripe-price-id-one-credit
-   - STRIPE_PRICE_ID_THREE_CREDITS=your-stripe-price-id-three-credit
-   - STRIPE_PRICE_ID_FIVE_CREDITS=your-stripe-price-id-five-credit
-   - NEXT_PUBLIC_STRIPE_IS_ENABLED=false # set to true to enable Stripe payments
+### 8. Create a [Resend](https://resend.com/) account (Optional)
 
-   You need to do multiple things to get Stripe working:
+- Fill in `your-resend-api-key` with your Resend API Key if you wish to use Resend to email users when their model has finished training.
 
-   - Get your Stripe API secret key from the [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
-   - Create a [Stripe Webhook](https://dashboard.stripe.com/test/webhooks) that will point to your hosted URL. The webhook should be listening for the `checkout.session.completed` event. The webhook should point to `your-hosted-url/stripe/subscription-webhook`.
-   - Create a [Stripe Price](https://dashboard.stripe.com/test/products) for each credit package you want to offer.
-   - Create a [Stripe Pricing Table](https://dashboard.stripe.com/test/pricing-tables) and replace the script @/components/stripe/StripeTable.tsx with your own values. It should look like this:
+### 9. Configure [Stripe](https://stripe.com) to bill users on a credit basis. (Optional)
 
-   ```js
-   <stripe-pricing-table
-     pricing-table-id="your-stripe-pricing-table-id"
-     publishable-key="your-stripe-publishable-key"
-     client-reference-id={user.id}
-     customer-email={user.email}
-   ></stripe-pricing-table>
-   ```
+The current setup is for a credit based system. 1 credit = 1 model train.
 
-   Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
+To enable Stripe billing, you will need to fill out the following fields in your `.env.local` file:
 
-   To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too. After creating the products make sure to update the variables in the .env.local [your-stripe-price-id-one-credit, your-stripe-price-id-three-credit, your-stripe-price-id-five-credit] with their respective price ids, each price id is found in the product page at the bottom.
+- STRIPE_SECRET_KEY=your-stripe-secret-key
+- STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+- STRIPE_PRICE_ID_ONE_CREDIT=your-stripe-price-id-one-credit
+- STRIPE_PRICE_ID_THREE_CREDITS=your-stripe-price-id-three-credit
+- STRIPE_PRICE_ID_FIVE_CREDITS=your-stripe-price-id-five-credit
+- NEXT_PUBLIC_STRIPE_IS_ENABLED=false # set to true to enable Stripe payments
 
-### 9. Start the development server:
+You need to do multiple things to get Stripe working:
 
-   For npm:
+- Get your Stripe API secret key from the [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
+- Create a [Stripe Webhook](https://dashboard.stripe.com/test/webhooks) that will point to your hosted URL. The webhook should be listening for the `checkout.session.completed` event. The webhook should point to `your-hosted-url/stripe/subscription-webhook`.
+- Create a [Stripe Price](https://dashboard.stripe.com/test/products) for each credit package you want to offer.
+- Create a [Stripe Pricing Table](https://dashboard.stripe.com/test/pricing-tables) and replace the script @/components/stripe/StripeTable.tsx with your own values. It should look like this:
 
-   ```bash
-   npm run dev
-   ```
+```js
+<stripe-pricing-table
+  pricing-table-id="your-stripe-pricing-table-id"
+  publishable-key="your-stripe-publishable-key"
+  client-reference-id={user.id}
+  customer-email={user.email}
+></stripe-pricing-table>
+```
 
-   For yarn:
+Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
 
-   ```bash
-   yarn dev
-   ```
+To create them go on the Stripe dashboard, search for Product Catalog and then click on the add product button on the top right of the screen. You will need to create 3 products, one for each credit package as shown in the images before. We set them to One time payments, but you can change that if you want to and you can set the price too. After creating the products make sure to update the variables in the .env.local [your-stripe-price-id-one-credit, your-stripe-price-id-three-credit, your-stripe-price-id-five-credit] with their respective price ids, each price id is found in the product page at the bottom.
 
-### 10. Visit `http://localhost:3000` in your browser to see the running app.
+### 10. Start the development server:
+
+For npm:
+
+```bash
+npm run dev
+```
+
+For yarn:
+
+```bash
+yarn dev
+```
+
+### 11. Visit `http://localhost:3000` in your browser to see the running app.
 
 ## One-Click Deploy
 

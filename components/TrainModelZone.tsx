@@ -22,6 +22,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { FaFemale, FaImages, FaMale, FaRainbow } from "react-icons/fa";
 import * as z from "zod";
 import { fileUploadFormSchema } from "@/types/zod";
+import { upload } from "@vercel/blob/client";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
@@ -43,7 +44,7 @@ export default function TrainModelZone() {
 
   const onSubmit: SubmitHandler<FormInput> = () => {
     trainModel();
-  }
+  };
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -107,15 +108,34 @@ export default function TrainModelZone() {
 
   const trainModel = useCallback(async () => {
     setIsLoading(true);
-    const formData = new FormData();
-    files?.forEach((file) => {
-      formData.append("image", file); // Add the image Blob to the form data
-    });
-    formData.append("name", form.getValues("name").trim());
-    formData.append("type", form.getValues("type"));
+    // Upload each file to Vercel blob and store the resulting URLs
+    const blobUrls = [];
+
+    if (files) {
+      for (const file of files) {
+        const blob = await upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/leap/train-model/image-upload",
+        });
+        blobUrls.push(blob.url);
+      }
+    }
+
+    // console.log(blobUrls, "blobUrls");
+
+    const payload = {
+      urls: blobUrls,
+      name: form.getValues("name").trim(),
+      type: form.getValues("type"),
+    };
+
+    // Send the JSON payload to the "/leap/train-model" endpoint
     const response = await fetch("/leap/train-model", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
 
     setIsLoading(false);
@@ -127,16 +147,16 @@ export default function TrainModelZone() {
       const messageWithButton = (
         <div className="flex flex-col gap-4">
           {responseMessage}
-          <a href="/get-credits" >
-            <Button size="sm">
-              Get Credits
-            </Button>
+          <a href="/get-credits">
+            <Button size="sm">Get Credits</Button>
           </a>
         </div>
       );
       toast({
         title: "Something went wrong!",
-        description: responseMessage.includes("Not enough credits") ? messageWithButton : responseMessage,
+        description: responseMessage.includes("Not enough credits")
+          ? messageWithButton
+          : responseMessage,
         duration: 5000,
       });
       return;
@@ -296,7 +316,8 @@ export default function TrainModelZone() {
           )}
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Train Model {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
+            Train Model{" "}
+            {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
           </Button>
         </form>
       </Form>
