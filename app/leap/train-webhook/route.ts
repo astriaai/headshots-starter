@@ -160,10 +160,10 @@ export async function POST(request: Request) {
       let allImages = [] as string[];
       for (let step in output) {
         if (
-          output[step].hasOwnProperty("images") &&
-          Array.isArray(output[step].images)
+          output[step].hasOwnProperty("headshots") &&
+          Array.isArray(output[step].headshots)
         ) {
-          allImages = allImages.concat(output[step].images);
+          allImages = allImages.concat(output[step].headshots);
         }
       }
       // console.log(allImages, "allImages");
