@@ -157,16 +157,7 @@ export async function POST(request: Request) {
         console.error({ modelUpdated });
       }
 
-      let allImages = [] as string[];
-      for (let step in output) {
-        if (
-          output[step].hasOwnProperty("headshots") &&
-          Array.isArray(output[step].headshots)
-        ) {
-          allImages = allImages.concat(output[step].headshots);
-        }
-      }
-      // console.log(allImages, "allImages");
+      let allImages: string[] = output.headshots
 
       const modelId = modelUpdated[0].id;
 
