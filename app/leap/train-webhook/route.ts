@@ -157,7 +157,11 @@ export async function POST(request: Request) {
         console.error({ modelUpdated });
       }
 
-      let allImages: string[] = output.headshots
+      // This is a long string with concatened image URLS
+      const headshotsUrl = output.headshots;
+
+      // We grab each image URL and split it into an array
+      let allImages: string[] = headshotsUrl.split(",");
 
       const modelId = modelUpdated[0].id;
 
