@@ -12,13 +12,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: any) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body className="flex flex-col min-h-screen">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem = {true}
-        >
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <section>
             <Suspense
               fallback={
