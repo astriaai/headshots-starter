@@ -12,7 +12,7 @@ This project was built to give developers & makers a great starting point into b
 
 Click **[here](http://www.youtube.com/watch?v=vV5Ig8uZmZI)** to watch the full tutorial 👇
 
-[![Watch the video](http://img.youtube.com/vi/vV5Ig8uZmZI/hqdefault.jpg)](http://www.youtube.com/watch?v=vV5Ig8uZmZI)
+[![Watch the video](/public/video_tutorial.png)](http://www.youtube.com/watch?v=vV5Ig8uZmZI)
 
 ## How It Works
 
