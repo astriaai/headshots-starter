@@ -159,10 +159,10 @@ export async function POST(request: Request) {
 
       // Here we join all of the arrays into one.
       const allHeadshots = [
-        ...output.headshots_part_1,
-        ...output.headshots_part_2,
-        ...output.headshots_part_3,
-        ...output.headshots_part_4,
+        ...(output.headshots_part_1 ?? []),
+        ...(output.headshots_part_2 ?? []),
+        ...(output.headshots_part_3 ?? []),
+        ...(output.headshots_part_4 ?? []),
       ];
 
       console.log({ allHeadshots });
