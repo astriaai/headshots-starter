@@ -46,6 +46,7 @@
     "lucide-react": "^0.274.0",
     "next": "13.4",
     "next-multipart": "^0.5.1",
+    "next-themes": "^0.2.1",
     "node-fetch": "2",
     "postcss": "8.4.24",
     "react": "^18.2.0",

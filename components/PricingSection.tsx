@@ -3,9 +3,9 @@ import { Button } from "./ui/button";
 
 export default function PricingSection() {
   return (
-    <div className="w-full max-w-6xl mt-16 mb-16 p-8 rounded-lg space-y-8">
-      <h2 className="text-3xl font-bold text-center mb-8">Pricing</h2>
-      <div className="flex flex-wrap justify-center lg:space-x-4 space-y-4 lg:space-y-0 items-stretch">
+    <div className="w-full max-w-6xl p-8 mt-16 mb-16 space-y-8 rounded-lg">
+      <h2 className="mb-8 text-3xl font-bold text-center">Pricing</h2>
+      <div className="flex flex-wrap items-stretch justify-center space-y-4 lg:space-x-4 lg:space-y-0">
         {pricingOptions.map((option, index) => (
           <div
             key={index}
@@ -15,13 +15,13 @@ export default function PricingSection() {
               <h3 className="text-2xl font-semibold text-center">
                 {option.title}
               </h3>
-              <p className="text-xl font-bold text-center mb-2">
+              <p className="mb-2 text-xl font-bold text-center">
                 {option.price}
               </p>
-              <p className="text-sm text-gray-600 text-center">
+              <p className="text-sm text-center text-gray-600 dark:text-gray-400">
                 {option.description}
               </p>
-              <ul className="space-y-2 mb-4 pl-4">
+              <ul className="pl-4 mb-4 space-y-2">
                 {option.features.map((feature, fIndex) => (
                   <li key={fIndex} className="flex items-center space-x-2">
                     <span className="text-green-500">✔</span>
@@ -53,7 +53,7 @@ const pricingOptions = [
       "4 AI Headshots",
     ],
     buttonText: "Choose Starter",
-    bgColor: "bg-white",
+    bgColor: "bg-white dark:bg-gray-800",
   },
   {
     title: "Basic",
@@ -64,7 +64,7 @@ const pricingOptions = [
       "12 AI Headshots",
     ],
     buttonText: "Choose Basic",
-    bgColor: "bg-blue-50",
+    bgColor: "bg-blue-50 dark:bg-gray-700",
   },
   {
     title: "Premium",
@@ -74,6 +74,6 @@ const pricingOptions = [
       "20 AI Headshots",
     ],
     buttonText: "Choose Premium",
-    bgColor: "bg-white",
+    bgColor: "bg-white dark:bg-gray-800",
   },
 ];
