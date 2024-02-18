@@ -97,6 +97,10 @@ Site URL: https://headshots-starter.vercel.app
 
 Redirect URL: https://headshots-starter.vercel.app/**
 
+For signup:
+
+To make sure sign up works through the supabase "Confirm signup" tab. Add "/auth/callback" after {{ .ConfirmationURL }} like href="{{ .ConfirmationURL }}/auth/callback" so the project catches the sign up route in the right callback.
+
 ### 6. Create a [Leap AI](https://tryleap.ai/) account
 
 In your Leap Workflows dashboard, clone the `Headshot Generator` template, then publish the workflow.
