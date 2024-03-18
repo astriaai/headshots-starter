@@ -157,16 +157,20 @@ export async function POST(request: Request) {
         console.error({ modelUpdated });
       }
 
-      // This is a long string with concatened image URLS
-      const headshotsUrl = output.headshots;
+      // Here we join all of the arrays into one.
+      const allHeadshots = [
+        ...output.headshots_part_1,
+        ...output.headshots_part_2,
+        ...output.headshots_part_3,
+        ...output.headshots_part_4,
+      ];
 
-      // We grab each image URL and split it into an array
-      let allImages: string[] = headshotsUrl.split(",");
+      console.log({ allHeadshots });
 
       const modelId = modelUpdated[0].id;
 
       await Promise.all(
-        allImages.map(async (image) => {
+        allHeadshots.map(async (image) => {
           const { error: imageError } = await supabase.from("images").insert({
             modelId: Number(modelId),
             uri: image,
