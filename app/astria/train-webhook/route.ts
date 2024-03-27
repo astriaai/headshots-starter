@@ -8,10 +8,8 @@ export const dynamic = "force-dynamic";
 const resendApiKey = process.env.RESEND_API_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const leapApiKey = process.env.LEAP_API_KEY;
-// For local development, recommend using an Ngrok tunnel for the domain
-const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
-const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+
+const appWebhookSecret = process.env.APP_WEBHOOK_SECRET;
 
 if (!resendApiKey) {
   console.warn(
@@ -27,35 +25,30 @@ if (!supabaseServiceRoleKey) {
   throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
 }
 
-if (!leapWebhookSecret) {
-  throw new Error("MISSING LEAP_WEBHOOK_SECRET!");
+if (!appWebhookSecret) {
+  throw new Error("MISSING APP_WEBHOOK_SECRET!");
 }
 
 export async function POST(request: Request) {
-  const incomingData = await request.json();
-  // console.log(incomingData, "train model webhook incomingData");
+  type TuneData = {
+    id: number;
+    title: string;
+    name: string;
+    steps: null;
+    trained_at: null;
+    started_training_at: null;
+    created_at: string;
+    updated_at: string;
+    expires_at: null;
+  };
 
-  const { output } = incomingData;
-  // console.log(output, "train model webhook result");
+  const incomingData = (await request.json()) as { tune: TuneData };
 
-  const workflowRunId = incomingData.id;
-  // console.log(workflowRunId, "workflowRunId");
+  const { tune } = incomingData;
 
   const urlObj = new URL(request.url);
   const user_id = urlObj.searchParams.get("user_id");
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
-  const model_type = urlObj.searchParams.get("model_type");
-
-  if (!leapApiKey) {
-    return NextResponse.json(
-      {
-        message: "Missing API Key: Add your Leap API Key to generate headshots",
-      },
-      {
-        status: 500,
-      }
-    );
-  }
 
   if (!webhook_secret) {
     return NextResponse.json(
@@ -66,7 +59,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (webhook_secret.toLowerCase() !== leapWebhookSecret?.toLowerCase()) {
+  if (webhook_secret.toLowerCase() !== appWebhookSecret?.toLowerCase()) {
     return NextResponse.json(
       {
         message: "Unauthorized!",
@@ -120,124 +113,44 @@ export async function POST(request: Request) {
   }
 
   try {
-    if (incomingData.status === "completed") {
-      // Send Email
-      if (resendApiKey) {
-        const resend = new Resend(resendApiKey);
-        await resend.emails.send({
-          from: "noreply@headshots.tryleap.ai",
-          to: user?.email ?? "",
-          subject: "Your model was successfully trained!",
-          html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,
-        });
-      }
+    if (resendApiKey) {
+      const resend = new Resend(resendApiKey);
+      await resend.emails.send({
+        from: "noreply@headshots.tryleap.ai",
+        to: user?.email ?? "",
+        subject: "Your model was successfully trained!",
+        html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,
+      });
+    }
 
-      const { data: modelUpdated, error: modelUpdatedError } = await supabase
-        .from("models")
-        .update({
-          status: "finished",
-        })
-        .eq("modelId", workflowRunId)
-        .select();
+    const { data: modelUpdated, error: modelUpdatedError } = await supabase
+      .from("models")
+      .update({
+        status: "finished",
+      })
+      .eq("modelId", tune.id)
+      .select();
 
-      if (modelUpdatedError) {
-        console.error({ modelUpdatedError });
-        return NextResponse.json(
-          {
-            message: "Something went wrong!",
-          },
-          { status: 500 }
-        );
-      }
-
-      if (!modelUpdated) {
-        console.error("No model updated!");
-        console.error({ modelUpdated });
-      }
-
-      // Here we join all of the arrays into one.
-      const allHeadshots = [
-        ...output.headshots_part_1,
-        ...output.headshots_part_2,
-        ...output.headshots_part_3,
-        ...output.headshots_part_4,
-      ];
-
-      console.log({ allHeadshots });
-
-      const modelId = modelUpdated[0].id;
-
-      await Promise.all(
-        allHeadshots.map(async (image) => {
-          const { error: imageError } = await supabase.from("images").insert({
-            modelId: Number(modelId),
-            uri: image,
-          });
-          if (imageError) {
-            console.error({ imageError });
-          }
-        })
-      );
+    if (modelUpdatedError) {
+      console.error({ modelUpdatedError });
       return NextResponse.json(
         {
-          message: "success",
+          message: "Something went wrong!",
         },
-        { status: 200, statusText: "Success" }
+        { status: 500 }
       );
-    } else {
-      // Send Email
-      if (resendApiKey) {
-        const resend = new Resend(resendApiKey);
-        await resend.emails.send({
-          from: "noreply@headshots.tryleap.ai",
-          to: user?.email ?? "",
-          subject: "Your model failed to train!",
-          html: `<h2>We're writing to notify you that your model training failed!. Since this failed, you will not be billed for it</h2>`,
-        });
-      }
-
-      // Update model status to failed.
-      await supabase
-        .from("models")
-        .update({
-          status: "failed",
-        })
-        .eq("modelId", workflowRunId);
-
-      if (stripeIsConfigured) {
-        // Refund the user.
-        const { data } = await supabase
-          .from("credits")
-          .select("*")
-          .eq("user_id", user.id)
-          .single();
-        const credits = data!.credits;
-
-        // We are adding a credit back to the user, since we charged them for the model training earlier. Since it failed we need to refund it.
-        const addCredit = credits + 1;
-        const { error: updateCreditError } = await supabase
-          .from("credits")
-          .update({ credits: addCredit })
-          .eq("user_id", user.id);
-
-        if (updateCreditError) {
-          console.error({ updateCreditError });
-          return NextResponse.json(
-            {
-              message: "Something went wrong!",
-            },
-            { status: 500 }
-          );
-        }
-
-        console.log("Refunded user 1 credit! User Id: ", user.id);
-      }
     }
+
+    if (!modelUpdated) {
+      console.error("No model updated!");
+      console.error({ modelUpdated });
+    }
+
     return NextResponse.json(
       {
         message: "success",
       },
-      { status: 200 }
+      { status: 200, statusText: "Success" }
     );
   } catch (e) {
     console.error(e);

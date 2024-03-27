@@ -57,7 +57,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.46.1",
     "react-icons": "^4.11.0",
-    "resend": "^1.0.0",
+    "resend": "^3.2.0",
     "stripe": "^13.6.0",
     "supports-color": "^9.4.0",
     "tailwind-merge": "^1.14.0",
