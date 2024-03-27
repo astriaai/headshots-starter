@@ -115,7 +115,7 @@ export default function TrainModelZone() {
       for (const file of files) {
         const blob = await upload(file.name, file, {
           access: "public",
-          handleUploadUrl: "/leap/train-model/image-upload",
+          handleUploadUrl: "/astria/train-model/image-upload",
         });
         blobUrls.push(blob.url);
       }
@@ -129,8 +129,8 @@ export default function TrainModelZone() {
       type: form.getValues("type"),
     };
 
-    // Send the JSON payload to the "/leap/train-model" endpoint
-    const response = await fetch("/leap/train-model", {
+    // Send the JSON payload to the "/astria/train-model" endpoint
+    const response = await fetch("/astria/train-model", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

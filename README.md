@@ -34,7 +34,8 @@ The app is powered by:
 
 To create your own Headshot AI app, follow these steps:
 
-> **Note**<br/>Training models is only available on paid plans. You'll need an active [Astria plan](<[url](https://www.astria.ai/pricing)>) to train models.
+**Note**
+Training models is only available on paid plans. You'll need an active [Astria API Key](<[url](https://www.astria.ai/pricing)>) to train models.
 
 ### 1. Vercel template
 
@@ -106,7 +107,7 @@ In your `.env.local` file:
 - Fill in `your_api_key` with your [Leap API key](https://alpha.tryleap.ai)
 - Fill in `your-workflow-id` with your [Leap workflowId](https://alpha.tryleap.ai) after publishing your Headshot Generator template.
 - Fill in `your-webhook-secret` with any arbitrary URL friendly string eg.`shadf892yr398hq23h`
-- Fill in `your-vercel-url` with a url to catch webhooks from Leap. This will be your vercel deployment url or Ngrok tunnel locally (eg. https://{your-hosted-url}/leap/train-webhook)
+- Fill in `your-vercel-url` with a url to catch webhooks from Astria. This will be your vercel deployment url or Ngrok tunnel locally (eg. https://{your-hosted-url}/astria/train-webhook)
 - Fill in `your-blob-read-write-token` with your Vercel Blob token (steps below)
 
 ### 7. Configure [Vercel Blob](https://vercel.com/docs/storage/vercel-blob/quickstart#client-uploads) for image uploads

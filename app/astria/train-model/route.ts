@@ -2,13 +2,12 @@ import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { Leap } from "@leap-ai/workflows";
 
 export const dynamic = "force-dynamic";
 
 const leapApiKey = process.env.LEAP_API_KEY;
 // For local development, recommend using an Ngrok tunnel for the domain
-const webhookUrl = `https://${process.env.VERCEL_URL}/leap/train-webhook`;
+const webhookUrl = `https://${process.env.VERCEL_URL}/astria/train-webhook`;
 const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
@@ -40,7 +39,8 @@ export async function POST(request: Request) {
   if (!leapApiKey) {
     return NextResponse.json(
       {
-        message: "Missing API Key: Add your Leap API Key to generate headshots",
+        message:
+          "Missing API Key: Add your Astria API Key to generate headshots",
       },
       {
         status: 500,
