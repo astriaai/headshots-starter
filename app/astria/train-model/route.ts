@@ -1,19 +1,20 @@
 import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import axios from "axios";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { Leap } from "@leap-ai/workflows";
 
 export const dynamic = "force-dynamic";
 
-const leapApiKey = process.env.LEAP_API_KEY;
+const astriaApiKey = process.env.ASTRIA_API_KEY;
+const astriaTestModeIsOn = process.env.ASTRIA_TEST_MODE === "true";
 // For local development, recommend using an Ngrok tunnel for the domain
-const webhookUrl = `https://${process.env.VERCEL_URL}/leap/train-webhook`;
-const leapWebhookSecret = process.env.LEAP_WEBHOOK_SECRET;
+
+const appWebhookSecret = process.env.APP_WEBHOOK_SECRET;
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
-if (!leapWebhookSecret) {
-  throw new Error("MISSING LEAP_WEBHOOK_SECRET!");
+if (!appWebhookSecret) {
+  throw new Error("MISSING APP_WEBHOOK_SECRET!");
 }
 
 export async function POST(request: Request) {
@@ -37,10 +38,11 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!leapApiKey) {
+  if (!astriaApiKey) {
     return NextResponse.json(
       {
-        message: "Missing API Key: Add your Leap API Key to generate headshots",
+        message:
+          "Missing API Key: Add your Astria API Key to generate headshots",
       },
       {
         status: 500,
@@ -115,24 +117,49 @@ export async function POST(request: Request) {
   }
 
   try {
-    const webhookUrlString = `${webhookUrl}?user_id=${user.id}&webhook_secret=${leapWebhookSecret}&model_type=${type}`;
+    const trainWebhook = `https://${process.env.VERCEL_URL}/astria/train-webhook`;
+    const trainWenhookWithParams = `${trainWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
 
-    const leap = new Leap({
-      apiKey: leapApiKey,
-    });
+    const promptWebhook = `https://${process.env.VERCEL_URL}/astria/prompt-webhook`;
+    const promptWebhookWithParams = `${promptWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
 
-    const response = await leap.workflowRuns.workflow({
-      workflow_id: process.env.LEAP_WORKFLOW_ID as string,
-      webhook_url: webhookUrlString,
-      input: {
-        title: name, // title of the model
-        name: type, // name of the model type
+    const API_KEY = astriaApiKey;
+    const DOMAIN = "https://api.astria.ai";
+
+    const body = {
+      tune: {
+        title: name,
+        // Hard coded tune id of Realistic Vision v5.1 from the gallery - https://www.astria.ai/gallery/tunes
+        // https://www.astria.ai/gallery/tunes/690204/prompts
+        base_tune_id: 690204,
+        name: type,
+        branch: astriaTestModeIsOn ? "fast" : "sd15",
+        token: "ohwx",
         image_urls: images,
+        callback: trainWenhookWithParams,
+        prompts_attributes: [
+          {
+            text: `portrait of ohwx ${type} wearing a business suit, professional photo, white background, Amazing Details, Best Quality, Masterpiece, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens`,
+            callback: promptWebhookWithParams,
+            num_images: 8,
+          },
+          {
+            text: `8k close up linkedin profile picture of ohwx ${type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window`,
+            callback: promptWebhookWithParams,
+            num_images: 8,
+          },
+        ],
+      },
+    };
+
+    const response = await axios.post(DOMAIN + "/tunes", body, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
       },
     });
 
-    const { status, statusText, data: workflowResponse } = response;
-    // console.log("workflows response: ", workflowResponse);
+    const { status, statusText, data: tune } = response;
 
     if (status !== 201) {
       console.error({ status });
@@ -157,7 +184,7 @@ export async function POST(request: Request) {
     const { error: modelError, data } = await supabase
       .from("models")
       .insert({
-        modelId: workflowResponse.id, // store workflowRunId field to retrieve workflow object if needed later
+        modelId: tune.id, // store tune Id field to retrieve workflow object if needed later
         user_id: user.id,
         name,
         type,

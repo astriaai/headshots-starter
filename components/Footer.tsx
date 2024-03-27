@@ -14,10 +14,10 @@ export default function Footer() {
         powered by{" "}
         <Link
           className="text-blue-600 hover:underline font-bold"
-          href="https://tryleap.ai/"
+          href="https://www.astria.ai/"
           target="_blank"
         >
-          Leap AI,{" "}
+          Astria,{" "}
         </Link>
         <Link
           className="text-blue-600 hover:underline font-bold"
@@ -47,7 +47,7 @@ export default function Footer() {
       </div>
       <div className="flex space-x-4 pb-4 sm:pb-0">
         <Link
-          href="https://twitter.com/leap_api"
+          href="https://twitter.com/Astria_AI"
           className="group"
           aria-label="Twitter"
           target="_blank"
