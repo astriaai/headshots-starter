@@ -8,12 +8,6 @@ This project was built to give developers & makers a great starting point into b
 
 [![Headshot AI Demo](/public/demo.png)](https://headshots-starter.vercel.app/)
 
-## Video tutorial
-
-Click **[here](http://www.youtube.com/watch?v=vV5Ig8uZmZI)** to watch the full tutorial 👇
-
-[![Watch the video](/public/video_tutorial.png)](http://www.youtube.com/watch?v=vV5Ig8uZmZI)
-
 ## How It Works
 
 Live demo **[here](https://getheadshots.ai)**.
