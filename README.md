@@ -1,6 +1,6 @@
 # 👨‍💼 [Headshot AI](https://headshots-starter.vercel.app/) - Professional Headshots with AI
 
-Introducing Headshot AI, an open-source project from [Leap AI](https://tryleap.ai/) that generates Professional AI Headshots in minutes.
+Introducing Headshot AI, an open-source project from [Astria](https://www.astria.ai/) that generates Professional AI Headshots in minutes.
 
 This project was built to give developers & makers a great starting point into building AI applications. This is your launch pad - fork the code, modify it, and make it your own to build a popular AI SaaS app.
 
@@ -20,7 +20,7 @@ Live demo **[here](https://getheadshots.ai)**.
 
 The app is powered by:
 
-- 🚀 [Leap AI](https://tryleap.ai/) for AI model training & inference
+- 🚀 [Astria](https://www.astria.ai/) for AI model training & inference
 - ▲ [Next.js](https://nextjs.org/) for app and landing page
 - 🔋 [Supabase](https://supabase.com/) for DB & Auth
 - 📩 [Resend](https://resend.com/) (optional) to email user when headshots are ready
@@ -28,13 +28,13 @@ The app is powered by:
 - ▲ [Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=LEAP_API_KEY,LEAP_WEBHOOK_SECRET,LEAP_WORKFLOW_ID&envDescription=Set%20up%20environment%20variables%20for%20Leap%20AI%20and%20redirect%20URL%20in%20Supabase%20Auth%20dashboard.%20See%20.env.local.example%20for%20full%20config%20with%20Resend%20and%20Stripe.&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&project-name=headshots-starter-clone&repository-name=headshots-starter-clone&demo-title=AI%20Headshot%20Generator&demo-description=A%20Professional%20AI%20headshot%20generator%20starter%20kit%20powered%20by%20Next.js%2C%20Leap%20AI%2C%20and%20Vercel&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&demo-image=https%3A%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain) for deployments
 - 💳 [Stripe](https://stripe.com/) for billing
 
-[![Headshot AI Explainer](/public/explainer.png)](https://tryleap.ai/)
+[![Headshot AI Explainer](/public/explainer.png)](https://www.astria.ai/)
 
 ## Running Locally
 
 To create your own Headshot AI app, follow these steps:
 
-> **Note**<br/>Training models is only available on paid plans. You'll need an active [Leap AI plan](<[url](https://tryleap.ai/pricing)>) to train models.
+> **Note**<br/>Training models is only available on paid plans. You'll need an active [Astria plan](<[url](https://www.astria.ai/pricing)>) to train models.
 
 ### 1. Vercel template
 
@@ -97,7 +97,7 @@ Site URL: https://headshots-starter.vercel.app
 
 Redirect URL: https://headshots-starter.vercel.app/**
 
-### 6. Create a [Leap AI](https://tryleap.ai/) account
+### 6. Create a [Astria](https://www.astria.ai/) account
 
 In your Leap Workflows dashboard, clone the `Headshot Generator` template, then publish the workflow.
 
@@ -212,28 +212,28 @@ For more information on how to improve quality, read the blog [here](https://blo
 
 ## Additional Use-Cases
 
-Headshot AI can be easily adapted to support many other use-cases of [Leap AI](https://tryleap.ai/) including:
+Headshot AI can be easily adapted to support many other use-cases of [Astria](https://www.astria.ai/) including:
 
 - AI Avatars
   - [Anime](https://blog.tryleap.ai/transforming-images-into-anime-with-leap-ai/)
   - [Portraits](https://blog.tryleap.ai/ai-time-machine-images-a-glimpse-into-the-future-with-leap-ai/)
   - [Story Illustrations](https://blog.tryleap.ai/novel-ai-image-generator-using-leap-ai-a-comprehensive-guide/)
 
-[![Anime AI Demo](/public/anime.png)](https://tryleap.ai/)
+[![Anime AI Demo](/public/anime.png)](https://www.astria.ai/)
 
 - Pet Portraits
 
-[![Pet AI Demo](/public/pet.png)](https://tryleap.ai/)
+[![Pet AI Demo](/public/pet.png)](https://www.astria.ai/)
 
 - Product Shots
 - Food Photography
 
-[![Product AI Demo](/public/products.png)](https://tryleap.ai/)
+[![Product AI Demo](/public/products.png)](https://www.astria.ai/)
 
 - Icons
 - [Style-Consistent Assets](https://blog.tryleap.ai/how-to-generate-style-consistent-assets-finetuning-on-leap/)
 
-[![Icons AI Demo](/public/icons.png)](https://tryleap.ai/)
+[![Icons AI Demo](/public/icons.png)](https://www.astria.ai/)
 
 & more!
 
