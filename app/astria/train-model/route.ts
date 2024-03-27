@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const astriaApiKey = process.env.ASTRIA_API_KEY;
+const astriaTestModeIsOn = process.env.ASTRIA_TEST_MODE === "true";
 // For local development, recommend using an Ngrok tunnel for the domain
 
 const appWebhookSecret = process.env.APP_WEBHOOK_SECRET;
@@ -132,18 +133,20 @@ export async function POST(request: Request) {
         // https://www.astria.ai/gallery/tunes/690204/prompts
         base_tune_id: 690204,
         name: type,
-        branch: "fast",
+        branch: astriaTestModeIsOn ? "fast" : "sd15",
         token: "ohwx",
         image_urls: images,
         callback: trainWenhookWithParams,
         prompts_attributes: [
           {
-            text: `ohwx ${type} in space circa 1979 French illustration`,
+            text: `portrait of ohwx ${type} wearing a business suit, professional photo, white background, Amazing Details, Best Quality, Masterpiece, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens`,
             callback: promptWebhookWithParams,
+            num_images: 8,
           },
           {
-            text: `ohwx ${type} getting into trouble viral meme`,
+            text: `8k close up linkedin profile picture of ohwx ${type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window`,
             callback: promptWebhookWithParams,
+            num_images: 8,
           },
         ],
       },
