@@ -81,7 +81,7 @@ In your supabase [dashboard](https://supabase.com/dashboard/), select newly crea
 ```
 <h2>Magic Link</h2>
 <p>Follow this link to login:</p>
-<p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Log In</a></p>
+<p><a href="{{ .ConfirmationURL }}">Log In</a></p>
 ```
 
 Then, make sure to setup your site URL and redirect urls in the supabase dashboard under Authentication -> URL Configuration.
