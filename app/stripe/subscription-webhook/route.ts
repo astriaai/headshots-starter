@@ -150,7 +150,7 @@ export async function POST(request: Request) {
           console.log(error);
           return NextResponse.json(
             {
-              message: `Error updating credits: ${error}\n ${data}`,
+              message: `Error updating credits: ${JSON.stringify(error)}. data=${data}`,
             },
             {
               status: 400,
