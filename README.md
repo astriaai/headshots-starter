@@ -101,6 +101,8 @@ In your `.env.local` file:
 - Fill in `your-vercel-url` with a url to catch webhooks from Astria. This will be your vercel deployment url or Ngrok tunnel locally (eg. https://{your-hosted-url}/astria/train-webhook)
 - Fill in `your-blob-read-write-token` with your Vercel Blob token (steps below)
 
+If your production webhook callbacks do not seem to be working, make sure the callback URL is not of a Vercel dedicated branch deployment which requires authentication, in which case you will not see the callback in the logs.
+
 ### 7. Configure [Vercel Blob](https://vercel.com/docs/storage/vercel-blob/quickstart#client-uploads) for image uploads
 
 In your Vercel project, create a [Blob store](https://vercel.com/docs/storage/vercel-blob/quickstart#create-a-blob-store)
@@ -236,7 +238,6 @@ If you want to contribute to the codebase make sure you create a new branch and 
 
 ## Resources and Support
 
-- Discord Community: [Astria Discord](https://discord.gg/MtW9gBgsMX)
 - Help Email: support@astria.ai
 
 ## License
