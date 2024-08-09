@@ -20,7 +20,7 @@ type ModelsTableProps = {
   models: modelRowWithSamples[];
 };
 
-export default async function ModelsTable({ models }: ModelsTableProps) {
+export default function ModelsTable({ models }: ModelsTableProps) {
   const router = useRouter();
   const handleRedirect = (id: number) => {
     router.push(`/overview/models/${id}`);
