@@ -113,16 +113,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    if (resendApiKey) {
-      const resend = new Resend(resendApiKey);
-      await resend.emails.send({
-        from: "noreply@headshots.tryleap.ai",
-        to: user?.email ?? "",
-        subject: "Your model was successfully trained!",
-        html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,
-      });
-    }
-
     const { data: modelUpdated, error: modelUpdatedError } = await supabase
       .from("models")
       .update({
@@ -144,6 +134,16 @@ export async function POST(request: Request) {
     if (!modelUpdated) {
       console.error("No model updated!");
       console.error({ modelUpdated });
+    }
+
+    if (resendApiKey) {
+      const resend = new Resend(resendApiKey);
+      await resend.emails.send({
+        from: "noreply@losefatwithai.com",
+        to: user?.email ?? "",
+        subject: "Your model was successfully trained!",
+        html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account. View it here: https://www.losefatwithai.com/overview</h2>`,
+      });
     }
 
     return NextResponse.json(
