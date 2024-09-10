@@ -10,6 +10,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "eslint --fix \"./**/*.{ts,tsx,js,jsx}\"",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\"",
     "update-types": "npx supabase gen types typescript --project-id \"hzcgbsakzagvgfuektjb\" > types/supabase.ts"
   },
   "dependencies": {
@@ -72,6 +74,13 @@
     "@types/node": "20.3.1",
     "@types/react": "18.2.12",
     "@types/react-dom": "18.2.5",
-    "encoding": "^0.1.13"
-  }
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "encoding": "^0.1.13",
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -1,0 +1,22 @@
+{
+  "tabWidth": 2,
+  "printWidth": 100,
+  "singleQuote": true,
+  "endOfLine": "lf",
+  "semi": true,
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": "*.ts",
+      "options": {
+        "parser": "typescript"
+      }
+    }
+  ]
+}
