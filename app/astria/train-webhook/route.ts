@@ -1,9 +1,9 @@
-import { Database } from "@/types/supabase";
-import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { Database } from '@/types/supabase';
+import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -13,20 +13,20 @@ const appWebhookSecret = process.env.APP_WEBHOOK_SECRET;
 
 if (!resendApiKey) {
   console.warn(
-    "We detected that the RESEND_API_KEY is missing from your environment variables. The app should still work but email notifications will not be sent. Please add your RESEND_API_KEY to your environment variables if you want to enable email notifications."
+    'We detected that the RESEND_API_KEY is missing from your environment variables. The app should still work but email notifications will not be sent. Please add your RESEND_API_KEY to your environment variables if you want to enable email notifications.',
   );
 }
 
 if (!supabaseUrl) {
-  throw new Error("MISSING NEXT_PUBLIC_SUPABASE_URL!");
+  throw new Error('MISSING NEXT_PUBLIC_SUPABASE_URL!');
 }
 
 if (!supabaseServiceRoleKey) {
-  throw new Error("MISSING SUPABASE_SERVICE_ROLE_KEY!");
+  throw new Error('MISSING SUPABASE_SERVICE_ROLE_KEY!');
 }
 
 if (!appWebhookSecret) {
-  throw new Error("MISSING APP_WEBHOOK_SECRET!");
+  throw new Error('MISSING APP_WEBHOOK_SECRET!');
 }
 
 export async function POST(request: Request) {
@@ -47,47 +47,43 @@ export async function POST(request: Request) {
   const { tune } = incomingData;
 
   const urlObj = new URL(request.url);
-  const user_id = urlObj.searchParams.get("user_id");
-  const webhook_secret = urlObj.searchParams.get("webhook_secret");
+  const user_id = urlObj.searchParams.get('user_id');
+  const webhook_secret = urlObj.searchParams.get('webhook_secret');
 
   if (!webhook_secret) {
     return NextResponse.json(
       {
-        message: "Malformed URL, no webhook_secret detected!",
+        message: 'Malformed URL, no webhook_secret detected!',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   if (webhook_secret.toLowerCase() !== appWebhookSecret?.toLowerCase()) {
     return NextResponse.json(
       {
-        message: "Unauthorized!",
+        message: 'Unauthorized!',
       },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
   if (!user_id) {
     return NextResponse.json(
       {
-        message: "Malformed URL, no user_id detected!",
+        message: 'Malformed URL, no user_id detected!',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
-  const supabase = createClient<Database>(
-    supabaseUrl as string,
-    supabaseServiceRoleKey as string,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-        detectSessionInUrl: false,
-      },
-    }
-  );
+  const supabase = createClient<Database>(supabaseUrl as string, supabaseServiceRoleKey as string, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
+  });
 
   const {
     data: { user },
@@ -99,66 +95,66 @@ export async function POST(request: Request) {
       {
         message: error.message,
       },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
   if (!user) {
     return NextResponse.json(
       {
-        message: "Unauthorized",
+        message: 'Unauthorized',
       },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
   try {
     const { data: modelUpdated, error: modelUpdatedError } = await supabase
-      .from("models")
+      .from('models')
       .update({
-        status: "finished",
+        status: 'finished',
       })
-      .eq("modelId", tune.id)
+      .eq('modelId', tune.id)
       .select();
 
     if (modelUpdatedError) {
       console.error({ modelUpdatedError });
       return NextResponse.json(
         {
-          message: "Something went wrong!",
+          message: 'Something went wrong!',
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     if (!modelUpdated) {
-      console.error("No model updated!");
+      console.error('No model updated!');
       console.error({ modelUpdated });
     }
 
     if (resendApiKey) {
       const resend = new Resend(resendApiKey);
       await resend.emails.send({
-        from: "noreply@losefatwithai.com",
-        to: user?.email ?? "",
-        subject: "Your model was successfully trained!",
+        from: 'noreply@losefatwithai.com',
+        to: user?.email ?? '',
+        subject: 'Your model was successfully trained!',
         html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account. View it here: https://www.losefatwithai.com/overview</h2>`,
       });
     }
 
     return NextResponse.json(
       {
-        message: "success",
+        message: 'success',
       },
-      { status: 200, statusText: "Success" }
+      { status: 200, statusText: 'Success' },
     );
   } catch (e) {
     console.error(e);
     return NextResponse.json(
       {
-        message: "Something went wrong!",
+        message: 'Something went wrong!',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,6 +1,6 @@
-import blur from "/public/blur.png";
-import example from "/public/example.png";
-import result from "/public/result.png";
+import blur from '/public/blur.png';
+import example from '/public/example.png';
+import result from '/public/result.png';
 
 export default function ExplainerSection() {
   return (
@@ -16,8 +16,7 @@ export default function ExplainerSection() {
           <h3 className="text-2xl font-semibold">Upload your images</h3>
         </div>
         <p className="text-sm text-gray-600 text-center">
-          Upload 4+ high-quality selfies: front facing, 1 person in frame, no
-          glasses or hats.
+          Upload 4+ high-quality selfies: front facing, 1 person in frame, no glasses or hats.
         </p>
         <img
           src={example.src}

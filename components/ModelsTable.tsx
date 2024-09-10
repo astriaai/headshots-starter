@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Table,
@@ -7,14 +7,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
-import { Database } from "@/types/supabase";
-import { Icons } from "./icons";
-import { useRouter } from "next/navigation";
-import { modelRowWithSamples } from "@/types/utils";
+import { Database } from '@/types/supabase';
+import { Icons } from './icons';
+import { useRouter } from 'next/navigation';
+import { modelRowWithSamples } from '@/types/utils';
 
 type ModelsTableProps = {
   models: modelRowWithSamples[];
@@ -49,12 +49,10 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
                 <div>
                   <Badge
                     className="flex gap-2 items-center w-min"
-                    variant={
-                      model.status === "finished" ? "default" : "secondary"
-                    }
+                    variant={model.status === 'finished' ? 'default' : 'secondary'}
                   >
-                    {model.status === "processing" ? "training" : model.status }
-                    {model.status === "processing" && (
+                    {model.status === 'processing' ? 'training' : model.status}
+                    {model.status === 'processing' && (
                       <Icons.spinner className="h-4 w-4 animate-spin" />
                     )}
                   </Badge>
@@ -69,7 +67,7 @@ export default async function ModelsTable({ models }: ModelsTableProps) {
                     </Avatar>
                   ))}
                   {model.samples.length > 3 && (
-                    <Badge className="rounded-full h-10" variant={"outline"}>
+                    <Badge className="rounded-full h-10" variant={'outline'}>
                       +{model.samples.length - 3}
                     </Badge>
                   )}

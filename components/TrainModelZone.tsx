@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -9,24 +9,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useToast } from "@/components/ui/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { FaFemale, FaImages, FaMale, FaRainbow } from "react-icons/fa";
-import * as z from "zod";
-import { fileUploadFormSchema } from "@/types/zod";
-import { upload } from "@vercel/blob/client";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useToast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { FaFemale, FaImages, FaMale, FaRainbow } from 'react-icons/fa';
+import * as z from 'zod';
+import { fileUploadFormSchema } from '@/types/zod';
+import { upload } from '@vercel/blob/client';
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
-const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === 'true';
 
 export default function TrainModelZone() {
   const [files, setFiles] = useState<File[]>([]);
@@ -37,8 +37,8 @@ export default function TrainModelZone() {
   const form = useForm<FormInput>({
     resolver: zodResolver(fileUploadFormSchema),
     defaultValues: {
-      name: "",
-      type: "man",
+      name: '',
+      type: 'man',
     },
   });
 
@@ -49,16 +49,13 @@ export default function TrainModelZone() {
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       const newFiles: File[] =
-        acceptedFiles.filter(
-          (file: File) => !files.some((f) => f.name === file.name)
-        ) || [];
+        acceptedFiles.filter((file: File) => !files.some((f) => f.name === file.name)) || [];
 
       // if user tries to upload more than 10 files, display a toast
       if (newFiles.length + files.length > 10) {
         toast({
-          title: "Too many images",
-          description:
-            "You can only upload up to 10 images in total. Please try again.",
+          title: 'Too many images',
+          description: 'You can only upload up to 10 images in total. Please try again.',
           duration: 5000,
         });
         return;
@@ -67,9 +64,8 @@ export default function TrainModelZone() {
       // display a toast if any duplicate files were found
       if (newFiles.length !== acceptedFiles.length) {
         toast({
-          title: "Duplicate file names",
-          description:
-            "Some of the files you selected were already added. They were ignored.",
+          title: 'Duplicate file names',
+          description: 'Some of the files you selected were already added. They were ignored.',
           duration: 5000,
         });
       }
@@ -80,9 +76,8 @@ export default function TrainModelZone() {
 
       if (totalSize + newSize > 4.5 * 1024 * 1024) {
         toast({
-          title: "Images exceed size limit",
-          description:
-            "The total combined size of the images cannot exceed 4.5MB.",
+          title: 'Images exceed size limit',
+          description: 'The total combined size of the images cannot exceed 4.5MB.',
           duration: 5000,
         });
         return;
@@ -91,19 +86,19 @@ export default function TrainModelZone() {
       setFiles([...files, ...newFiles]);
 
       toast({
-        title: "Images selected",
-        description: "The images were successfully selected.",
+        title: 'Images selected',
+        description: 'The images were successfully selected.',
         duration: 5000,
       });
     },
-    [files]
+    [files],
   );
 
   const removeFile = useCallback(
     (file: File) => {
       setFiles(files.filter((f) => f.name !== file.name));
     },
-    [files]
+    [files],
   );
 
   const trainModel = useCallback(async () => {
@@ -114,8 +109,8 @@ export default function TrainModelZone() {
     if (files) {
       for (const file of files) {
         const blob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/astria/train-model/image-upload",
+          access: 'public',
+          handleUploadUrl: '/astria/train-model/image-upload',
         });
         blobUrls.push(blob.url);
       }
@@ -125,15 +120,15 @@ export default function TrainModelZone() {
 
     const payload = {
       urls: blobUrls,
-      name: form.getValues("name").trim(),
-      type: form.getValues("type"),
+      name: form.getValues('name').trim(),
+      type: form.getValues('type'),
     };
 
     // Send the JSON payload to the "/astria/train-model" endpoint
-    const response = await fetch("/astria/train-model", {
-      method: "POST",
+    const response = await fetch('/astria/train-model', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
@@ -143,7 +138,7 @@ export default function TrainModelZone() {
     if (!response.ok) {
       const responseData = await response.json();
       const responseMessage: string = responseData.message;
-      console.error("Something went wrong! ", responseMessage);
+      console.error('Something went wrong! ', responseMessage);
       const messageWithButton = (
         <div className="flex flex-col gap-4">
           {responseMessage}
@@ -153,8 +148,8 @@ export default function TrainModelZone() {
         </div>
       );
       toast({
-        title: "Something went wrong!",
-        description: responseMessage.includes("Not enough credits")
+        title: 'Something went wrong!',
+        description: responseMessage.includes('Not enough credits')
           ? messageWithButton
           : responseMessage,
         duration: 5000,
@@ -163,32 +158,29 @@ export default function TrainModelZone() {
     }
 
     toast({
-      title: "Model queued for training",
+      title: 'Model queued for training',
       description:
-        "The model was queued for training. You will receive an email when the model is ready to use.",
+        'The model was queued for training. You will receive an email when the model is ready to use.',
       duration: 5000,
     });
 
-    router.push("/");
+    router.push('/');
   }, [files]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      "image/png": [".png"],
-      "image/jpeg": [".jpg", ".jpeg"],
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpg', '.jpeg'],
     },
   });
 
-  const modelType = form.watch("type");
+  const modelType = form.watch('type');
 
   return (
     <div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="rounded-md flex flex-col gap-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="rounded-md flex flex-col gap-8">
           <FormField
             control={form.control}
             name="name"
@@ -212,24 +204,17 @@ export default function TrainModelZone() {
           />
           <div className="flex flex-col gap-4">
             <FormLabel>Type</FormLabel>
-            <FormDescription>
-              Select the type of headshots you want to generate.
-            </FormDescription>
+            <FormDescription>Select the type of headshots you want to generate.</FormDescription>
             <RadioGroup
               defaultValue={modelType}
               className="grid grid-cols-3 gap-4"
               value={modelType}
               onValueChange={(value) => {
-                form.setValue("type", value);
+                form.setValue('type', value);
               }}
             >
               <div>
-                <RadioGroupItem
-                  value="man"
-                  id="man"
-                  className="peer sr-only"
-                  aria-label="man"
-                />
+                <RadioGroupItem value="man" id="man" className="peer sr-only" aria-label="man" />
                 <Label
                   htmlFor="man"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
@@ -277,8 +262,7 @@ export default function TrainModelZone() {
           >
             <FormLabel>Samples</FormLabel>
             <FormDescription>
-              Upload 4-10 images of the person you want to generate headshots
-              for.
+              Upload 4-10 images of the person you want to generate headshots for.
             </FormDescription>
             <div className="outline-dashed outline-2 outline-gray-100 hover:outline-blue-500 w-full h-full rounded-md p-4 flex justify-center align-middle">
               <input {...getInputProps()} />
@@ -304,7 +288,7 @@ export default function TrainModelZone() {
                   />
                   <Button
                     variant="outline"
-                    size={"sm"}
+                    size={'sm'}
                     className="w-full"
                     onClick={() => removeFile(file)}
                   >
@@ -316,8 +300,7 @@ export default function TrainModelZone() {
           )}
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Train Model{" "}
-            {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
+            Train Model {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
           </Button>
         </form>
       </Form>

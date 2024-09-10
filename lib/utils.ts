@@ -1,13 +1,13 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export async function streamToString(stream: ReadableStream<Uint8Array>): Promise<string> {
   const reader = stream.getReader();
-  const decoder = new TextDecoder("utf-8");
+  const decoder = new TextDecoder('utf-8');
   let result = '';
 
   while (true) {

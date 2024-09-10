@@ -1,9 +1,9 @@
-import ClientSideModelsList from "@/components/realtime/ClientSideModelsList";
-import { Database } from "@/types/supabase";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import ClientSideModelsList from '@/components/realtime/ClientSideModelsList';
+import { Database } from '@/types/supabase';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export default async function Index() {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -17,13 +17,13 @@ export default async function Index() {
   }
 
   const { data: models } = await supabase
-    .from("models")
+    .from('models')
     .select(
       `*, samples (
       *
-    )`
+    )`,
     )
-    .eq("user_id", user.id);
+    .eq('user_id', user.id);
 
   return <ClientSideModelsList serverModels={models ?? []} />;
 }
