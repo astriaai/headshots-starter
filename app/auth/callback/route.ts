@@ -38,6 +38,34 @@ export async function GET(req: NextRequest) {
           `${requestUrl.origin}/login/failed?err=500`
         );
       }
+
+      // Check if the user already has credits
+      const { data: existingCredits, error: creditsError } = await supabase
+        .from("credits")
+        .select("*")
+        .eq("user_id", user.user.id)
+        .single();
+
+      if (creditsError && creditsError.code !== "PGRST116") {
+        console.error("[login] [credits] [500] Error checking credits: ", creditsError);
+        return NextResponse.redirect(
+          `${requestUrl.origin}/login/failed?err=500`
+        );
+      }
+
+      // If the user doesn't have credits, give them 5 credits
+      if (!existingCredits) {
+        const { error: insertError } = await supabase
+          .from("credits")
+          .insert({ user_id: user.user.id, credits: 5 });
+
+        if (insertError) {
+          console.error("[login] [credits] [500] Error inserting credits: ", insertError);
+          return NextResponse.redirect(
+            `${requestUrl.origin}/login/failed?err=500`
+          );
+        }
+      }
     } catch (error) {
       if (isAuthApiError(error)) {
         console.error(
