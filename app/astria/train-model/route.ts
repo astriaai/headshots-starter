@@ -118,7 +118,7 @@ export async function POST(request: Request) {
 
   try {
     const trainWebhook = `https://${process.env.VERCEL_URL}/astria/train-webhook`;
-    const trainWenhookWithParams = `${trainWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
+    const trainWebhookWithParams = `${trainWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
 
     const promptWebhook = `https://${process.env.VERCEL_URL}/astria/prompt-webhook`;
     const promptWebhookWithParams = `${promptWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
@@ -126,33 +126,55 @@ export async function POST(request: Request) {
     const API_KEY = astriaApiKey;
     const DOMAIN = "https://api.astria.ai";
 
+    // Create a fine tuned model using Astria tune API
+    // const body = {
+    //   tune: {
+    //     title: name,
+    //     // Hard coded tune id of Realistic Vision v5.1 from the gallery - https://www.astria.ai/gallery/tunes
+    //     // https://www.astria.ai/gallery/tunes/690204/prompts
+    //     base_tune_id: 690204,
+    //     name: type,
+    //     branch: astriaTestModeIsOn ? "fast" : "sd15",
+    //     token: "ohwx",
+    //     image_urls: images,
+    //     callback: trainWebhookWithParams,
+    //     prompts_attributes: [
+    //       {
+    //         text: `portrait of ohwx ${type} wearing a business suit, professional photo, white background, Amazing Details, Best Quality, Masterpiece, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens`,
+    //         callback: promptWebhookWithParams,
+    //         num_images: 8,
+    //       },
+    //       {
+    //         text: `8k close up linkedin profile picture of ohwx ${type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window`,
+    //         callback: promptWebhookWithParams,
+    //         num_images: 8,
+    //       },
+    //     ],
+    //   },
+    // };
+
+    // const response = await axios.post(DOMAIN + "/tunes", body, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${API_KEY}`,
+    //   },
+    // });
+
+    // Create a fine tuned model using Astria packs API
     const body = {
       tune: {
         title: name,
-        // Hard coded tune id of Realistic Vision v5.1 from the gallery - https://www.astria.ai/gallery/tunes
-        // https://www.astria.ai/gallery/tunes/690204/prompts
-        base_tune_id: 690204,
         name: type,
-        branch: astriaTestModeIsOn ? "fast" : "sd15",
-        token: "ohwx",
+        callback: trainWebhookWithParams,
+        prompt_attributes: {
+          callback: promptWebhookWithParams,
+        },
         image_urls: images,
-        callback: trainWenhookWithParams,
-        prompts_attributes: [
-          {
-            text: `portrait of ohwx ${type} wearing a business suit, professional photo, white background, Amazing Details, Best Quality, Masterpiece, dramatic lighting highly detailed, analog photo, overglaze, 80mm Sigma f/1.4 or any ZEISS lens`,
-            callback: promptWebhookWithParams,
-            num_images: 8,
-          },
-          {
-            text: `8k close up linkedin profile picture of ohwx ${type}, professional jack suite, professional headshots, photo-realistic, 4k, high-resolution image, workplace settings, upper body, modern outfit, professional suit, business, blurred background, glass building, office window`,
-            callback: promptWebhookWithParams,
-            num_images: 8,
-          },
-        ],
       },
     };
 
-    const response = await axios.post(DOMAIN + "/tunes", body, {
+    // Hard coded pack id corporate headshots from the gallery - https://www.astria.ai/gallery/packs
+    const response = await axios.post(DOMAIN + "/p/corporate-headshots/tunes", body, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${API_KEY}`,

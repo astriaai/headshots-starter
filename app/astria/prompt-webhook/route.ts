@@ -117,7 +117,10 @@ export async function POST(request: Request) {
   try {
     // Here we join all of the arrays into one.
     const allHeadshots = prompt.images;
-    const modelId = prompt.tune_id;
+    // const modelId = prompt.tune_id // model id fory tune api
+
+    const regex = /<[^>]*:(\d+):/;
+    const modelId = prompt.text.match(regex)?.[1] ?? prompt.tune_id; // model id for packs api
 
     const { data: model, error: modelError } = await supabase
       .from("models")
