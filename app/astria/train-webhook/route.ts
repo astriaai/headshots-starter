@@ -137,6 +137,7 @@ export async function POST(request: Request) {
     const { data: modelUpdated, error: modelUpdatedError } = await supabase
       .from("models")
       .update({
+        modelId: `${tune.id}`,
         status: "finished",
       })
       .eq("id", model_id)

@@ -13,18 +13,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaFemale, FaImages, FaMale, FaRainbow } from "react-icons/fa";
 import * as z from "zod";
 import { fileUploadFormSchema } from "@/types/zod";
 import { upload } from "@vercel/blob/client";
+import axios from "axios";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
+
+interface Pack {
+  id: string;
+  title: string;
+  slug: string;
+}
 
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
@@ -39,6 +53,7 @@ export default function TrainModelZone() {
     defaultValues: {
       name: "",
       type: "man",
+      pack: "corporate-headshots",
     },
   });
 
@@ -127,6 +142,7 @@ export default function TrainModelZone() {
       urls: blobUrls,
       name: form.getValues("name").trim(),
       type: form.getValues("type"),
+      pack: form.getValues("pack"),
     };
 
     // Send the JSON payload to the "/astria/train-model" endpoint
@@ -182,6 +198,37 @@ export default function TrainModelZone() {
 
   const modelType = form.watch("type");
 
+  const handleSelectChange = (value: string) => {
+    form.setValue("pack", value);
+  };
+
+  const [packs, setPacks] = useState<Pack[]>([]);
+
+  const fetchPacks = async (): Promise<void> => {
+    try {
+      const response = await axios.get<Pack[]>("/astria/packs");
+      setPacks(response.data);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast({
+          title: "Error fetching packs",
+          description: err.message,
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Unknown error",
+          description: "An unknown error occurred.",
+          duration: 5000,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchPacks();
+  }, []);
+
   return (
     <div>
       <Form {...form}>
@@ -189,6 +236,38 @@ export default function TrainModelZone() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="rounded-md flex flex-col gap-8"
         >
+          <FormField
+            control={form.control}
+            name="pack"
+            render={({ field }) => (
+              <FormItem className="w-full rounded-md">
+                <FormLabel>Pack</FormLabel>
+                <FormDescription>
+                  Select the style of image you want to generate.
+                </FormDescription>
+                <FormControl>
+                  <Select
+                    onValueChange={handleSelectChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="max-w-screen-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent position="popper" className="max-h-60 overflow-y-auto">
+                      {packs.length > 0 &&
+                        packs?.map((pack) => (
+                          <SelectItem key={pack.id} value={pack.slug}>
+                            {pack.title}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="name"

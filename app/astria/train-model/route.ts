@@ -21,6 +21,7 @@ export async function POST(request: Request) {
   const payload = await request.json();
   const images = payload.urls;
   const type = payload.type;
+  const pack = payload.pack;
   const name = payload.name;
 
   const supabase = createRouteHandlerClient<Database>({ cookies });
@@ -197,9 +198,8 @@ export async function POST(request: Request) {
       },
     };
 
-    // Hard coded pack id corporate headshots from the gallery - https://www.astria.ai/gallery/packs
     const response = await axios.post(
-      DOMAIN + "/p/corporate-headshots/tunes",
+      DOMAIN + `/p/${pack}/tunes`,
       body,
       {
         headers: {
@@ -236,22 +236,6 @@ export async function POST(request: Request) {
       }
     }
 
-    const { error: updateError } = await supabase
-      .from("models")
-      .update({
-        modelId: tune.id,
-      })
-      .eq("id", modelId);
-
-    if (updateError) {
-      console.error("updateError: ", updateError);
-      return NextResponse.json(
-        {
-          message: "Something went wrong!",
-        },
-        { status: 500 }
-      );
-    }
 
     const { error: samplesError } = await supabase.from("samples").insert(
       images.map((sample: string) => ({
