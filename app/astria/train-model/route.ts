@@ -117,11 +117,35 @@ export async function POST(request: Request) {
   }
 
   try {
+    // create a model row in supabase
+    const { error: modelError, data } = await supabase
+      .from("models")
+      .insert({
+        user_id: user.id,
+        name,
+        type,
+      })
+      .select("id")
+      .single();
+
+    if (modelError) {
+      console.error("modelError: ", modelError);
+      return NextResponse.json(
+        {
+          message: "Something went wrong!",
+        },
+        { status: 500 }
+      );
+    }
+
+    // Get the modelId from the created model
+    const modelId = data?.id;
+
     const trainWebhook = `https://${process.env.VERCEL_URL}/astria/train-webhook`;
-    const trainWebhookWithParams = `${trainWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
+    const trainWebhookWithParams = `${trainWebhook}?user_id=${user.id}&model_id=${modelId}&webhook_secret=${appWebhookSecret}`;
 
     const promptWebhook = `https://${process.env.VERCEL_URL}/astria/prompt-webhook`;
-    const promptWebhookWithParams = `${promptWebhook}?user_id=${user.id}&webhook_secret=${appWebhookSecret}`;
+    const promptWebhookWithParams = `${promptWebhook}?user_id=${user.id}&&model_id=${modelId}&webhook_secret=${appWebhookSecret}`;
 
     const API_KEY = astriaApiKey;
     const DOMAIN = "https://api.astria.ai";
@@ -174,17 +198,26 @@ export async function POST(request: Request) {
     };
 
     // Hard coded pack id corporate headshots from the gallery - https://www.astria.ai/gallery/packs
-    const response = await axios.post(DOMAIN + "/p/corporate-headshots/tunes", body, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${API_KEY}`,
-      },
-    });
+    const response = await axios.post(
+      DOMAIN + "/p/corporate-headshots/tunes",
+      body,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${API_KEY}`,
+        },
+      }
+    );
 
     const { status, statusText, data: tune } = response;
 
     if (status !== 201) {
       console.error({ status });
+      // Rollback: Delete the created model if something goes wrong
+      if (modelId) {
+        await supabase.from("models").delete().eq("id", modelId);
+      }
+
       if (status === 400) {
         return NextResponse.json(
           {
@@ -203,19 +236,15 @@ export async function POST(request: Request) {
       }
     }
 
-    const { error: modelError, data } = await supabase
+    const { error: updateError } = await supabase
       .from("models")
-      .insert({
-        modelId: tune.id, // store tune Id field to retrieve workflow object if needed later
-        user_id: user.id,
-        name,
-        type,
+      .update({
+        modelId: tune.id,
       })
-      .select("id")
-      .single();
+      .eq("id", modelId);
 
-    if (modelError) {
-      console.error("modelError: ", modelError);
+    if (updateError) {
+      console.error("updateError: ", updateError);
       return NextResponse.json(
         {
           message: "Something went wrong!",
@@ -223,9 +252,6 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
-
-    // Get the modelId from the created model
-    const modelId = data?.id;
 
     const { error: samplesError } = await supabase.from("samples").insert(
       images.map((sample: string) => ({

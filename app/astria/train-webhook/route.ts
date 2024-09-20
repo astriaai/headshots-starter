@@ -48,7 +48,18 @@ export async function POST(request: Request) {
 
   const urlObj = new URL(request.url);
   const user_id = urlObj.searchParams.get("user_id");
+  const model_id = urlObj.searchParams.get("model_id");
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
+
+  if (!model_id) {
+    return NextResponse.json(
+      {
+        message: "Malformed URL, no model_id detected!",
+      },
+      { status: 500 }
+    );
+  }
+  
 
   if (!webhook_secret) {
     return NextResponse.json(
@@ -128,7 +139,7 @@ export async function POST(request: Request) {
       .update({
         status: "finished",
       })
-      .eq("modelId", tune.id)
+      .eq("id", model_id)
       .select();
 
     if (modelUpdatedError) {

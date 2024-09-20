@@ -50,7 +50,17 @@ export async function POST(request: Request) {
 
   const urlObj = new URL(request.url);
   const user_id = urlObj.searchParams.get("user_id");
+  const model_id = urlObj.searchParams.get("model_id");
   const webhook_secret = urlObj.searchParams.get("webhook_secret");
+
+  if (!model_id) {
+    return NextResponse.json(
+      {
+        message: "Malformed URL, no model_id detected!",
+      },
+      { status: 500 }
+    );
+  }  
 
   if (!webhook_secret) {
     return NextResponse.json(
@@ -117,15 +127,11 @@ export async function POST(request: Request) {
   try {
     // Here we join all of the arrays into one.
     const allHeadshots = prompt.images;
-    // const modelId = prompt.tune_id // model id fory tune api
-
-    const regex = /<[^>]*:(\d+):/;
-    const modelId = prompt.text.match(regex)?.[1] ?? prompt.tune_id; // model id for packs api
-
+    
     const { data: model, error: modelError } = await supabase
       .from("models")
       .select("*")
-      .eq("modelId", modelId)
+      .eq("id", model_id)
       .single();
 
     if (modelError) {
