@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
+import { Database } from "@/types/supabase";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 // Set dynamic route handling
 export const dynamic = "force-dynamic";
@@ -15,6 +18,21 @@ if (!API_KEY) {
 }
 
 export async function GET(request: Request) {
+  const supabase = createRouteHandlerClient<Database>({ cookies });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+  
   try {
     // Authorization header
     const headers = { Authorization: `Bearer ${API_KEY}` };
