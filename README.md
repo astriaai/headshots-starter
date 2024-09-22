@@ -8,6 +8,10 @@ This project was built to give developers & makers a great starting point into b
 
 [![Headshot AI Demo](/public/demo.png)](https://headshots-starter.vercel.app/)
 
+## Incoming changes
+Incoming PR will allow usage of the easier abstraction Astria's packs API which helps you avoid hardcoding prompts in your code as well as offering different packs of prompts, and switching to the new Flux model fine-tuning easily.
+See PR [here](https://github.com/astriaai/headshots-starter/pull/121). Read more on advantage of using packs [Astria's documentation](https://docs.astria.ai/docs/api/pack/pack//).
+
 ## How It Works
 
 Live demo **[here](https://getheadshots.ai)**.
@@ -212,11 +216,11 @@ Headshot AI can be easily adapted to support many other use-cases of [Astria](ht
   - [Portraits](https://blog.tryleap.ai/ai-time-machine-images-a-glimpse-into-the-future-with-leap-ai/)
   - [Story Illustrations](https://blog.tryleap.ai/novel-ai-image-generator-using-leap-ai-a-comprehensive-guide/)
 
-[![Anime AI Demo](/public/anime.png)](https://www.astria.ai/)
+[![Anime AI Demo](/public/anime.png)](https://www.astria.ai/gallery/packs)
 
 - Pet Portraits
 
-[![Pet AI Demo](/public/pet.png)](https://www.astria.ai/)
+[![Pet AI Demo](/public/pet.png)](https://www.astria.ai/gallery/packs)
 
 - Product Shots
 - Food Photography
