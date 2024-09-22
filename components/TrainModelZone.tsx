@@ -13,22 +13,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaFemale, FaImages, FaMale, FaRainbow } from "react-icons/fa";
 import * as z from "zod";
 import { fileUploadFormSchema } from "@/types/zod";
 import { upload } from "@vercel/blob/client";
+import axios from "axios";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
-export default function TrainModelZone() {
+export default function TrainModelZone({ packSlug }: { packSlug: string }) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
@@ -127,6 +135,7 @@ export default function TrainModelZone() {
       urls: blobUrls,
       name: form.getValues("name").trim(),
       type: form.getValues("type"),
+      pack: packSlug
     };
 
     // Send the JSON payload to the "/astria/train-model" endpoint

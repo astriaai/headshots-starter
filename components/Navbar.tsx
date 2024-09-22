@@ -19,6 +19,8 @@ export const dynamic = "force-dynamic";
 
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
+const packsIsEnabled = process.env.NEXT_PUBLIC_TUNE_TYPE === "packs";
+
 export const revalidate = 0;
 
 export default async function Navbar() {
@@ -28,9 +30,11 @@ export default async function Navbar() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const {
-    data: credits,
-  } = await supabase.from("credits").select("*").eq("user_id", user?.id ?? '').single()
+  const { data: credits } = await supabase
+    .from("credits")
+    .select("*")
+    .eq("user_id", user?.id ?? "")
+    .single();
 
   return (
     <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
@@ -44,6 +48,11 @@ export default async function Navbar() {
           <Link href="/overview">
             <Button variant={"ghost"}>Home</Button>
           </Link>
+          {packsIsEnabled && (
+            <Link href="/overview/packs">
+              <Button variant={"ghost"}>Packs</Button>
+            </Link>
+          )}
           {stripeIsConfigured && (
             <Link href="/get-credits">
               <Button variant={"ghost"}>Get Credits</Button>
@@ -67,14 +76,16 @@ export default async function Navbar() {
                 <AvatarIcon height={24} width={24} className="text-primary" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel className="text-primary text-center overflow-hidden text-ellipsis">{user.email}</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-primary text-center overflow-hidden text-ellipsis">
+                  {user.email}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <form action="/auth/sign-out" method="post">
                   <Button
                     type="submit"
                     className="w-full text-left"
                     variant={"ghost"}
-                    >
+                  >
                     Log out
                   </Button>
                 </form>
