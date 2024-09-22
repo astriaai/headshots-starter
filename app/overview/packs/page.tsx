@@ -9,8 +9,16 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
+import { redirect } from "next/navigation";
+
+const packsIsEnabled = process.env.NEXT_PUBLIC_TUNE_TYPE === "packs";
 
 export default async function Index() {
+
+  if(!packsIsEnabled) {
+    redirect('/overview')
+  }
+
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div

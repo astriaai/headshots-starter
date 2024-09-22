@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 // Environment Variables
 const API_KEY = process.env.ASTRIA_API_KEY;
-const QUERY_TYPE = process.env.QUERY_TYPE || "users"; // Default to 'users'
+const QUERY_TYPE = process.env.PACK_QUERY_TYPE || "users"; // Default to 'users'
 const DOMAIN = "https://api.astria.ai";
 
 // Check if API Key is missing
