@@ -37,7 +37,7 @@ export async function GET(request: Request) {
 
     // Combine the data from both responses
     const combinedData = responses.flatMap((response) => response.data);
-
+    
     // Return the combined data as JSON
     return NextResponse.json(combinedData);
   } catch (error) {

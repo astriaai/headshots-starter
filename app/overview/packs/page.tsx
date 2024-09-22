@@ -1,4 +1,4 @@
-import TrainModelZone from "@/components/TrainModelZone";
+import PacksGalleryZone from "@/components/PacksGalleryZone";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,13 +25,13 @@ export default async function Index() {
         </Link>
         <Card>
           <CardHeader>
-            <CardTitle>Train Model</CardTitle>
+            <CardTitle>Packs Gallary</CardTitle>
             <CardDescription>
-              Choose a name, type, and upload some photos to get started.
+              Choose the type of images you would like to create.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6">
-            <TrainModelZone />
+            <PacksGalleryZone />
           </CardContent>
         </Card>
       </div>

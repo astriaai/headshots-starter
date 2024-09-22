@@ -48,3 +48,7 @@
     --ring: 224.3 76.3% 48%;
   }
 }
+
+.sentence-case:first-letter {
+  text-transform: uppercase;
+}

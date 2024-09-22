@@ -44,6 +44,9 @@ export default async function Navbar() {
           <Link href="/overview">
             <Button variant={"ghost"}>Home</Button>
           </Link>
+          <Link href="/overview/packs">
+            <Button variant={"ghost"}>Packs</Button>
+          </Link>
           {stripeIsConfigured && (
             <Link href="/get-credits">
               <Button variant={"ghost"}>Get Credits</Button>

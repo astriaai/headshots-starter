@@ -34,15 +34,9 @@ import axios from "axios";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
-interface Pack {
-  id: string;
-  title: string;
-  slug: string;
-}
-
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 
-export default function TrainModelZone() {
+export default function TrainModelZone({ packSlug }: { packSlug: string }) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
@@ -53,7 +47,6 @@ export default function TrainModelZone() {
     defaultValues: {
       name: "",
       type: "man",
-      pack: "corporate-headshots",
     },
   });
 
@@ -142,7 +135,7 @@ export default function TrainModelZone() {
       urls: blobUrls,
       name: form.getValues("name").trim(),
       type: form.getValues("type"),
-      pack: form.getValues("pack"),
+      pack: packSlug
     };
 
     // Send the JSON payload to the "/astria/train-model" endpoint
@@ -198,37 +191,6 @@ export default function TrainModelZone() {
 
   const modelType = form.watch("type");
 
-  const handleSelectChange = (value: string) => {
-    form.setValue("pack", value);
-  };
-
-  const [packs, setPacks] = useState<Pack[]>([]);
-
-  const fetchPacks = async (): Promise<void> => {
-    try {
-      const response = await axios.get<Pack[]>("/astria/packs");
-      setPacks(response.data);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast({
-          title: "Error fetching packs",
-          description: err.message,
-          duration: 5000,
-        });
-      } else {
-        toast({
-          title: "Unknown error",
-          description: "An unknown error occurred.",
-          duration: 5000,
-        });
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchPacks();
-  }, []);
-
   return (
     <div>
       <Form {...form}>
@@ -236,38 +198,6 @@ export default function TrainModelZone() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="rounded-md flex flex-col gap-8"
         >
-          <FormField
-            control={form.control}
-            name="pack"
-            render={({ field }) => (
-              <FormItem className="w-full rounded-md">
-                <FormLabel>Pack</FormLabel>
-                <FormDescription>
-                  Select the style of image you want to generate.
-                </FormDescription>
-                <FormControl>
-                  <Select
-                    onValueChange={handleSelectChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger className="max-w-screen-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent position="popper" className="max-h-60 overflow-y-auto">
-                      {packs.length > 0 &&
-                        packs?.map((pack) => (
-                          <SelectItem key={pack.id} value={pack.slug}>
-                            {pack.title}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="name"
