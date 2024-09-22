@@ -163,6 +163,8 @@ CREATE POLICY "Enable updates for authenticated users to samples" ON "public"."s
    FROM "public"."models"
   WHERE ("models"."id" = "samples"."modelId"))));
 
+CREATE POLICY "Enable delete for authenticated users" ON "public"."models" FOR DELETE TO "authenticated" USING (("auth"."uid"() = "user_id"));
+
 ALTER TABLE "public"."credits" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."images" ENABLE ROW LEVEL SECURITY;
