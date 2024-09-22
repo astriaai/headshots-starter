@@ -118,30 +118,31 @@ export async function POST(request: Request) {
     }
   }
 
+  // create a model row in supabase
+  const { error: modelError, data } = await supabase
+    .from("models")
+    .insert({
+      user_id: user.id,
+      name,
+      type,
+    })
+    .select("id")
+    .single();
+
+  if (modelError) {
+    console.error("modelError: ", modelError);
+    return NextResponse.json(
+      {
+        message: "Something went wrong!",
+      },
+      { status: 500 }
+    );
+  }
+  
+  // Get the modelId from the created model
+  const modelId = data?.id;
+
   try {
-    // create a model row in supabase
-    const { error: modelError, data } = await supabase
-      .from("models")
-      .insert({
-        user_id: user.id,
-        name,
-        type,
-      })
-      .select("id")
-      .single();
-
-    if (modelError) {
-      console.error("modelError: ", modelError);
-      return NextResponse.json(
-        {
-          message: "Something went wrong!",
-        },
-        { status: 500 }
-      );
-    }
-
-    // Get the modelId from the created model
-    const modelId = data?.id;
 
     const trainWebhook = `https://${process.env.VERCEL_URL}/astria/train-webhook`;
     const trainWebhookWithParams = `${trainWebhook}?user_id=${user.id}&model_id=${modelId}&webhook_secret=${appWebhookSecret}`;
@@ -193,7 +194,7 @@ export async function POST(request: Request) {
     };
 
     const response = await axios.post(
-      DOMAIN + packsIsEnabled ? `/p/${pack}/tunes` : "/tunes",
+      DOMAIN + (packsIsEnabled ? `/p/${pack}/tunes` : "/tunes"),
       packsIsEnabled ? packBody : tuneBody,
       {
         headers: {
@@ -203,7 +204,7 @@ export async function POST(request: Request) {
       }
     );
 
-    const { status, statusText, data: tune } = response;
+    const { status } = response;
 
     if (status !== 201) {
       console.error({ status });
@@ -270,6 +271,10 @@ export async function POST(request: Request) {
     }
   } catch (e) {
     console.error(e);
+    // Rollback: Delete the created model if something goes wrong
+    if (modelId) {
+      await supabase.from("models").delete().eq("id", modelId);
+    }
     return NextResponse.json(
       {
         message: "Something went wrong!",
