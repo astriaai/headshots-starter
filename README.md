@@ -15,8 +15,8 @@ Read more on advantage of using packs [Astria's documentation](https://docs.astr
 
 When migrating to the new packs api, add to your vercel environment:
 ```text
-NEXT_PUBLIC_TUNE_TYPE=both
-PACK_QUERY_TYPE=public
+NEXT_PUBLIC_TUNE_TYPE=packs
+PACK_QUERY_TYPE=both
 ```
 
 ![Headshot AI Packs](assets/headshots-packs.png)
