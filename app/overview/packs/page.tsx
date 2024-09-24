@@ -33,7 +33,7 @@ export default async function Index() {
         </Link>
         <Card>
           <CardHeader>
-            <CardTitle>Packs Gallary</CardTitle>
+            <CardTitle>Packs Gallery</CardTitle>
             <CardDescription>
               Choose the type of images you would like to create.
             </CardDescription>
