@@ -31,6 +31,7 @@ import * as z from "zod";
 import { fileUploadFormSchema } from "@/types/zod";
 import { upload } from "@vercel/blob/client";
 import axios from "axios";
+import { ImageInspector } from "./ImageInspector";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
@@ -307,24 +308,36 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
             <div className="flex flex-row gap-4 flex-wrap">
               {files.map((file) => (
                 <div key={file.name} className="flex flex-col gap-1">
-                  <img
-                    src={URL.createObjectURL(file)}
-                    className="rounded-md w-24 h-24 object-cover"
-                  />
-                  <Button
-                    variant="outline"
-                    size={"sm"}
-                    className="w-full"
-                    onClick={() => removeFile(file)}
-                  >
-                    Remove
-                  </Button>
+                  <div className="relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="rounded-md w-24 h-24 object-cover"
+                      alt="Preview"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-1"
+                      onClick={() => removeFile(file)}
+                    >
+                      Remove
+                    </Button>
+                    
+                    <ImageInspector
+                      file={file}
+                      type={form.getValues("type")}
+                      onInspectionComplete={(result) => {
+                        // Store inspection results if needed for the final submission
+                        // You could add this to your form data or state
+                      }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          <Button type="submit" className="w-full" isLoading={isLoading}>
+          <Button type="submit" className="w-full" disabled={isLoading}>
             Train Model{" "}
             {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
           </Button>

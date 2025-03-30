@@ -131,7 +131,7 @@ export async function POST(request: Request) {
     const { data: model, error: modelError } = await supabase
       .from("models")
       .select("*")
-      .eq("id", model_id)
+      .eq("id", Number(model_id))
       .single();
 
     if (modelError) {

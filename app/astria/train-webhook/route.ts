@@ -140,7 +140,7 @@ export async function POST(request: Request) {
         modelId: `${tune.id}`,
         status: "finished",
       })
-      .eq("id", model_id)
+      .eq("id", Number(model_id))
       .select();
 
     if (modelUpdatedError) {
