@@ -2,7 +2,7 @@ export const config = {
   packQueryType: process.env.PACK_QUERY_TYPE as 'users' | 'gallery' | 'both',
   tuneType: process.env.NEXT_PUBLIC_TUNE_TYPE as 'packs' | 'tune',
   stripeEnabled: process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === 'true',
-  vercelUrl: process.env.VERCEL_URL,
+  vercelUrl: process.env.DEPLOYMENT_URL,
 } as const;
 
 function isVercelPreviewUrl(url: string): boolean {
@@ -30,7 +30,7 @@ export function validateConfig() {
   // Add Vercel URL validation
   if (config.vercelUrl && isVercelPreviewUrl(config.vercelUrl)) {
     throw new Error(
-      'Invalid VERCEL_URL: Preview URLs cannot be used for webhooks.\n' +
+      'Invalid DEPLOYMENT_URL: Preview URLs cannot be used for webhooks.\n' +
       'Please use either:\n' +
       '1. Your production domain (e.g., your-app.com)\n' +
       '2. For local development, use ngrok (e.g., your-tunnel.ngrok.io)'
