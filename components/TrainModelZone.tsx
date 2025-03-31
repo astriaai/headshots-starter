@@ -31,6 +31,8 @@ import * as z from "zod";
 import { fileUploadFormSchema } from "@/types/zod";
 import { upload } from "@vercel/blob/client";
 import axios from "axios";
+import { ImageInspector } from "./ImageInspector";
+import { ImageInspectionResult, aggregateCharacteristics } from "@/lib/imageInspection";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
@@ -39,6 +41,7 @@ const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 export default function TrainModelZone({ packSlug }: { packSlug: string }) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [characteristics, setCharacteristics] = useState<ImageInspectionResult[]>([]);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -114,6 +117,10 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
     [files]
   );
 
+  const handleInspectionComplete = (result: ImageInspectionResult, file: File) => {
+    setCharacteristics(prev => [...prev, result]);
+  };
+
   const trainModel = useCallback(async () => {
     setIsLoading(true);
     // Upload each file to Vercel blob and store the resulting URLs
@@ -130,12 +137,14 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
     }
 
     // console.log(blobUrls, "blobUrls");
+    const aggregatedCharacteristics = aggregateCharacteristics(characteristics);
 
     const payload = {
       urls: blobUrls,
       name: form.getValues("name").trim(),
       type: form.getValues("type"),
-      pack: packSlug
+      pack: packSlug,
+      characteristics: aggregatedCharacteristics
     };
 
     // Send the JSON payload to the "/astria/train-model" endpoint
@@ -179,7 +188,7 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
     });
 
     router.push("/");
-  }, [files]);
+  }, [files, characteristics, form, packSlug]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -307,24 +316,33 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
             <div className="flex flex-row gap-4 flex-wrap">
               {files.map((file) => (
                 <div key={file.name} className="flex flex-col gap-1">
-                  <img
-                    src={URL.createObjectURL(file)}
-                    className="rounded-md w-24 h-24 object-cover"
-                  />
-                  <Button
-                    variant="outline"
-                    size={"sm"}
-                    className="w-full"
-                    onClick={() => removeFile(file)}
-                  >
-                    Remove
-                  </Button>
+                  <div className="relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="rounded-md w-24 h-24 object-cover"
+                      alt="Preview"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-1"
+                      onClick={() => removeFile(file)}
+                    >
+                      Remove
+                    </Button>
+
+                    <ImageInspector
+                      file={file}
+                      type={form.getValues("type")}
+                      onInspectionComplete={(result) => handleInspectionComplete(result, file)}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          <Button type="submit" className="w-full" isLoading={isLoading}>
+          <Button type="submit" className="w-full" disabled={isLoading}>
             Train Model{" "}
             {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
           </Button>

@@ -1,4 +1,5 @@
 import { AvatarIcon } from "@radix-ui/react-icons";
+import { Camera } from "lucide-react"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import {
@@ -14,13 +15,12 @@ import { Button } from "./ui/button";
 import React from "react";
 import { Database } from "@/types/supabase";
 import ClientSideCredits from "./realtime/ClientSideCredits";
+import { ThemeToggle } from "./homepage/theme-toggle";
 
 export const dynamic = "force-dynamic";
 
 const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
-
 const packsIsEnabled = process.env.NEXT_PUBLIC_TUNE_TYPE === "packs";
-
 export const revalidate = 0;
 
 export default async function Navbar() {
@@ -37,63 +37,76 @@ export default async function Navbar() {
     .single();
 
   return (
-    <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
-      <div className="flex gap-2 h-full">
-        <Link href="/">
-          <h2 className="font-bold">Headshots AI</h2>
+    <header className="sticky top-0 z-[100] w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+          <Camera className="h-5 w-5 text-primary" />
+          <span>Headshots AI</span>
         </Link>
-      </div>
-      {user && (
-        <div className="hidden lg:flex flex-row gap-2">
-          <Link href="/overview">
-            <Button variant={"ghost"}>Home</Button>
-          </Link>
-          {packsIsEnabled && (
-            <Link href="/overview/packs">
-              <Button variant={"ghost"}>Packs</Button>
+        
+        {user && (
+          <nav className="hidden md:flex gap-6">
+            <Link href="/overview" className="text-sm font-medium hover:text-primary transition-colors">
+              Home
             </Link>
+            {packsIsEnabled && (
+              <Link href="/overview/packs" className="text-sm font-medium hover:text-primary transition-colors">
+                Packs
+              </Link>
+            )}
+            {stripeIsConfigured && (
+              <Link href="/get-credits" className="text-sm font-medium hover:text-primary transition-colors">
+                Get Credits
+              </Link>
+            )}
+          </nav>
+        )}
+
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          
+          {!user && (
+            <>
+              <Link href="/login" className="hidden sm:block text-sm font-medium hover:text-primary transition-colors">
+                Login
+              </Link>
+              <Link href="/login">
+                <Button>Create headshots</Button>
+              </Link>
+            </>
           )}
-          {stripeIsConfigured && (
-            <Link href="/get-credits">
-              <Button variant={"ghost"}>Get Credits</Button>
-            </Link>
+
+          {user && (
+            <div className="flex items-center gap-4">
+              {stripeIsConfigured && (
+                <ClientSideCredits creditsRow={credits ? credits : null} />
+              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
+                    <AvatarIcon className="h-6 w-6 text-primary" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 z-[101]">
+                  <DropdownMenuLabel className="text-primary text-center overflow-hidden text-ellipsis">
+                    {user.email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <form action="/auth/sign-out" method="post">
+                    <Button
+                      type="submit"
+                      className="w-full text-left"
+                      variant="ghost"
+                    >
+                      Log out
+                    </Button>
+                  </form>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           )}
         </div>
-      )}
-      <div className="flex gap-4 lg:ml-auto">
-        {!user && (
-          <Link href="/login">
-            <Button variant={"ghost"}>Login / Signup</Button>
-          </Link>
-        )}
-        {user && (
-          <div className="flex flex-row gap-4 text-center align-middle justify-center">
-            {stripeIsConfigured && (
-              <ClientSideCredits creditsRow={credits ? credits : null} />
-            )}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild className="cursor-pointer">
-                <AvatarIcon height={24} width={24} className="text-primary" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel className="text-primary text-center overflow-hidden text-ellipsis">
-                  {user.email}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <form action="/auth/sign-out" method="post">
-                  <Button
-                    type="submit"
-                    className="w-full text-left"
-                    variant={"ghost"}
-                  >
-                    Log out
-                  </Button>
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        )}
       </div>
-    </div>
+    </header>
   );
 }
