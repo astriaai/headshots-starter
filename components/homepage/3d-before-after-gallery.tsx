@@ -146,8 +146,6 @@ export default function ThreeDBeforeAfterGallery() {
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative w-full max-w-3xl">
-            {/* Glowing background effect */}
-            <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30 opacity-75 blur-xl"></div>
 
             {/* Main card container */}
             <div className="relative flex h-[500px] md:h-[550px] rounded-xl bg-background/90 backdrop-blur-sm shadow-xl overflow-hidden">
@@ -241,34 +239,6 @@ export default function ThreeDBeforeAfterGallery() {
                         AI Generated
                       </span>
                     </div>
-
-                    {/* Animated particles */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {[...Array(15)].map((_, i) => (
-                        <motion.div
-                          key={i}
-                          className="absolute w-1 h-1 rounded-full bg-primary"
-                          initial={{
-                            x: -10,
-                            y: Math.random() * 400,
-                            opacity: 0,
-                            scale: 0,
-                          }}
-                          animate={{
-                            x: 250,
-                            y: Math.random() * 400,
-                            opacity: [0, 1, 0],
-                            scale: [0, 1, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Number.POSITIVE_INFINITY,
-                            delay: Math.random() * 2,
-                            ease: "easeInOut",
-                          }}
-                        />
-                      ))}
-                    </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -288,31 +258,6 @@ export default function ThreeDBeforeAfterGallery() {
           </div>
         </div>
 
-        {/* Floating elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={`float-${i}`}
-              className="absolute rounded-full bg-primary/20 backdrop-blur-md"
-              style={{
-                width: `${Math.random() * 60 + 20}px`,
-                height: `${Math.random() * 60 + 20}px`,
-                left: `${Math.random() * 80 + 10}%`,
-                top: `${Math.random() * 80 + 10}%`,
-              }}
-              animate={{
-                y: [0, -15, 0],
-                x: [0, Math.random() * 10 - 5, 0],
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
       </div>
 
       {/* Navigation buttons */}
