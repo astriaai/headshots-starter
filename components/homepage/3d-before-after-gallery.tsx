@@ -27,14 +27,9 @@ export default function ThreeDBeforeAfterGallery() {
       label: "Professional Corporate",
     },
     {
-      before: "/homepage/before0002.jpeg",
+      before: "/homepage/before0002.png",
       after: "/homepage/example0002.png",
       label: "Executive Style",
-    },
-    {
-      before: "/homepage/before0003.png",
-      after: "/homepage/example0003.png",
-      label: "Business Casual",
     },
     {
       before: "/homepage/before0001.png",
@@ -47,12 +42,12 @@ export default function ThreeDBeforeAfterGallery() {
       label: "Urban Professional",
     },
     {
-      before: "/homepage/before0002.jpeg",
+      before: "/homepage/before0002.png",
       after: "/homepage/example0006.png",
       label: "Formal Business",
     },
     {
-      before: "/homepage/before0002.jpeg",
+      before: "/homepage/before0002.png",
       after: "/homepage/example0007.png",
       label: "Executive Portrait",
     },
@@ -62,7 +57,7 @@ export default function ThreeDBeforeAfterGallery() {
       label: "Modern Business",
     },
     {
-      before: "/homepage/before0002.jpeg",
+      before: "/homepage/before0002.png",
       after: "/homepage/example0009.png",
       label: "Formal Event",
     },
