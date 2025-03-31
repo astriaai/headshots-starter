@@ -40,7 +40,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link 
-                  href="https://github.com/leap-ai/headshots-starter" 
+                  href="https://github.com/astriaai/headshots-starter" 
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   target="_blank"
                 >
