@@ -6,6 +6,10 @@ import { Suspense } from "react";
 import AnnouncementBar from "@/components/homepage/announcement-bar"
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/homepage/theme-provider"
+import { validateConfig } from "@/lib/config";
+
+// Validate configuration at app initialization
+validateConfig();
 
 export const viewport = {
   width: 'device-width',
