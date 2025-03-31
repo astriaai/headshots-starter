@@ -27,11 +27,6 @@ const features = [
     description: "Advanced AI technology for natural-looking results",
     icon: <Star className="h-6 w-6" />
   },
-  {
-    title: "24/7 Support",
-    description: "Get help whenever you need it",
-    icon: <Shield className="h-6 w-6" />
-  }
 ]
 
 export default function FeaturesSection() {

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 const images = [
   "/homepage/example0001.png",
   "/homepage/example0002.png",
-  "/homepage/example0003.png",
+  "/homepage/example0004.png",
   "/homepage/example0006.png",
 ]
 

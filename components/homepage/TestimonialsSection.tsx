@@ -16,7 +16,7 @@ const testimonials = [
   },
   {
     quote: "I was skeptical at first, but the results blew me away. These look better than the professional photos I paid hundreds for.",
-    author: "Jessica Williams",
+    author: "Mark Williams",
     role: "Software Engineer",
     avatarUrl: "/homepage/example0003.png"
   }

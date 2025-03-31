@@ -29,9 +29,10 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="mt-8">
+        {/* Trust Badges */}
+        {/* <div className="mt-8">
           <TrustBadges />
-        </div>
+        </div> */}
 
         <div className="mt-12">
           <ThreeDBeforeAfterGallery />

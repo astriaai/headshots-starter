@@ -90,3 +90,31 @@ async function resizeImage(file: File): Promise<Blob> {
     reader.readAsDataURL(file);
   });
 }
+
+export function aggregateCharacteristics(results: ImageInspectionResult[]): Record<string, string> {
+  const aggregated: Record<string, string[]> = {};
+  
+  results.forEach((result) => {
+    Object.entries(result).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        if (aggregated[key]) {
+          aggregated[key].push(value);
+        } else {
+          aggregated[key] = [value];
+        }
+      }
+    });
+  });
+
+  const commonValues: Record<string, string> = {};
+  Object.entries(aggregated).forEach(([key, values]) => {
+    const mostCommonValue = values.sort((a, b) => 
+      values.filter(v => v === a).length - values.filter(v => v === b).length
+    ).pop();
+    if (mostCommonValue) {
+      commonValues[key] = mostCommonValue;
+    }
+  });
+
+  return commonValues;
+}

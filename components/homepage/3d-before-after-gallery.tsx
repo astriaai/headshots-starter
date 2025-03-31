@@ -32,7 +32,7 @@ export default function ThreeDBeforeAfterGallery() {
       label: "Executive Style",
     },
     {
-      before: "/homepage/before0001.png",
+      before: "/homepage/before0003.png",
       after: "/homepage/example0003.png",
       label: "Business Casual",
     },

@@ -32,6 +32,7 @@ import { fileUploadFormSchema } from "@/types/zod";
 import { upload } from "@vercel/blob/client";
 import axios from "axios";
 import { ImageInspector } from "./ImageInspector";
+import { ImageInspectionResult, aggregateCharacteristics } from "@/lib/imageInspection";
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
@@ -40,6 +41,7 @@ const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
 export default function TrainModelZone({ packSlug }: { packSlug: string }) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [characteristics, setCharacteristics] = useState<ImageInspectionResult[]>([]);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -115,6 +117,10 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
     [files]
   );
 
+  const handleInspectionComplete = (result: ImageInspectionResult, file: File) => {
+    setCharacteristics(prev => [...prev, result]);
+  };
+
   const trainModel = useCallback(async () => {
     setIsLoading(true);
     // Upload each file to Vercel blob and store the resulting URLs
@@ -131,12 +137,14 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
     }
 
     // console.log(blobUrls, "blobUrls");
+    const aggregatedCharacteristics = aggregateCharacteristics(characteristics);
 
     const payload = {
       urls: blobUrls,
       name: form.getValues("name").trim(),
       type: form.getValues("type"),
-      pack: packSlug
+      pack: packSlug,
+      characteristics: aggregatedCharacteristics
     };
 
     // Send the JSON payload to the "/astria/train-model" endpoint
@@ -180,7 +188,7 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
     });
 
     router.push("/");
-  }, [files]);
+  }, [files, characteristics, form, packSlug]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -322,14 +330,11 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
                     >
                       Remove
                     </Button>
-                    
+
                     <ImageInspector
                       file={file}
                       type={form.getValues("type")}
-                      onInspectionComplete={(result) => {
-                        // Store inspection results if needed for the final submission
-                        // You could add this to your form data or state
-                      }}
+                      onInspectionComplete={(result) => handleInspectionComplete(result, file)}
                     />
                   </div>
                 </div>
