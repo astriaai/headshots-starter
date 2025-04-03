@@ -29,10 +29,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* 直接在head中添加Google Analytics代码 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MYTMHRN5ME"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-MYTMHRN5ME');
+            `
+          }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col bg-background">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AnnouncementBar />
-          {/* Remove the section wrapper as it's interfering with sticky positioning */}
           <Suspense
             fallback={
               <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
