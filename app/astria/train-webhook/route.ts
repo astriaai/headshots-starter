@@ -124,14 +124,33 @@ export async function POST(request: Request) {
   }
 
   try {
-    if (resendApiKey) {
-      const resend = new Resend(resendApiKey);
-      await resend.emails.send({
-        from: "noreply@headshots.tryleap.ai",
-        to: user?.email ?? "",
-        subject: "Your model was successfully trained!",
-        html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,
-      });
+    // Send email notification when model training completes
+    if (resendApiKey && !resendApiKey.includes('your-resend') && !resendApiKey.includes('placeholder')) {
+      try {
+        const resend = new Resend(resendApiKey);
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        
+        await resend.emails.send({
+          from: "noreply@headshots.tryleap.ai",
+          to: user?.email ?? "",
+          subject: "Your AI model has been successfully trained! ✅",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Model Training Complete!</h2>
+              <p>Great news! Your AI model has been successfully trained. You can now generate professional headshots with it.</p>
+              <p><strong>1 credit has been used from your account.</strong></p>
+              <p><a href="${appUrl}/overview" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Generate Headshots Now</a></p>
+              <p style="color: #666; font-size: 12px; margin-top: 20px;">Ready to create your professional headshots? Visit your dashboard to get started.</p>
+            </div>
+          `,
+        });
+        console.log(`Training completion email sent to ${user?.email}`);
+      } catch (emailError) {
+        console.warn('Failed to send training email notification:', emailError);
+        // Don't fail the webhook if email fails
+      }
+    } else {
+      console.log('Email notifications disabled - RESEND_API_KEY not configured');
     }
 
     const { data: modelUpdated, error: modelUpdatedError } = await supabase

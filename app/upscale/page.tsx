@@ -10,30 +10,25 @@ import {
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
-const packsIsEnabled = process.env.NEXT_PUBLIC_TUNE_TYPE === "packs";
-
-export default async function Index({ params }: { params: { pack : string } }) {
-  
+export default function UpscalePage() {
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div
-        id="train-model-container"
-        className="flex flex-1 flex-col gap-2 px-2"
-      >
-        <Link href={packsIsEnabled ? "/overview/packs" : "/overview"} className="text-sm w-fit">
-          <Button variant={"outline"}>
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="flex flex-1 flex-col gap-2 px-2">
+        <Link href="/overview" className="text-sm w-fit">
+          <Button variant="outline">
             <FaArrowLeft className="mr-2" />
             Go Back
           </Button>
         </Link>
         <Card>
           <CardHeader>
-            <CardTitle>Image Upscaler</CardTitle>
+            <CardTitle>AI Image Upscaler</CardTitle>
             <CardDescription>
-              Upload images to upscale them with AI enhancement.
+              Upload any image format and enhance it with AI-powered upscaling.
+              Download your high-quality results instantly.
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-6">
+          <CardContent>
             <ImageUpscaleZone />
           </CardContent>
         </Card>

@@ -1,6 +1,7 @@
 import { Database } from "@/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 export const dynamic = "force-dynamic";
 
@@ -127,6 +128,34 @@ export async function POST(request: Request) {
   try {
     // Here we join all of the arrays into one.
     const allHeadshots = prompt.images;
+
+    // Send email notification when headshots are ready
+    if (resendApiKey && !resendApiKey.includes('your-resend') && !resendApiKey.includes('placeholder')) {
+      try {
+        const resend = new Resend(resendApiKey);
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        
+        await resend.emails.send({
+          from: "noreply@headshots.tryleap.ai",
+          to: user?.email ?? "",
+          subject: "Your AI headshots are ready! 🎉",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Your AI Headshots Are Ready!</h2>
+              <p>Good news! Your ${allHeadshots.length} professional AI headshots have been generated and are ready to view.</p>
+              <p><a href="${appUrl}/overview" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">View Your Headshots</a></p>
+              <p style="color: #666; font-size: 12px; margin-top: 20px;">Don't forget to download and share your new professional headshots!</p>
+            </div>
+          `,
+        });
+        console.log(`Email sent to ${user?.email} for headshots generation`);
+      } catch (emailError) {
+        console.warn('Failed to send email notification:', emailError);
+        // Don't fail the webhook if email fails
+      }
+    } else {
+      console.log('Email notifications disabled - RESEND_API_KEY not configured');
+    }
     
     const { data: model, error: modelError } = await supabase
       .from("models")

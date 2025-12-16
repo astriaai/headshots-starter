@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/types/supabase";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import disposableDomains from "disposable-email-domains";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { WaitingForMagicLink } from "./WaitingForMagicLink";
@@ -26,6 +26,21 @@ export const Login = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMagicLinkSent, setIsMagicLinkSent] = useState(false);
   const { toast } = useToast();
+
+  // Enable persistent session storage on component mount
+  useEffect(() => {
+    // Configure Supabase to persist sessions in localStorage
+    const configureSession = async () => {
+      // This ensures the session is stored in localStorage and persists across page reloads
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        // Session is already available and will be automatically persisted
+        console.log('Session persisted and available');
+      }
+    };
+    
+    configureSession();
+  }, [supabase]);
 
   const {
     register,

@@ -61,10 +61,10 @@ export default function ClientSideModelsList({
       {models && models.length > 0 && (
         <div className="flex flex-col gap-4">
           <div className="flex flex-row gap-4 w-full justify-between items-center text-center">
-            <h1>Your models</h1>
-            <Link href={packsIsEnabled ? "/overview/packs" : "/overview/models/train/raw-tune"} className="w-fit">
+            <h1>Image Upscaler</h1>
+            <Link href="/upscale" className="w-fit">
               <Button size={"sm"}>
-                Train model
+                Upscale Images
               </Button>
             </Link>
           </div>
@@ -75,11 +75,11 @@ export default function ClientSideModelsList({
         <div className="flex flex-col gap-4 items-center">
           <FaImages size={64} className="text-gray-500" />
           <h1 className="text-2xl">
-            Get started by training your first model.
+            Get started by upscaling your first image.
           </h1>
           <div>
-            <Link href={packsIsEnabled ? "/overview/packs" : "/overview/models/train/raw-tune"}>
-              <Button size={"lg"}>Train model</Button>
+            <Link href="/upscale">
+              <Button size={"lg"}>Upscale Images</Button>
             </Link>
           </div>
         </div>

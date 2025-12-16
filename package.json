@@ -13,6 +13,7 @@
     "update-types": "npx supabase gen types typescript --project-id \"hzcgbsakzagvgfuektjb\" > types/supabase.ts"
   },
   "dependencies": {
+    "@fal-ai/client": "^1.7.2",
     "@hookform/resolvers": "^3.3.1",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.3",

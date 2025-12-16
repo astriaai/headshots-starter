@@ -1,7 +1,6 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import StripePricingTable from "@/components/stripe/StripeTable";
+import CreditsPageClient from "./components/CreditsPageClient";
 
 export const dynamic = "force-dynamic";
 
@@ -12,11 +11,9 @@ export default async function Index() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return redirect("/login");
-  }
-
+  // Allow access with or without login
+  // If logged in, use user data; otherwise collect email
   return (
-    <StripePricingTable user={user} />
+    <CreditsPageClient user={user} />
   );
 }
