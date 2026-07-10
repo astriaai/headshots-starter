@@ -1,0 +1,72 @@
+# Docker Compose for deploying the Next.js app on Dokploy with a local
+# storage volume for uploaded training images.
+#
+# Supabase (database + auth) is deployed SEPARATELY as its own Dokploy stack
+# (see DEPLOY-DOKPLOY.md). This compose file only covers the app.
+#
+# All values come from environment variables set in Dokploy
+# (Environment tab). See .env.local.example for the full list.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # NEXT_PUBLIC_* vars are inlined at build time, so they must be passed
+      # as build args (Dokploy: "Build-time Variables"), not only at runtime.
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        NEXT_PUBLIC_TUNE_TYPE: ${NEXT_PUBLIC_TUNE_TYPE}
+        NEXT_PUBLIC_STRIPE_IS_ENABLED: ${NEXT_PUBLIC_STRIPE_IS_ENABLED}
+        NEXT_PUBLIC_ANNOUNCEMENT_ENABLED: ${NEXT_PUBLIC_ANNOUNCEMENT_ENABLED}
+        NEXT_PUBLIC_ANNOUNCEMENT_MESSAGE: ${NEXT_PUBLIC_ANNOUNCEMENT_MESSAGE}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      # Where uploaded training images are written. Backed by the volume below.
+      STORAGE_DIR: /data/uploads
+
+      # Public URL Astria uses to fetch training images AND webhook callbacks.
+      # MUST be your public domain, e.g. https://headshots.example.com
+      DEPLOYMENT_URL: ${DEPLOYMENT_URL}
+
+      # Astria (AI service)
+      ASTRIA_API_KEY: ${ASTRIA_API_KEY}
+      ASTRIA_TEST_MODE: ${ASTRIA_TEST_MODE}
+      PACK_QUERY_TYPE: ${PACK_QUERY_TYPE}
+      NEXT_PUBLIC_TUNE_TYPE: ${NEXT_PUBLIC_TUNE_TYPE}
+      APP_WEBHOOK_SECRET: ${APP_WEBHOOK_SECRET}
+
+      # Supabase (your self-hosted instance)
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+
+      # Email (optional)
+      RESEND_API_KEY: ${RESEND_API_KEY}
+
+      # Stripe (optional)
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      STRIPE_PRICE_ID_ONE_CREDIT: ${STRIPE_PRICE_ID_ONE_CREDIT}
+      STRIPE_PRICE_ID_THREE_CREDITS: ${STRIPE_PRICE_ID_THREE_CREDITS}
+      STRIPE_PRICE_ID_FIVE_CREDITS: ${STRIPE_PRICE_ID_FIVE_CREDITS}
+      NEXT_PUBLIC_STRIPE_IS_ENABLED: ${NEXT_PUBLIC_STRIPE_IS_ENABLED}
+
+      # Announcement bar (optional)
+      NEXT_PUBLIC_ANNOUNCEMENT_ENABLED: ${NEXT_PUBLIC_ANNOUNCEMENT_ENABLED}
+      NEXT_PUBLIC_ANNOUNCEMENT_MESSAGE: ${NEXT_PUBLIC_ANNOUNCEMENT_MESSAGE}
+    expose:
+      - "3000"
+    volumes:
+      # The local storage volume. All uploaded training images live here and
+      # survive redeploys. To point this at a specific host directory instead
+      # of a managed named volume, replace `uploads` with an absolute path,
+      # e.g.  - /srv/headshots/uploads:/data/uploads
+      - uploads:/data/uploads
+
+volumes:
+  uploads:

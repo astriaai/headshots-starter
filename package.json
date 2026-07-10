@@ -36,7 +36,6 @@
     "@types/formidable": "^3.4.2",
     "@types/node-fetch": "^2.6.4",
     "@vercel/analytics": "^1.2.2",
-    "@vercel/blob": "^0.22.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.6.8",
     "bufferutil": "^4.0.8",

@@ -26,6 +26,14 @@ Here is how it looks
 
 **Note:** The environment variable `VERCEL_URL` has been renamed to `DEPLOYMENT_URL` for consistency across the codebase. If you're updating from a previous version, please update your environment variables accordingly. This change makes the application more platform-agnostic and clearer for deployments on any hosting provider, not just Vercel.
 
+## Self-hosting on Dokploy (local storage)
+
+Prefer to run this on your own server with local storage instead of Vercel? See
+**[DEPLOY-DOKPLOY.md](DEPLOY-DOKPLOY.md)**. That setup replaces Vercel Blob with
+a local storage volume for uploaded images and uses a self-hosted Supabase
+stack, deployed via [`docker-compose.yml`](docker-compose.yml) and the included
+`Dockerfile`.
+
 ## How It Works
 
 Live demo **[here](https://getheadshots.ai)**.

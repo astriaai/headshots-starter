@@ -29,7 +29,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { FaFemale, FaImages, FaMale, FaRainbow } from "react-icons/fa";
 import * as z from "zod";
 import { fileUploadFormSchema } from "@/types/zod";
-import { upload } from "@vercel/blob/client";
 import axios from "axios";
 import { ImageInspector } from "./ImageInspector";
 import { ImageInspectionResult, aggregateCharacteristics } from "@/lib/imageInspection";
@@ -123,16 +122,37 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
 
   const trainModel = useCallback(async () => {
     setIsLoading(true);
-    // Upload each file to Vercel blob and store the resulting URLs
+    // Upload each file to our local storage volume and store the resulting URLs.
     const blobUrls = [];
 
     if (files) {
       for (const file of files) {
-        const blob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/astria/train-model/image-upload",
-        });
-        blobUrls.push(blob.url);
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const uploadResponse = await fetch(
+          "/astria/train-model/image-upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!uploadResponse.ok) {
+          const { error } = await uploadResponse
+            .json()
+            .catch(() => ({ error: "Upload failed" }));
+          setIsLoading(false);
+          toast({
+            title: "Something went wrong!",
+            description: error || "Could not upload image.",
+            duration: 5000,
+          });
+          return;
+        }
+
+        const { url } = await uploadResponse.json();
+        blobUrls.push(url);
       }
     }
 
